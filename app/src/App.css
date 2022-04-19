@@ -24,10 +24,20 @@
     margin-right: 10px !important;
 }
 
+.my-link {
+    text-decoration: none;
+    color: black
+}
+
+.my-link:hover {
+    text-decoration: none;
+    color: black;
+}
+
 .grow { 
     transition: all .2s ease-in-out; 
 }
 
 .grow:hover { 
-    transform: scale(1.2); 
+    transform: scale(1.1); 
 }
