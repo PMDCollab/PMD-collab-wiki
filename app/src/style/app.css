@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-image: url('../public/background.png');
+  background-image: url('../../public/background.png');
   height: 100vh;
   width: 100vw;
   padding: 20px;
@@ -10,7 +10,6 @@
     padding: 5px !important;
     background-color: white;
     border: 2px solid black !important;
-    cursor: pointer;
 }
 
 .my-img {
