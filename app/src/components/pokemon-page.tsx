@@ -1,5 +1,6 @@
 import { ITracker } from "../types/ITracker";
 import Buttons from "./buttons";
+import Credits from "./credits";
 import Emotions from "./emotions";
 
 export default function PokemonPage(props:{infoKey: string, info: ITracker}){
@@ -9,33 +10,12 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
             <h1>{props.info.name} ({props.infoKey})</h1>
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <h2>Emotions</h2>
-                <div style={{display:'flex', alignItems:'center', width:'40%', justifyContent:'space-between'}}>
-                    <p>by:</p>
-                    <div style={{display:'flex', flexFlow:'column'}}>
-                        <p className="nes-text is-primary">Primary</p>
-                        <p>{props.info.portrait_credit.primary}</p>
-                    </div>
-                    <div style={{display:'flex', flexFlow:'column'}}>
-                        <p className="nes-text is-primary">Secondary</p>
-                        <p>{props.info.portrait_credit.secondary}</p>
-                    </div>
-                </div>
-
+                <Credits primary={props.info.portrait_credit.primary} secondary={props.info.portrait_credit.secondary}/>
             </div>
             <Emotions infoKey={props.infoKey} emotions={props.info.portrait_files}/>
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <h2>Sprites</h2>
-                <div style={{display:'flex', alignItems:'center', width:'40%', justifyContent:'space-between'}}>
-                    <p>by:</p>
-                    <div style={{display:'flex', flexFlow:'column'}}>
-                        <p className="nes-text is-primary">Primary</p>
-                        <p>{props.info.sprite_credit.primary}</p>
-                    </div>
-                    <div style={{display:'flex', flexFlow:'column'}}>
-                        <p className="nes-text is-primary">Secondary</p>
-                        <p>{props.info.sprite_credit.secondary}</p>
-                    </div>
-                </div>
+                <Credits primary={props.info.sprite_credit.primary} secondary={props.info.sprite_credit.secondary}/>
             </div>
         </div>
     </div>
