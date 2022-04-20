@@ -11,7 +11,7 @@ export default function SpritePreview(props:{infoKey: string, action: Action}) {
 
     const container = useCallback((node: HTMLDivElement) =>{
         async function initialize(){
-            const xmlData =  await (await fetch(`${process.env.PUBLIC_URL}/sprite/${props.infoKey}/AnimData.xml`)).text();
+            const xmlData =  await (await fetch(`${process.env.PUBLIC_URL}/collab/sprite/${props.infoKey}/AnimData.xml`)).text();
             const parser = new XMLParser();
             const data = parser.parse(xmlData) as IPMDCollab;
             new GameContainer(node as HTMLDivElement, props.infoKey, props.action, data.AnimData);
