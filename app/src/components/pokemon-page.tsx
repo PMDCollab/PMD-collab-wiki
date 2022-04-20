@@ -1,7 +1,9 @@
+import { Action } from "../types/enum";
 import { ITracker } from "../types/ITracker";
 import Buttons from "./buttons";
 import Credits from "./credits";
 import Emotions from "./emotions";
+import SpritePreview from "./sprite-preview";
 
 export default function PokemonPage(props:{infoKey: string, info: ITracker}){
     return <div className="App">
@@ -16,6 +18,12 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <h2>Sprites</h2>
                 <Credits primary={props.info.sprite_credit.primary} secondary={props.info.sprite_credit.secondary}/>
+            </div>
+            <div  style={{display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap'}}>
+                {(Object.keys(props.info.sprite_files) as Action[]).map(
+                    k => <SpritePreview key={k} infoKey={props.infoKey} action={k}/>
+                )}
+                
             </div>
         </div>
     </div>
