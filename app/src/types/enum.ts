@@ -1,3 +1,5 @@
+export const CDN_URL = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master";
+
 export enum Emotion {
     ANGRY = "Angry",
     ANGRY_R = "Angry^",

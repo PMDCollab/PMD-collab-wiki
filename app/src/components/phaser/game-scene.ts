@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { Action, AnimationType, IAnim } from "../../types/enum";
+import { Action, AnimationType, CDN_URL, IAnim } from "../../types/enum";
 import { MyGame } from "./game-container";
 
 export default class GameScene extends Phaser.Scene {
@@ -83,8 +83,8 @@ export default class GameScene extends Phaser.Scene {
         });
 
         const m = this.metadata as IAnim;
-        this.load.spritesheet(`${this.infoKey}/${this.action}-${AnimationType.ANIM}`,`${process.env.PUBLIC_URL}/collab/sprite/${this.infoKey}/${this.action}-${AnimationType.ANIM}.png`, {frameWidth: m.FrameWidth, frameHeight: m.FrameHeight});
-        this.load.spritesheet(`${this.infoKey}/${this.action}-${AnimationType.SHADOW}`,`${process.env.PUBLIC_URL}/collab/sprite/${this.infoKey}/${this.action}-${AnimationType.SHADOW}.png`, {frameWidth: m.FrameWidth, frameHeight: m.FrameHeight});
+        this.load.spritesheet(`${this.infoKey}/${this.action}-${AnimationType.ANIM}`,`${CDN_URL}/sprite/${this.infoKey}/${this.action}-${AnimationType.ANIM}.png`, {frameWidth: m.FrameWidth, frameHeight: m.FrameHeight});
+        this.load.spritesheet(`${this.infoKey}/${this.action}-${AnimationType.SHADOW}`,`${CDN_URL}/sprite/${this.infoKey}/${this.action}-${AnimationType.SHADOW}.png`, {frameWidth: m.FrameWidth, frameHeight: m.FrameHeight});
     }
 
     create() {
