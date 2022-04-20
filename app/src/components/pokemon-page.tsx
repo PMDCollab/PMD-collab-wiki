@@ -19,11 +19,10 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
                 <h2>Sprites</h2>
                 <Credits primary={props.info.sprite_credit.primary} secondary={props.info.sprite_credit.secondary}/>
             </div>
-            <div  style={{display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap'}}>
+            <div  style={{display:'flex', flexWrap:'wrap'}}>
                 {(Object.keys(props.info.sprite_files) as Action[]).map(
                     k => <SpritePreview key={k} infoKey={props.infoKey} action={k}/>
                 )}
-                
             </div>
         </div>
     </div>

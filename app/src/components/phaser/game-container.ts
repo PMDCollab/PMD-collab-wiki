@@ -13,8 +13,8 @@ export default class GameContainer{
         this.action = action;
         const config = {
             type: Phaser.CANVAS,
-            width: 150,
-            height: 150,
+            width: 200,
+            height: 200,
             parent: this.div,
             pixelArt: true,
             scene: GameScene,
