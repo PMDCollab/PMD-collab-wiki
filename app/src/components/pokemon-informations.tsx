@@ -16,15 +16,16 @@ export default function PokemonInformations(props:{
             <h2>Emotions</h2>
             <Credits df={props.df} primary={props.portraitCredit.primary} secondary={props.portraitCredit.secondary}/>
         </div>
-        <Emotions infoKey={props.infoKey} emotions={props.portraitFiles}/>
+        {Object.keys(props.portraitFiles).length !== 0 ? <Emotions infoKey={props.infoKey} emotions={props.portraitFiles}/>: <p>No portraits available for now.</p>}
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
             <h2>Sprites</h2>
             <Credits df={props.df} primary={props.spriteCredit.primary} secondary={props.spriteCredit.secondary}/>
         </div>
-        <div  style={{display:'flex', flexWrap:'wrap'}}>
+        {Object.keys(props.spriteFiles).length !== 0 ? <div  style={{display:'flex', flexWrap:'wrap'}}>
             {(Object.keys(props.spriteFiles) as Action[]).map(
                 k => <SpritePreview key={k} infoKey={props.infoKey} action={k}/>
             )}
-        </div>
+        </div>: <p>No sprites available for now.</p>}
+
     </div>
 }
