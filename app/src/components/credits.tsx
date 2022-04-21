@@ -11,18 +11,18 @@ export default function Credits(props:{df:ICreditNames|undefined, primary: strin
                 name = props.df.Name[i];
             }
         }
-        return `${name} (${contact})`;
+        return <a key={id} href={contact}>{name}</a>;
     }
 
-    return  <div style={{display:'flex', alignItems:'center', justifyContent:'space-around'}}>
-    <div style={{display:'flex', flexFlow:'column', width:'20%', textAlign:'center'}}>
-        <p className="nes-text is-primary">Primary</p>
-        <p style={{width:'70%'}}>{findCredits(props.primary)}</p>
+    return  <div style={{display:'flex', flexGrow: '.3', justifyContent: 'space-around'}}>
+    <div>
+        <p>by</p>
+        <p>{findCredits(props.primary)}</p>
     </div>
-    <div style={{display:'flex', flexFlow:'column'}}>
-        <p className="nes-text is-primary">Secondary</p>
+    <div>
+        <p>Others:</p>
         <div style={{display:'flex', justifyContent:'space-around'}}>
-            {props.secondary.map(s=><p key={s}>{findCredits(s)}</p>)}
+            {props.secondary.map(s=>findCredits(s))}
         </div>
     </div>
 </div>
