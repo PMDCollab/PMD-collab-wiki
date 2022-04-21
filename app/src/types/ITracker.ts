@@ -51,7 +51,7 @@ export interface ITrackerSubgroup {
     portrait_files:        { [key: string]: boolean };
     portrait_link:         string;
     portrait_modified:     string;
-    portrait_pending:      PortraitBountyClass;
+    portrait_pending:      PurplePortraitPending;
     portrait_recolor_link: string;
     portrait_required:     boolean;
     sprite_bounty:         SpriteBounty;
@@ -64,6 +64,10 @@ export interface ITrackerSubgroup {
     sprite_recolor_link:   string;
     sprite_required:       boolean;
     subgroups:             { [key: string]: SubgroupSubgroup };
+}
+
+export interface PurplePortraitPending {
+    "965788441017192468"?: number;
 }
 
 export interface SpriteBounty {
@@ -84,7 +88,7 @@ export interface SubgroupSubgroup {
     portrait_files:        { [key: string]: boolean };
     portrait_link:         string;
     portrait_modified:     string;
-    portrait_pending:      PurplePortraitPending;
+    portrait_pending:      PortraitBountyClass;
     portrait_recolor_link: string;
     portrait_required:     boolean;
     sprite_bounty:         PortraitBountyClass;
@@ -103,10 +107,6 @@ export enum Name {
     Empty = "",
     Female = "Female",
     Shiny = "Shiny",
-}
-
-export interface PurplePortraitPending {
-    "965682207026999407"?: number;
 }
 
 export interface Subgroups {
@@ -324,7 +324,7 @@ const typeMap: any = {
         { json: "portrait_files", js: "portrait_files", typ: m(true) },
         { json: "portrait_link", js: "portrait_link", typ: "" },
         { json: "portrait_modified", js: "portrait_modified", typ: "" },
-        { json: "portrait_pending", js: "portrait_pending", typ: r("PortraitBountyClass") },
+        { json: "portrait_pending", js: "portrait_pending", typ: r("PurplePortraitPending") },
         { json: "portrait_recolor_link", js: "portrait_recolor_link", typ: "" },
         { json: "portrait_required", js: "portrait_required", typ: true },
         { json: "sprite_bounty", js: "sprite_bounty", typ: r("SpriteBounty") },
@@ -337,6 +337,9 @@ const typeMap: any = {
         { json: "sprite_recolor_link", js: "sprite_recolor_link", typ: "" },
         { json: "sprite_required", js: "sprite_required", typ: true },
         { json: "subgroups", js: "subgroups", typ: m(r("SubgroupSubgroup")) },
+    ], false),
+    "PurplePortraitPending": o([
+        { json: "965788441017192468", js: "965788441017192468", typ: u(undefined, 0) },
     ], false),
     "SpriteBounty": o([
         { json: "1", js: "1", typ: u(undefined, 0) },
@@ -354,7 +357,7 @@ const typeMap: any = {
         { json: "portrait_files", js: "portrait_files", typ: m(true) },
         { json: "portrait_link", js: "portrait_link", typ: "" },
         { json: "portrait_modified", js: "portrait_modified", typ: "" },
-        { json: "portrait_pending", js: "portrait_pending", typ: r("PurplePortraitPending") },
+        { json: "portrait_pending", js: "portrait_pending", typ: r("PortraitBountyClass") },
         { json: "portrait_recolor_link", js: "portrait_recolor_link", typ: "" },
         { json: "portrait_required", js: "portrait_required", typ: true },
         { json: "sprite_bounty", js: "sprite_bounty", typ: r("PortraitBountyClass") },
@@ -367,9 +370,6 @@ const typeMap: any = {
         { json: "sprite_recolor_link", js: "sprite_recolor_link", typ: "" },
         { json: "sprite_required", js: "sprite_required", typ: true },
         { json: "subgroups", js: "subgroups", typ: r("Subgroups") },
-    ], false),
-    "PurplePortraitPending": o([
-        { json: "965682207026999407", js: "965682207026999407", typ: u(undefined, 0) },
     ], false),
     "Subgroups": o([
         { json: "0002", js: "0002", typ: u(undefined, r("The0002")) },

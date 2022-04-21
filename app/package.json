@@ -22,6 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "update": "npm run download-tracker && npm run quicktype",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
