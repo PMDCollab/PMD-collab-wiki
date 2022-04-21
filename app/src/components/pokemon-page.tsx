@@ -1,11 +1,11 @@
-import { Action, CDN_URL, ICreditNames } from "../types/enum";
+import { CDN_URL, ICreditNames } from "../types/enum";
 import { ITracker } from "../types/ITracker";
 import Buttons from "./buttons";
-import Credits from "./credits";
-import Emotions from "./emotions";
-import SpritePreview from "./sprite-preview";
 import DataFrame from 'dataframe-js';
-import { useState } from "react";
+import { ReactElement, useState } from "react";
+import PokemonInformations from "./pokemon-informations";
+import 'react-tabs/style/react-tabs.css';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 export default function PokemonPage(props:{infoKey: string, info: ITracker}){
     const [df, setDf] = useState<ICreditNames>();
@@ -16,24 +16,68 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
         .then(df=>{setDf(df.toDict())});
     }
 
+    const tablist = new Array<ReactElement>();
+    const tabPanelList = new Array<ReactElement>();
+
+    if(props.info.subgroups){
+        Object.keys(props.info.subgroups).forEach(k=>{
+            const s = props.info.subgroups[k];
+            const name = s.name ? s.name : '';
+            if(s.name){
+                tablist.push(<Tab key={k}>{`${props.info.name} ${name}`}</Tab>);
+                tabPanelList.push(<TabPanel key={k}>
+                    <PokemonInformations
+                        portraitCredit={s.portrait_credit}
+                        portraitFiles={s.portrait_files}
+                        spriteCredit={s.sprite_credit}
+                        spriteFiles={s.sprite_files as { [key: string]: boolean; }}
+                        infoKey={`${props.infoKey}/${k}`}
+                        df={df}
+                    />
+                </TabPanel>);
+            }
+            if(s.subgroups){
+                Object.keys(s.subgroups).forEach(kk=>{
+                    const ss = s.subgroups[kk];
+                    if(ss.name){
+                        tablist.push(<Tab key={kk}>{`${props.info.name} ${name} ${ss.name}`}</Tab>);
+                        tabPanelList.push(<TabPanel key={k}>
+                            <PokemonInformations
+                                portraitCredit={ss.portrait_credit}
+                                portraitFiles={ss.portrait_files}
+                                spriteCredit={ss.sprite_credit}
+                                spriteFiles={ss.sprite_files as { [key: string]: boolean; }}
+                                infoKey={`${props.infoKey}/${k}/${kk}`}
+                                df={df}
+                            />
+                        </TabPanel>);
+                    }
+                });
+            }
+        })
+    }
+
     return <div className="App">
         <Buttons/>
         <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.7)', display:'flex', flexFlow:'column', overflowY:'scroll'}}>
             <h1>{props.info.name} ({props.infoKey})</h1>
-            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                <h2>Emotions</h2>
-                <Credits df={df} primary={props.info.portrait_credit.primary} secondary={props.info.portrait_credit.secondary}/>
-            </div>
-            <Emotions infoKey={props.infoKey} emotions={props.info.portrait_files}/>
-            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                <h2>Sprites</h2>
-                <Credits df={df} primary={props.info.sprite_credit.primary} secondary={props.info.sprite_credit.secondary}/>
-            </div>
-            <div  style={{display:'flex', flexWrap:'wrap'}}>
-                {(Object.keys(props.info.sprite_files) as Action[]).map(
-                    k => <SpritePreview key={k} infoKey={props.infoKey} action={k}/>
-                )}
-            </div>
+            <Tabs>
+                <TabList>
+                    <Tab>{props.info.name}</Tab>
+                    {tablist}
+                </TabList>
+                <TabPanel>
+                    <PokemonInformations 
+                        portraitCredit={props.info.portrait_credit}
+                        portraitFiles={props.info.portrait_files}
+                        spriteCredit={props.info.sprite_credit}
+                        spriteFiles={props.info.sprite_files}
+                        infoKey={props.infoKey}
+                        df={df}
+                    />
+                </TabPanel>
+                {tabPanelList}
+            </Tabs>
         </div>
     </div>
 }
