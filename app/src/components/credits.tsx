@@ -15,10 +15,11 @@ export default function Credits(props:{df:ICreditNames|undefined, primary: strin
     }
 
     return  <div style={{display:'flex', flexGrow: '.3', justifyContent: 'space-around'}}>
-    <div>
+    {props.primary.length !== 0 ? <div>
         <p>by</p>
         <p>{findCredits(props.primary)}</p>
-    </div>
+    </div>: null}
+
     {props.secondary.length !== 0 ? <div>
         <p>Others</p>
         <div style={{display:'flex', justifyContent:'space-around'}}>

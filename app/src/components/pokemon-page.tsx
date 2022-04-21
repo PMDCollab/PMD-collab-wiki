@@ -41,7 +41,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
                     const ss = s.subgroups[kk];
                     if(ss.name){
                         tablist.push(<Tab key={`${k}-${kk}`}><p className={`nes-pointer ${tablist.length%2 === 0 ? 'nes-text is-primary': ''}`}>{`${props.info.name} ${name} ${ss.name}`}</p></Tab>);
-                        tabPanelList.push(<TabPanel key={k}>
+                        tabPanelList.push(<TabPanel key={`${k}-${kk}`}>
                             <PokemonInformations
                                 portraitCredit={ss.portrait_credit}
                                 portraitFiles={ss.portrait_files}

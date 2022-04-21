@@ -20,10 +20,7 @@ export default class GameContainer{
             scene: GameScene,
             scale: {mode: Phaser.Scale.NONE},
             autoFocus: false,
-            input: false,
-            dom: {
-                createContainer: true
-            }
+            input: false
           };
           this.game = new MyGame(config, infoKey, action, animationData);
     }
