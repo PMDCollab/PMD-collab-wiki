@@ -25,7 +25,7 @@ export default function SpritePreview(props:{infoKey: string, action: Action}) {
 
     return <div className='my-container nes-container' style={{display:'flex', alignItems:'center', flexFlow:'column', margin:'10px'}}>
             <div id={`action-${props.action}`} ref={container}></div>
-            <p style={{fontSize: '0.5vw', margin: '0px'}}>{props.action}</p>
+            <p style={{fontSize: '0.6em', margin: '0px'}}>{props.action}</p>
         </div>
 }
 
