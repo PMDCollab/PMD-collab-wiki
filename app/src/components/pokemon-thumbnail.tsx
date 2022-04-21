@@ -7,7 +7,7 @@ export default function PokemonThumbnail(props: {info: ITracker, infoKey: string
     return <Link to={props.infoKey} className='my-link'>
         <div className='my-container nes-container nes-pointer grow' style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'center', width: '100px', margin:'20px'}}>
              {image}
-            <p style={{fontSize: '0.5vw', margin: '0px'}}>{props.info.name}</p>
+            <p style={{fontSize: '0.5vw', margin: '0px'}}>{props.infoKey} {props.info.name}</p>
         </div>
     </Link>
 }
