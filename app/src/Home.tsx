@@ -11,7 +11,7 @@ export default function Home() {
     return (
       <div className="App">
           <Buttons/>
-          <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.7)', display:'flex', flexFlow:'column', alignItems:'center'}}>
+          <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.85)', display:'flex', flexFlow:'column', alignItems:'center'}}>
               <Search currentText={currentText} setCurrentText={setCurrentText}/>
               <PokemonCarousel currentText={currentText}/>
           </div>

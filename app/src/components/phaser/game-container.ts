@@ -18,7 +18,12 @@ export default class GameContainer{
             parent: this.div,
             pixelArt: true,
             scene: GameScene,
-            scale: {mode: Phaser.Scale.NONE}
+            scale: {mode: Phaser.Scale.NONE},
+            autoFocus: false,
+            input: false,
+            dom: {
+                createContainer: true
+            }
           };
           this.game = new MyGame(config, infoKey, action, animationData);
     }

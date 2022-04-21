@@ -24,7 +24,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
             const s = props.info.subgroups[k];
             const name = s.name ? s.name : '';
             if(s.name){
-                tablist.push(<Tab key={k}>{`${props.info.name} ${name}`}</Tab>);
+                tablist.push(<Tab key={k}><p className={`nes-pointer ${tablist.length%2 === 0 ? 'nes-text is-primary': ''}`}>{`${props.info.name} ${name}`}</p></Tab>);
                 tabPanelList.push(<TabPanel key={k}>
                     <PokemonInformations
                         portraitCredit={s.portrait_credit}
@@ -40,7 +40,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
                 Object.keys(s.subgroups).forEach(kk=>{
                     const ss = s.subgroups[kk];
                     if(ss.name){
-                        tablist.push(<Tab key={kk}>{`${props.info.name} ${name} ${ss.name}`}</Tab>);
+                        tablist.push(<Tab key={`${k}-${kk}`}><p className={`nes-pointer ${tablist.length%2 === 0 ? 'nes-text is-primary': ''}`}>{`${props.info.name} ${name} ${ss.name}`}</p></Tab>);
                         tabPanelList.push(<TabPanel key={k}>
                             <PokemonInformations
                                 portraitCredit={ss.portrait_credit}
@@ -59,7 +59,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
 
     return <div className="App">
         <Buttons/>
-        <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.7)', display:'flex', flexFlow:'column', overflowY:'scroll'}}>
+        <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.85)', display:'flex', flexFlow:'column', overflowY:'scroll'}}>
             <h1>{props.info.name} ({props.infoKey})</h1>
             <Tabs>
                 <TabList>

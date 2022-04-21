@@ -11,7 +11,7 @@ export default function Credits(props:{df:ICreditNames|undefined, primary: strin
                 name = props.df.Name[i];
             }
         }
-        return <a style={{marginRight:'20px'}} key={id} href={contact}>{name}</a>;
+        return <a className='nes-text is-primary' style={{marginRight:'20px'}} key={id} href={contact}>{name}</a>;
     }
 
     return  <div style={{display:'flex', flexGrow: '.3', justifyContent: 'space-around'}}>
