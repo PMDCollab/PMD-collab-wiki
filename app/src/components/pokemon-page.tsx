@@ -24,7 +24,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
             const s = props.info.subgroups[k];
             const name = s.name ? s.name : '';
             if(s.name){
-                tablist.push(<Tab key={k}><p className={`nes-pointer ${tablist.length%2 === 0 ? 'nes-text is-primary': ''}`}>{`${props.info.name} ${name}`}</p></Tab>);
+                tablist.push(<Tab key={k}><p className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{`${props.info.name} ${name}`}</p></Tab>);
                 tabPanelList.push(<TabPanel key={k}>
                     <PokemonInformations
                         portraitCredit={s.portrait_credit}
@@ -40,7 +40,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
                 Object.keys(s.subgroups).forEach(kk=>{
                     const ss = s.subgroups[kk];
                     if(ss.name){
-                        tablist.push(<Tab key={`${k}-${kk}`}><p className={`nes-pointer ${tablist.length%2 === 0 ? 'nes-text is-primary': ''}`}>{`${props.info.name} ${name} ${ss.name}`}</p></Tab>);
+                        tablist.push(<Tab key={`${k}-${kk}`}><p className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{`${props.info.name} ${name} ${ss.name}`}</p></Tab>);
                         tabPanelList.push(<TabPanel key={`${k}-${kk}`}>
                             <PokemonInformations
                                 portraitCredit={ss.portrait_credit}
