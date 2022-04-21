@@ -6,7 +6,7 @@ export default function About(){
             <Buttons/>
             <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.8)', display:'flex', flexFlow:'column', alignItems:'center', justifyContent:'space-evenly'}}>
                 <h1 className="nes-text is-primary">The PMD Sprite Repository</h1>
-                <p>Welcome to the PMD Sprite Repository! This is a comprehensive resource of official sprites from the Pokémon Mystery Dungeon NDS games, and custom sprites made in the same style. We have both spritesheets and portraits; only portraits can be viewed on this site for now, while the GitHub repository contains both. They are easily downloaded for use in fan projects, and can be imported to SkyTemple. We aim to provide sprites for every Pokémon of every generation!
+                <p>Welcome to the PMD Sprite Repository! This is a comprehensive resource of official sprites from the Pokémon Mystery Dungeon NDS games, and custom sprites made in the same style. We have both spritesheets and portraits. They are easily downloaded for use in fan projects, and can be imported to SkyTemple. We aim to provide sprites for every Pokémon of every generation!
 When using, you must credit the contributors. They can be found on each Pokémon's page.</p>
                 <h3 className="nes-text is-primary"> How to collaborate ?</h3>
                 <p>Have you made a portrait we're missing? Notice errors in existing portraits? Join us on the SkyTemple Discord to speak to contributors and submit your own!
