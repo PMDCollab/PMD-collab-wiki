@@ -187,3 +187,9 @@ export interface IAnim {
 export interface IDuration{
     Duration: number | number[]
 }
+
+export interface ICreditNames{
+    Contact: string[],
+    Discord: string[],
+    Name: string[]
+}

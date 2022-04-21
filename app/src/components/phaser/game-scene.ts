@@ -53,7 +53,7 @@ export default class GameScene extends Phaser.Scene {
       });
 
         this.add.image(100,100,'small-ba').setScale(2,2);
-        this.add.sprite(100,105,`${this.infoKey}/${this.action}-${AnimationType.SHADOW}`).setScale(2,2).setTintFill(0xffffff).play(AnimationType.SHADOW);
-        this.add.sprite(100,100,`${this.infoKey}/${this.action}-${AnimationType.ANIM}`).setScale(2,2).play(AnimationType.ANIM);
+        this.add.sprite(110,115,`${this.infoKey}/${this.action}-${AnimationType.SHADOW}`).setScale(2,2).setTintFill(0xffffff).play(AnimationType.SHADOW);
+        this.add.sprite(110,110,`${this.infoKey}/${this.action}-${AnimationType.ANIM}`).setScale(2,2).play(AnimationType.ANIM);
     }
 }
