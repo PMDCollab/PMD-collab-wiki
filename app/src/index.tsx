@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style/index.css';
 import Home from './Home';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import tracker from './types/tracker.json';
 import { Convert } from './types/ITracker';
 import PokemonPage from './components/pokemon-page';
@@ -15,12 +15,12 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
           <Routes>
-            <Route path='/PMD-collab-wiki' element={<Home/>}/>
-            {Object.keys(metadata).map(k=><Route key={k} path={`/PMD-collab-wiki/${k}`} element={<PokemonPage infoKey={k} info={metadata[k]}/>}/>)}
-            <Route path='/PMD-collab-wiki/About' element={<About/>}/>
+            <Route path='/' element={<Home/>}/>
+            {Object.keys(metadata).map(k=><Route key={k} path={`/${k}`} element={<PokemonPage infoKey={k} info={metadata[k]}/>}/>)}
+            <Route path='/About' element={<About/>}/>
           </Routes>
-      </BrowserRouter>
+      </HashRouter>
   </React.StrictMode>
 );
