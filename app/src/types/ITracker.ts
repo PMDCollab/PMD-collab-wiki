@@ -100,7 +100,7 @@ export interface SubgroupSubgroup {
     sprite_pending:        PortraitBountyClass;
     sprite_recolor_link:   string;
     sprite_required:       boolean;
-    subgroups:             Subgroups;
+    subgroups:             any;
 }
 
 export enum Name {
