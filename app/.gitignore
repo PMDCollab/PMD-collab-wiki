@@ -24,3 +24,5 @@ yarn-error.log*
 node_modules
 public/portrait
 public/sprites
+
+src/types/tracker.json
