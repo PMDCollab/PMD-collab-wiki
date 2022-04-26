@@ -30,7 +30,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
                         portraitCredit={s.portrait_credit}
                         portraitFiles={s.portrait_files}
                         spriteCredit={s.sprite_credit}
-                        spriteFiles={s.sprite_files as { [key: string]: boolean; }}
+                        spriteFiles={s.sprite_files}
                         infoKey={`${props.infoKey}/${k}`}
                         df={df}
                     />
@@ -46,7 +46,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
                                 portraitCredit={ss.portrait_credit}
                                 portraitFiles={ss.portrait_files}
                                 spriteCredit={ss.sprite_credit}
-                                spriteFiles={ss.sprite_files as { [key: string]: boolean; }}
+                                spriteFiles={ss.sprite_files}
                                 infoKey={`${props.infoKey}/${k}/${kk}`}
                                 df={df}
                             />

@@ -23,14 +23,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "update": "npm run download-tracker && npm run quicktype",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "download-tracker": "node ./src/gen/download-tracker.js",
-    "quicktype": "quicktype ./src/types/tracker.json  -o ./src/types/ITracker.ts"
+    "download-tracker": "node ./src/gen/download-tracker.js"
   },
   "eslintConfig": {
     "extends": [
@@ -50,7 +48,6 @@
     ]
   },
   "devDependencies": {
-    "@types/dataframe-js": "^1.4.0",
-    "quicktype": "^15.0.261"
+    "@types/dataframe-js": "^1.4.0"
   }
 }

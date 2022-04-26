@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './style/index.css';
 import Home from './Home';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import { Convert } from './types/ITracker';
 import PokemonPage from './components/pokemon-page';
 import About from './About';
 import { CDN_URL } from './types/enum';
+import { ITracker } from './types/ITracker';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 fetch(`${CDN_URL}/tracker.json`)
 .then(res=>res.json())
 .then(tracker=>{
-  const metadata = Convert.toITracker(JSON.stringify(tracker));
+  const metadata = tracker as { [key: string]: ITracker };
   root.render(
     <React.StrictMode>
       <HashRouter>
