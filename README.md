@@ -21,9 +21,3 @@ it creates a gh-pages branch in your repo
 ```
 npm run deploy
 ```
-
-## Update type tracker definition
-
-```
-npm run deploy
-```
