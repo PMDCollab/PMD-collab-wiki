@@ -23,13 +23,15 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
     function buildTab(info: ITracker, infoKey: string, infoName: string){
         const name = info.name ? info.name : '';
         if(info.name){
-            tablist.push(<Tab key={infoKey}><p style={{fontSize:'0.8em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'} style={{fontSize: '0.6em', margin: '0px'}}>{`${infoName} ${name}`}</p></Tab>);
+            tablist.push(<Tab key={infoKey}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{`${infoName} ${name}`}</p></Tab>);
             tabPanelList.push(<TabPanel key={`${infoKey}`}>
                 <PokemonInformations
                     portraitCredit={info.portrait_credit}
                     portraitFiles={info.portrait_files}
                     spriteCredit={info.sprite_credit}
                     spriteFiles={info.sprite_files}
+                    spriteModified={info.sprite_modified}
+                    portraitModified={info.portrait_modified}
                     infoKey={`${infoKey}`}
                     df={df}
                 />
@@ -50,7 +52,6 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
             <h1 style={{fontSize:'1.5em'}}>{props.info.name} ({props.infoKey})</h1>
             <Tabs>
                 <TabList>
-                    <Tab><p style={{fontSize:'0.8em'}}>{props.info.name}</p></Tab>
                     {tablist}
                 </TabList>
                 <TabPanel>
