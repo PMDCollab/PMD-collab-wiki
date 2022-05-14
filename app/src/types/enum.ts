@@ -193,3 +193,9 @@ export interface ICreditNames{
     Discord: string[],
     Name: string[]
 }
+
+export enum RankMethod{
+    POKEDEX_NUMBER = 'Pokedex Number',
+    LAST_MODIFICATION = 'Last Modification',
+    NAME = 'Name'
+}

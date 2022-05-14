@@ -1,5 +1,7 @@
 export interface ITracker {
     name:                  string;
+    portrait_modified:     string;
+    sprite_modified:       string;
     portrait_credit:       Credit;
     portrait_files:        { [key: string]: boolean };
     sprite_credit:         Credit;

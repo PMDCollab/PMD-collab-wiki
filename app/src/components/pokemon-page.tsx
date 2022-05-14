@@ -23,7 +23,7 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
     function buildTab(info: ITracker, infoKey: string, infoName: string){
         const name = info.name ? info.name : '';
         if(info.name){
-            tablist.push(<Tab key={infoKey}><p className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'} style={{fontSize: '0.6em', margin: '0px'}}>{`${infoName} ${name}`}</p></Tab>);
+            tablist.push(<Tab key={infoKey}><p style={{fontSize:'0.8em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'} style={{fontSize: '0.6em', margin: '0px'}}>{`${infoName} ${name}`}</p></Tab>);
             tabPanelList.push(<TabPanel key={`${infoKey}`}>
                 <PokemonInformations
                     portraitCredit={info.portrait_credit}
@@ -50,8 +50,21 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
             <h1 style={{fontSize:'1.5em'}}>{props.info.name} ({props.infoKey})</h1>
             <Tabs>
                 <TabList>
+                    <Tab><p style={{fontSize:'0.8em'}}>{props.info.name}</p></Tab>
                     {tablist}
                 </TabList>
+                <TabPanel>
+                    <PokemonInformations 
+                        portraitCredit={props.info.portrait_credit}
+                        portraitFiles={props.info.portrait_files}
+                        portraitModified={props.info.portrait_modified}
+                        spriteCredit={props.info.sprite_credit}
+                        spriteFiles={props.info.sprite_files}
+                        spriteModified={props.info.sprite_modified}
+                        infoKey={props.infoKey}
+                        df={df}
+                    />
+                </TabPanel>
                 {tabPanelList}
             </Tabs>
         </div>
