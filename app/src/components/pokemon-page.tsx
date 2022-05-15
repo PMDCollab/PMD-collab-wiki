@@ -54,18 +54,6 @@ export default function PokemonPage(props:{infoKey: string, info: ITracker}){
                 <TabList>
                     {tablist}
                 </TabList>
-                <TabPanel>
-                    <PokemonInformations 
-                        portraitCredit={props.info.portrait_credit}
-                        portraitFiles={props.info.portrait_files}
-                        portraitModified={props.info.portrait_modified}
-                        spriteCredit={props.info.sprite_credit}
-                        spriteFiles={props.info.sprite_files}
-                        spriteModified={props.info.sprite_modified}
-                        infoKey={props.infoKey}
-                        df={df}
-                    />
-                </TabPanel>
                 {tabPanelList}
             </Tabs>
         </div>
