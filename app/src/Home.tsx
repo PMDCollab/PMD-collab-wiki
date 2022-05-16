@@ -5,36 +5,17 @@ import Search from './components/search';
 import { useState } from 'react';
 import Buttons from './components/buttons';
 import { ITracker } from './types/ITracker';
-import { CDN_URL, ICreditNames, RankMethod } from './types/enum';
+import { CreditInformation, RankMethod } from './types/enum';
 import DisplayParameters from './components/display-parameters';
-import { DataFrame } from 'dataframe-js';
 
-export default function Home(props:{metadata: {[key: string]: ITracker}}) {
+export default function Home(props:{metadata: {[key: string]: ITracker}, mappedCredits: Map<string, CreditInformation>}) {
     const [currentText, setCurrentText] = useState('');
     const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
     const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false);
     const [showSpriteAuthor, setSpriteAuthor] = useState<boolean>(false);
     const [showIndex, setShowIndex] = useState<boolean>(false);
     const [showLastModification, setShowLastModification] = useState<boolean>(false);
-    const [initialized, setInitialized] = useState<boolean>(false);
 
-    if(!initialized){
-        setInitialized(true);
-        DataFrame.fromText(`${CDN_URL}/credit_names.txt`,'\t',true)
-        .then(df=>{return df.toDict()})
-        .then((dict: ICreditNames)=>{
-            Object.keys(props.metadata).forEach(k =>{
-                const i = dict.Discord.findIndex(e=>e===props.metadata[k].portrait_credit.primary)
-                const j = dict.Discord.findIndex(e=>e===props.metadata[k].sprite_credit.primary)
-                if(i !== -1){
-                    props.metadata[k].portrait_credit.primary = dict.Name[i]
-                }
-                if(j !== -1){
-                    props.metadata[k].sprite_credit.primary = dict.Name[i]
-                }
-            })
-        })
-    }
 
     return (
         <div className="App">
@@ -50,7 +31,16 @@ export default function Home(props:{metadata: {[key: string]: ITracker}}) {
                   </select>
                   </div>
                 </div>
-                <PokemonCarousel currentText={currentText} metadata={props.metadata} rankBy={rankBy} showPortraitAuthor={showPortraitAuthor} showSpriteAuthor={showSpriteAuthor} showIndex={showIndex} showLastModification={showLastModification}/>
+                <PokemonCarousel 
+                    currentText={currentText}
+                    metadata={props.metadata}
+                    rankBy={rankBy}
+                    showPortraitAuthor={showPortraitAuthor}
+                    showSpriteAuthor={showSpriteAuthor}
+                    showIndex={showIndex}
+                    showLastModification={showLastModification}
+                    mappedCredits={props.mappedCredits}
+                />
             </div>
         </div>
       )
