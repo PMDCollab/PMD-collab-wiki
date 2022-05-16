@@ -35,20 +35,16 @@ fetch(`${CDN_URL}/tracker.json`)
             })
         }
     }
-
     Object.keys(metadata).forEach(k=>flattenMetadata(metadata[k],k, metadata[k].name))
 })
-.then(()=>{
-    DataFrame.fromText(`${CDN_URL}/credit_names.txt`,'\t',true)
-    .then(df=>{return df.toDict()})
-    .then((dict: ICreditNames)=>{
-        for (let i = 0; i < dict.Discord.length; i++) {
-            mappedCredits.set(dict.Discord[i],{discord: dict.Discord[i], name: dict.Name[i], contact:dict.Contact[i]})
-        }
-    })
+.then(()=> DataFrame.fromText(`${CDN_URL}/credit_names.txt`,'\t',true))
+.then(df=> df.toDict())
+.then((dict: ICreditNames)=>{
+    for (let i = 0; i < dict.Discord.length; i++) {
+        mappedCredits.set(dict.Discord[i],{discord: dict.Discord[i], name: dict.Name[i], contact:dict.Contact[i]})
+    }
 })
 .then(()=>{
-    //console.log(mappedCredits)
     root.render(
         <React.StrictMode>
         <HashRouter>
