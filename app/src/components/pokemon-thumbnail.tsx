@@ -1,9 +1,17 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
-import { CDN_URL, Emotion } from '../types/enum';
+import { CDN_URL, CreditInformation, Emotion } from '../types/enum';
 import { ITracker } from '../types/ITracker';
 
-export default function PokemonThumbnail(props: {info: ITracker, infoKey: string, showIndex: boolean, showSpriteAuthor: boolean, showPortraitAuthor: boolean, showLastModification: boolean}){
+export default function PokemonThumbnail(props: {
+        info: ITracker,
+        infoKey: string,
+        showIndex: boolean,
+        showSpriteAuthor: boolean,
+        showPortraitAuthor: boolean,
+        showLastModification: boolean,
+        mappedCredits: Map<string, CreditInformation>
+    }){
     let image: ReactElement | null = null
     let date: ReactElement | null = null
     let index: ReactElement | null = null
@@ -11,11 +19,11 @@ export default function PokemonThumbnail(props: {info: ITracker, infoKey: string
     let spriteAuthor: ReactElement | null = null
 
     if(props.showPortraitAuthor){
-        portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.portrait_credit.primary}</p> 
+        portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.mappedCredits.get(props.info.portrait_credit.primary)?.name}</p> 
     }
 
     if(props.showSpriteAuthor){
-        spriteAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.sprite_credit.primary}</p> 
+        spriteAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.mappedCredits.get(props.info.sprite_credit.primary)?.name}</p> 
     }
 
     if(props.showIndex){

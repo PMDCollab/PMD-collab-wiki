@@ -1,4 +1,4 @@
-import { Action, ICreditNames } from "../types/enum";
+import { Action, CreditInformation } from "../types/enum";
 import { Credit } from "../types/ITracker";
 import Credits from "./credits";
 import Emotions from "./emotions";
@@ -6,14 +6,14 @@ import { formatDate } from "./pokemon-thumbnail";
 import SpritePreview from "./sprite-preview";
 
 export default function PokemonInformations(props:{
-    df:ICreditNames | undefined,
     portraitFiles: { [key: string]: boolean },
     portraitCredit: Credit,
     spriteFiles: { [key: string]: boolean },
     spriteCredit: Credit,
     infoKey: string,
     spriteModified: string,
-    portraitModified: string
+    portraitModified: string,
+    mappedCredits: Map<string, CreditInformation>
     }){
     const portraitDate = props.portraitModified !== '' ? new Date(props.portraitModified): undefined;
     const spriteDate = props.spriteModified !== '' ? new Date(props.spriteModified): undefined;
@@ -23,7 +23,7 @@ export default function PokemonInformations(props:{
                 <h2 style={{textAlign:'left'}}>Emotions</h2>
                 <p style={{fontSize: '0.6em', margin: '0px'}}>{getLastModification(portraitDate)}</p>
             </div>
-            <Credits df={props.df} primary={props.portraitCredit.primary} secondary={props.portraitCredit.secondary}/>
+            <Credits mappedCredits={props.mappedCredits} primary={props.portraitCredit.primary} secondary={props.portraitCredit.secondary}/>
         </div>
         {Object.keys(props.portraitFiles).length !== 0 ? <Emotions infoKey={props.infoKey} emotions={props.portraitFiles}/>: <p>No portraits available for now.</p>}
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
@@ -31,7 +31,7 @@ export default function PokemonInformations(props:{
                 <h2 style={{textAlign:'left'}}>Sprites</h2>
                 <p style={{fontSize: '0.6em', margin: '0px'}}>{getLastModification(spriteDate)}</p>
             </div>
-            <Credits df={props.df} primary={props.spriteCredit.primary} secondary={props.spriteCredit.secondary}/>
+            <Credits mappedCredits={props.mappedCredits} primary={props.spriteCredit.primary} secondary={props.spriteCredit.secondary}/>
         </div>
         {Object.keys(props.spriteFiles).length !== 0 ? <div  style={{display:'flex', flexWrap:'wrap'}}>
             {(Object.keys(props.spriteFiles) as Action[]).map(
