@@ -16,7 +16,7 @@ export default function Credits(props:{mappedCredits: Map<string, CreditInformat
     return  <div style={{display:'flex', flexGrow: '.3', justifyContent: 'space-around'}}>
     {props.primary.length !== 0 ? <div>
         <p style={{fontSize:'0.6em'}}>by</p>
-        <p style={{fontSize:'0.6em'}}>{findCredits(props.primary)}</p>
+        <p style={{fontSize:'1em'}}>{findCredits(props.primary)}</p>
     </div>: null}
 
     {props.secondary.length !== 0 ? <div>
