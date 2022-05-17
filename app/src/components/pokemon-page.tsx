@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { IFlattenTracker } from "../types/ITracker";
 import Buttons from "./buttons";
 import PokemonInformations from "./pokemon-informations";
+import trackerFile from '../tracker.json'
+
+const tracker = trackerFile as unknown as {[key: string]: IFlattenTracker}
 
 export default function PokemonPage(props:{
         infoKey: string,
@@ -17,8 +20,8 @@ export default function PokemonPage(props:{
                 <Link key={props.infoKey} to={'/' + props.infoKey} className='my-link'>
                     <p style={{fontSize:'0.7em'}}>{props.info.name}</p>
                 </Link>
-                {props.info.related.map((p,i)=><Link key={p.id} to={'/' + p.id} className='my-link'>
-                    <p style={{fontSize:'0.7em', marginLeft: '10px', marginRight:'10px'}} className={i%2 === 1 ? 'nes-text': 'nes-text is-primary'}>{p.name}</p>
+                {props.info.related.map((p,i)=><Link key={p} to={'/' + p} className='my-link'>
+                    <p style={{fontSize:'0.7em', marginLeft: '10px', marginRight:'10px'}} className={i%2 === 1 ? 'nes-text': 'nes-text is-primary'}>{tracker[p].name}</p>
                 </Link>)}
             </div>
             <PokemonInformations

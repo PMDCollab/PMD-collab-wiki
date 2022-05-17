@@ -17,7 +17,7 @@ export interface IFlattenTracker{
     portrait_files:        { [key: string]: boolean };
     sprite_credit:         Credit;
     sprite_files:          { [key: string]: boolean };
-    related:               {id: string, name: string}[]
+    related:               string[]
 }
 
 export interface Credit {

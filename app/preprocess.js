@@ -40,7 +40,7 @@ async function preprocess(){
     Object.keys(flatMetadata).forEach(k=>{
         Object.keys(flatMetadata).forEach(l=>{
             if(l.split('/')[0] === k.split('/')[0] && l !== k){
-                flatMetadata[k].related.push({id: l, name: flatMetadata[l].name})
+                flatMetadata[k].related.push(l)
             }
         })
     })
