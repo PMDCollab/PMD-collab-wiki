@@ -1,4 +1,4 @@
-import { Action, CreditInformation } from "../types/enum";
+import { Action } from "../types/enum";
 import { Credit } from "../types/ITracker";
 import Credits from "./credits";
 import Emotions from "./emotions";
@@ -12,8 +12,7 @@ export default function PokemonInformations(props:{
     spriteCredit: Credit,
     infoKey: string,
     spriteModified: string,
-    portraitModified: string,
-    mappedCredits: Map<string, CreditInformation>
+    portraitModified: string
     }){
     const portraitDate = props.portraitModified !== '' ? new Date(props.portraitModified): undefined;
     const spriteDate = props.spriteModified !== '' ? new Date(props.spriteModified): undefined;
@@ -23,7 +22,7 @@ export default function PokemonInformations(props:{
                 <h2 style={{textAlign:'left'}}>Emotions</h2>
                 <p style={{fontSize: '0.6em', margin: '0px'}}>{getLastModification(portraitDate)}</p>
             </div>
-            <Credits mappedCredits={props.mappedCredits} primary={props.portraitCredit.primary} secondary={props.portraitCredit.secondary}/>
+            <Credits primary={props.portraitCredit.primary} secondary={props.portraitCredit.secondary}/>
         </div>
         {Object.keys(props.portraitFiles).length !== 0 ? <Emotions infoKey={props.infoKey} emotions={props.portraitFiles}/>: <p>No portraits available for now.</p>}
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
@@ -31,7 +30,7 @@ export default function PokemonInformations(props:{
                 <h2 style={{textAlign:'left'}}>Sprites</h2>
                 <p style={{fontSize: '0.6em', margin: '0px'}}>{getLastModification(spriteDate)}</p>
             </div>
-            <Credits mappedCredits={props.mappedCredits} primary={props.spriteCredit.primary} secondary={props.spriteCredit.secondary}/>
+            <Credits primary={props.spriteCredit.primary} secondary={props.spriteCredit.secondary}/>
         </div>
         {Object.keys(props.spriteFiles).length !== 0 ? <div  style={{display:'flex', flexWrap:'wrap'}}>
             {(Object.keys(props.spriteFiles) as Action[]).map(

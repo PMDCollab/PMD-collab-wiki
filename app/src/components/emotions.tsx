@@ -1,6 +1,9 @@
 import { CDN_URL } from "../types/enum"
 
-export default function Emotions(props: {infoKey: string, emotions:{[key: string]: boolean}}){
+export default function Emotions(props: {
+    infoKey: string,
+    emotions:{[key: string]: boolean
+    }}){
     return <div style={{display:'flex', flexWrap:'wrap'}}>
     {Object.keys(props.emotions).sort().map(k=>{
        return <div key={k} className="my-container nes-container" style={{margin:'10px', marginLeft:'0px', display:'flex', flexFlow:'column', justifyContent:'space-around', alignItems:'center'}}>

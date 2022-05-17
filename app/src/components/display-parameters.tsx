@@ -1,6 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 
-export default function DisplayParameters(props:{setShowIndex: Dispatch<SetStateAction<boolean>>, setPortraitAuthor: Dispatch<SetStateAction<boolean>>, setSpriteAuthor: Dispatch<SetStateAction<boolean>>, setShowLastModification: Dispatch<SetStateAction<boolean>>}){
+export default function DisplayParameters(props:{
+    setShowIndex: Dispatch<SetStateAction<boolean>>,
+    setPortraitAuthor: Dispatch<SetStateAction<boolean>>,
+    setSpriteAuthor: Dispatch<SetStateAction<boolean>>,
+    setShowLastModification: Dispatch<SetStateAction<boolean>>
+}){
     return <div style={{display:'flex', flexFlow:'column', alignItems:'start', minWidth:'200px', maxWidth:'200px'}}>
         <label className="my-label">
             <input type="checkbox" className="nes-checkbox my-cursor" onChange={e=>{props.setShowIndex(e.target.checked)}} />

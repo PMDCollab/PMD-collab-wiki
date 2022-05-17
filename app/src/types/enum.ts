@@ -1,9 +1,9 @@
 export const CDN_URL = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master";
 
 export type CreditInformation = {
-    contact: string,
-    discord: string,
-    name: string
+    contact: string | undefined,
+    discord: string | undefined,
+    name: string | undefined
 }
 
 export enum Emotion {
