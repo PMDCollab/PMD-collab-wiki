@@ -1,16 +1,13 @@
-import { CreditInformation } from "../types/enum";
+import mappedContactsFile from '../mappedContacts.json'
 
+const mappedContacts = mappedContactsFile as {[key: string]: string}
 
-export default function Credits(props:{mappedCredits: Map<string, CreditInformation>, primary: string, secondary: string[]}){
-    function findCredits(id:string){
-        let contact = '';
-        let name = '';
-        const c = props.mappedCredits.get(id)
-        if(c){
-            contact = c.contact
-            name = c.name
-        }
-        return <a className='nes-text is-primary' style={{marginRight:'20px', fontSize:'1em'}} key={id} href={contact}>{name}</a>;
+export default function Credits(props:{
+        primary: string,
+        secondary: string[]
+    }){
+    function findCredits(name :string){
+        return <a className='nes-text is-primary' style={{marginRight:'20px', fontSize:'1em'}} key={name} href={mappedContacts[name]}>{name}</a>;
     }
 
     return  <div style={{display:'flex', flexGrow: '.3', justifyContent: 'space-around'}}>

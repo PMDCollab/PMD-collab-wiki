@@ -9,6 +9,16 @@ export interface ITracker {
     subgroups:             { [key: string]: ITracker };
 }
 
+export interface IFlattenTracker{
+    name:                  string;
+    portrait_modified:     string;
+    sprite_modified:       string;
+    portrait_credit:       Credit;
+    portrait_files:        { [key: string]: boolean };
+    sprite_credit:         Credit;
+    sprite_files:          { [key: string]: boolean };
+}
+
 export interface Credit {
     primary:   string;
     secondary: string[];

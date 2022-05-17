@@ -5,10 +5,10 @@ import Search from './components/search';
 import { useState } from 'react';
 import Buttons from './components/buttons';
 import { ITracker } from './types/ITracker';
-import { CreditInformation, RankMethod } from './types/enum';
+import {RankMethod } from './types/enum';
 import DisplayParameters from './components/display-parameters';
 
-export default function Home(props:{metadata: {[key: string]: ITracker}, mappedCredits: Map<string, CreditInformation>}) {
+export default function Home(props:{metadata: {[key: string]: ITracker}}) {
     const [currentText, setCurrentText] = useState('');
     const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
     const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false);
@@ -39,7 +39,6 @@ export default function Home(props:{metadata: {[key: string]: ITracker}, mappedC
                     showSpriteAuthor={showSpriteAuthor}
                     showIndex={showIndex}
                     showLastModification={showLastModification}
-                    mappedCredits={props.mappedCredits}
                 />
             </div>
         </div>
