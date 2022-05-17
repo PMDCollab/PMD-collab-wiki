@@ -5,14 +5,14 @@ import Home from './Home';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import PokemonPage from './components/pokemon-page';
 import About from './About';
-import { ITracker } from './types/ITracker';
+import { IFlattenTracker } from './types/ITracker';
 import tracker from './tracker.json'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const flatMetadata: {[key: string]: ITracker} = tracker as unknown as {[key: string]: ITracker}
+const flatMetadata: {[key: string]: IFlattenTracker} = tracker as unknown as {[key: string]: IFlattenTracker}
 
 root.render(
 <React.StrictMode>

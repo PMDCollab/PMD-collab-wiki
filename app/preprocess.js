@@ -14,6 +14,7 @@ async function preprocess(){
     function flattenMetadata(info, infoKey, infoName){
         if(info.portrait_files && Object.keys(info.portrait_files).length > 0){
             flatMetadata[infoKey] = {}
+            flatMetadata[infoKey].related = []
             flatMetadata[infoKey].portrait_modified = info.portrait_modified
             flatMetadata[infoKey].name = infoName
             flatMetadata[infoKey].sprite_modified = info.sprite_modified
@@ -32,7 +33,17 @@ async function preprocess(){
         }
     }
 
-    Object.keys(metadata).forEach(k=>flattenMetadata(metadata[k],k, metadata[k].name))
+    Object.keys(metadata).forEach(k=>{
+        flattenMetadata(metadata[k],k, metadata[k].name, [{id: k, name: metadata[k].name}])
+    })
+
+    Object.keys(flatMetadata).forEach(k=>{
+        Object.keys(flatMetadata).forEach(l=>{
+            if(l.split('/')[0] === k.split('/')[0] && l !== k){
+                flatMetadata[k].related.push({id: l, name: flatMetadata[l].name})
+            }
+        })
+    })
     
     const df = await DataFrame.fromText(`${CDN_URL}/credit_names.txt`,'\t',true)
     const dict = await df.toDict()
