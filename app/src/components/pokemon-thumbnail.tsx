@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { CDN_URL, Emotion } from '../types/enum';
-import { ITracker } from '../types/ITracker';
+import { IFlattenTracker } from '../types/ITracker';
 
 export default function PokemonThumbnail(props: {
-        info: ITracker,
+        info: IFlattenTracker,
         infoKey: string,
         showIndex: boolean,
         showSpriteAuthor: boolean,

@@ -1,11 +1,11 @@
 import { RankMethod } from '../types/enum';
-import { ITracker } from '../types/ITracker';
+import { IFlattenTracker } from '../types/ITracker';
 import PokemonThumbnail from './pokemon-thumbnail';
 
 
 export default function PokemonCarousel(props:{
         currentText:string,
-        metadata: {[key: string]: ITracker},
+        metadata: {[key: string]: IFlattenTracker},
         rankBy: RankMethod,
         showIndex: boolean,
         showPortraitAuthor: boolean,
@@ -13,9 +13,13 @@ export default function PokemonCarousel(props:{
         showLastModification: boolean,
     }){
 
+    const lowerCaseText = props.currentText.toLowerCase()
     return <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-between', overflowY:'scroll', overflowX:'hidden'}}>
         {Object.keys(props.metadata)
-        .filter(k=>props.metadata[k].name.toLowerCase().includes(props.currentText.toLowerCase()))
+        .filter(k=>props.metadata[k].name.toLowerCase().includes(lowerCaseText) 
+        || props.metadata[k].portrait_credit.primary.toLowerCase().includes(lowerCaseText)
+        || props.metadata[k].sprite_credit.primary.toLowerCase().includes(lowerCaseText)
+        || k.includes(lowerCaseText))
         .sort((a,b) => rankFunction(props.rankBy, a, b, props.metadata[a], props.metadata[b]))
         .map(k=><PokemonThumbnail
             key={k}
@@ -34,8 +38,8 @@ function rankFunction(
         rankBy: RankMethod,
         ka: string,
         kb: string,
-        a: ITracker,
-        b: ITracker
+        a: IFlattenTracker,
+        b: IFlattenTracker
         ){
     switch (rankBy) {
         case RankMethod.POKEDEX_NUMBER:
