@@ -21,18 +21,6 @@ jobs:
         # Default: '.'
         add: 'app/src/.'
 
-        # The name of the user that will be displayed as the author of the commit.
-        # Default: depends on the default_author input
-        author_name: keldaan-ag
-
-        # The name of the custom committer you want to use, if different from the author of the commit.
-        # Default: the name of the author (set with either author_name or default_author)
-        committer_name: keldaan-ag
-
-        # The email of the custom committer you want to use, if different from the author of the commit.
-        # Default: the email of the author (set with either author_email or default_author)
-        committer_email: arnaudgregoire92@gmail.com
-
         # The local path to the directory where your repository is located. You should use actions/checkout first to set it up.
         # Default: '.'
         cwd: '.'
