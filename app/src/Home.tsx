@@ -21,10 +21,10 @@ export default function Home(props:{metadata: {[key: string]: IFlattenTracker}})
         <div className="App">
             <Buttons/>
             <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.85)', display:'flex', flexFlow:'column', alignItems:'center'}}>
-                <div style={{display:'flex', width:'100%', alignContent:'center', alignItems:'center', justifyContent:'space-between'}}>
+                <div style={{display:'flex', width:'100%', alignContent:'center', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap'}}>
                   <DisplayParameters setSpriteAuthor={setSpriteAuthor} setPortraitAuthor={setPortraitAuthor} setShowIndex={setShowIndex} setShowLastModification={setShowLastModification}/>
                   <Search currentText={currentText} setCurrentText={setCurrentText}/>
-                  <div className="nes-select is-inline" style={{display:'flex', alignItems:'center', width:'30%'}}>
+                  <div className="nes-select is-inline" style={{display:'flex', alignItems:'center', width:'initial'}}>
                   <p style={{fontSize:'0.7em'}}>Rank by</p>
                   <select style={{borderWidth:'2px', height:'40px', fontSize:'0.7em'}} value={rankBy} id="default_select" onChange={e=>{setRankBy(e.target.value as RankMethod)}}>
                       {(Object.values(RankMethod) as RankMethod[]).map(r=><option style={{fontSize:'1.5em', fontFamily: "Press Start 2P"}} key={r} value={r}>{r}</option>)}

@@ -6,7 +6,7 @@ export default function DisplayParameters(props:{
     setSpriteAuthor: Dispatch<SetStateAction<boolean>>,
     setShowLastModification: Dispatch<SetStateAction<boolean>>
 }){
-    return <div style={{display:'flex', flexFlow:'column', alignItems:'start', minWidth:'200px', maxWidth:'200px'}}>
+    return <div style={{display:'flex', flexFlow:'column', alignItems:'start'}}>
         <label className="my-label">
             <input type="checkbox" className="nes-checkbox my-cursor" onChange={e=>{props.setShowIndex(e.target.checked)}} />
             <span style={{fontSize:'0.7em'}}>Index</span>

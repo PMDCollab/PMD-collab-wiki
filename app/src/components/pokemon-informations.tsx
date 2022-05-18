@@ -19,7 +19,7 @@ export default function PokemonInformations(props:{
     return <div>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
             <div>
-                <h2 style={{textAlign:'left'}}>Emotions</h2>
+                <h4 style={{textAlign:'left'}}>Emotions</h4>
                 <p style={{fontSize: '0.6em', margin: '0px'}}>{getLastModification(portraitDate)}</p>
             </div>
             <Credits primary={props.portraitCredit.primary} secondary={props.portraitCredit.secondary}/>
@@ -27,7 +27,7 @@ export default function PokemonInformations(props:{
         {Object.keys(props.portraitFiles).length !== 0 ? <Emotions infoKey={props.infoKey} emotions={props.portraitFiles}/>: <p>No portraits available for now.</p>}
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
             <div>
-                <h2 style={{textAlign:'left'}}>Sprites</h2>
+                <h4 style={{textAlign:'left'}}>Sprites</h4>
                 <p style={{fontSize: '0.6em', margin: '0px'}}>{getLastModification(spriteDate)}</p>
             </div>
             <Credits primary={props.spriteCredit.primary} secondary={props.spriteCredit.secondary}/>

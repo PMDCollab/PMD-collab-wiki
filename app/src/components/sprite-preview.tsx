@@ -5,12 +5,11 @@ import GameContainer from "./phaser/game-container";
 
 
 export default function SpritePreview(props:{infoKey: string, action: Action}) {
-
-
     const [initialized, setInitialized] = useState<boolean>(false);
 
     const container = useCallback((node: HTMLDivElement) =>{
         async function initialize(){
+
             const xmlData =  await (await fetch(`${CDN_URL}/sprite/${props.infoKey}/AnimData.xml`)).text();
             const parser = new XMLParser();
             const data = parser.parse(xmlData) as IPMDCollab;

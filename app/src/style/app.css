@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   background-image: url('../../public/background.png');
+  background-repeat: repeat;
   height: 100vh;
   width: 100vw;
   padding: 20px;

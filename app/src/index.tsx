@@ -19,7 +19,7 @@ root.render(
 <HashRouter>
         <Routes>
         <Route path='/' element={<Home metadata={flatMetadata}/>}/>
-        {Object.keys(flatMetadata).map(k=><Route key={k} path={`/${k}`} element={<PokemonPage infoKey={k} info={flatMetadata[k]}/>}/>)}
+        {Object.keys(flatMetadata).map(k=>k.split('/').length <= 1 ? <Route key={k} path={`/${k}`} element={<PokemonPage infoKey={k} info={flatMetadata[k]}/>}/> : null)}
         <Route path='/About' element={<About/>}/>
         </Routes>
     </HashRouter>
