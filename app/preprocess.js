@@ -39,10 +39,14 @@ async function preprocess(){
 
     Object.keys(flatMetadata).forEach(k=>{
         Object.keys(flatMetadata).forEach(l=>{
-            if(l.split('/')[0] === k.split('/')[0] && l !== k){
+            if(l.split('/')[0] === k.split('/')[0]){
                 flatMetadata[k].related.push(l)
             }
         })
+    })
+
+    Object.keys(flatMetadata).forEach(k=>{
+        flatMetadata[k].related.sort((a,b) => a.length - b.length)
     })
     
     const df = await DataFrame.fromText(`${CDN_URL}/credit_names.txt`,'\t',true)

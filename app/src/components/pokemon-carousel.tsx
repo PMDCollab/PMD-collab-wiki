@@ -16,6 +16,7 @@ export default function PokemonCarousel(props:{
     const lowerCaseText = props.currentText.toLowerCase()
     return <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-between', overflowY:'scroll', overflowX:'hidden'}}>
         {Object.keys(props.metadata)
+        .filter(k=>k.split('/').length < 2)
         .filter(k=>props.metadata[k].name.toLowerCase().includes(lowerCaseText) 
         || props.metadata[k].portrait_credit.primary.toLowerCase().includes(lowerCaseText)
         || props.metadata[k].sprite_credit.primary.toLowerCase().includes(lowerCaseText)
