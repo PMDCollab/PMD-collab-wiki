@@ -52,11 +52,13 @@ async function preprocess(){
     const df = await DataFrame.fromText(`${CDN_URL}/credit_names.txt`,'\t',true)
     const dict = await df.toDict()
     for (let i = 0; i < dict.Discord.length; i++) {
+        console.log(dict.Name[i])
         mappedCredits[dict.Discord[i]] = {discord: dict.Discord[i], name: dict.Name[i], contact:dict.Contact[i]}
         mappedContacts[dict.Name[i]] = dict.Contact[i]
     }
 
     Object.keys(flatMetadata).forEach(k =>{
+        console.log(k)
         if(mappedCredits[flatMetadata[k].portrait_credit.primary]?.name){
             flatMetadata[k].portrait_credit.primary = mappedCredits[flatMetadata[k].portrait_credit.primary].name
         }
