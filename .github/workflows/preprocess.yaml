@@ -14,7 +14,11 @@ jobs:
     - name: Install dependencies
       run: npm install
       working-directory: app/
-    - run: npm run preprocess
+    - name: Preprocess
+      run: npm run preprocess
+      working-directory: app/
+    - name: build
+      run: npm run build
       working-directory: app/
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4.3.3
