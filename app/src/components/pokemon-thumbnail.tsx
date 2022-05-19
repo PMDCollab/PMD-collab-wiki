@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { CDN_URL, Emotion } from '../types/enum';
-import { IFlattenTracker } from '../types/ITracker';
+import { ITracker, MinPath } from '../types/ITracker';
 
 export default function PokemonThumbnail(props: {
-        info: IFlattenTracker,
+        info: ITracker,
         infoKey: string,
         showIndex: boolean,
         showSpriteAuthor: boolean,
@@ -18,11 +18,11 @@ export default function PokemonThumbnail(props: {
     let spriteAuthor: ReactElement | null = null
 
     if(props.showPortraitAuthor){
-        portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.portrait_credit.primary}</p> 
+        portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info[MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY]}</p> 
     }
 
     if(props.showSpriteAuthor){
-        spriteAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.sprite_credit.primary}</p> 
+        spriteAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info[MinPath.SPRITE_CREDIT][MinPath.PRIMARY]}</p> 
     }
 
     if(props.showIndex){
@@ -30,15 +30,15 @@ export default function PokemonThumbnail(props: {
     }
 
     if(props.showLastModification){
-        const portraitDate = new Date(props.info.portrait_modified)
-        const spriteDate = new Date(props.info.sprite_modified)
+        const portraitDate = new Date(props.info[MinPath.PORTRAIT_MODIFIED])
+        const spriteDate = new Date(props.info[MinPath.SPRITE_MODIFIED])
         date = <p style={{fontSize: '0.45em', margin: '0px'}}>{formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}</p>
     }
 
-    if (props.info.portrait_files[Emotion.NORMAL] !== undefined) {
+    if (props.info[MinPath.PORTRAIT_FILES][Emotion.NORMAL] !== undefined) {
         image = <img className='my-img' alt='' src={`${CDN_URL}/portrait/${props.infoKey}/${Emotion.NORMAL}.png`}/>;
-    } else if (Object.keys(props.info.portrait_files).length > 0) {
-        image = <img className='my-img' alt='' src={`${CDN_URL}/portrait/${props.infoKey}/${Object.keys(props.info.portrait_files)[0]}.png`}/>;
+    } else if (Object.keys(props.info[MinPath.PORTRAIT_FILES]).length > 0) {
+        image = <img className='my-img' alt='' src={`${CDN_URL}/portrait/${props.infoKey}/${Object.keys(props.info[MinPath.PORTRAIT_FILES])[0]}.png`}/>;
     } else {
         image = <h1 style={{height:'80px', margin:'0px'}}>?</h1>;
     }
@@ -46,7 +46,7 @@ export default function PokemonThumbnail(props: {
     return <Link to={props.infoKey} className='my-link'>
         <div className='my-container nes-container nes-pointer grow' style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'center', minWidth: '100px', maxWidth: '100px', margin:'10px'}}>
              {image}
-            <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.name}</p>
+            <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info[MinPath.NAME]}</p>
             {index}
             {portraitAuthor}
             {spriteAuthor}

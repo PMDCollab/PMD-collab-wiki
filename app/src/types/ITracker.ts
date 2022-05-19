@@ -1,30 +1,33 @@
-export interface ITracker {
-    name:                  string;
-    portrait_modified:     string;
-    sprite_modified:       string;
-    portrait_credit:       Credit;
-    portrait_files:        { [key: string]: boolean };
-    sprite_credit:         Credit;
-    sprite_files:          { [key: string]: boolean };
-    subgroups:             { [key: string]: ITracker };
+export enum MinPath{
+    NAME = 'n',
+    PORTRAIT_MODIFIED = 'pm',
+    SPRITE_MODIFIED = 'sm',
+    PORTRAIT_CREDIT = 'pc',
+    PORTRAIT_FILES = 'pf',
+    SPRITE_CREDIT = 'sc',
+    SPRITE_FILES = 'sf',
+    RELATED = 'r',
+    PRIMARY= 'p',
+    SECONDARY= 's'
 }
 
-export interface IFlattenTracker{
-    name:                  string;
-    portrait_modified:     string;
-    sprite_modified:       string;
-    portrait_credit:       Credit;
-    portrait_files:        { [key: string]: boolean };
-    sprite_credit:         Credit;
-    sprite_files:          { [key: string]: boolean };
-    related:               string[]
+export interface ITracker{
+    [MinPath.NAME]: string
+    [MinPath.PORTRAIT_MODIFIED]: string
+    [MinPath.SPRITE_MODIFIED]: string
+    [MinPath.PORTRAIT_CREDIT]: Credit
+    [MinPath.PORTRAIT_FILES]: { [key: string]: boolean }
+    [MinPath.SPRITE_CREDIT]: Credit
+    [MinPath.SPRITE_FILES]: { [key: string]: boolean }
+    [MinPath.RELATED]: string[]
 }
 
 export interface Credit {
-    primary:   string;
-    secondary: string[];
-    total:     number;
+    [MinPath.PRIMARY]:   string
+    [MinPath.SECONDARY]: string[]
 }
+
+
 
 export enum Name {
     Empty = "",

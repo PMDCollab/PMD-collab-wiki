@@ -1,11 +1,11 @@
 import { RankMethod } from '../types/enum';
-import { IFlattenTracker } from '../types/ITracker';
+import { ITracker, MinPath } from '../types/ITracker'
 import PokemonThumbnail from './pokemon-thumbnail';
 
 
 export default function PokemonCarousel(props:{
         currentText:string,
-        metadata: {[key: string]: IFlattenTracker},
+        metadata: {[key: string]: ITracker},
         rankBy: RankMethod,
         showIndex: boolean,
         showPortraitAuthor: boolean,
@@ -17,9 +17,9 @@ export default function PokemonCarousel(props:{
     return <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-between', overflowY:'scroll', overflowX:'hidden'}}>
         {Object.keys(props.metadata)
         .filter(k=>k.split('/').length < 2)
-        .filter(k=>props.metadata[k].name.toLowerCase().includes(lowerCaseText) 
-        || props.metadata[k].portrait_credit.primary.toLowerCase().includes(lowerCaseText)
-        || props.metadata[k].sprite_credit.primary.toLowerCase().includes(lowerCaseText)
+        .filter(k=>props.metadata[k][MinPath.NAME].toLowerCase().includes(lowerCaseText) 
+        || props.metadata[k][MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY].toLowerCase().includes(lowerCaseText)
+        || props.metadata[k][MinPath.SPRITE_CREDIT][MinPath.PRIMARY].toLowerCase().includes(lowerCaseText)
         || k.includes(lowerCaseText))
         .sort((a,b) => rankFunction(props.rankBy, a, b, props.metadata[a], props.metadata[b]))
         .map(k=><PokemonThumbnail
@@ -39,28 +39,28 @@ function rankFunction(
         rankBy: RankMethod,
         ka: string,
         kb: string,
-        a: IFlattenTracker,
-        b: IFlattenTracker
+        a: ITracker,
+        b: ITracker
         ){
     switch (rankBy) {
         case RankMethod.POKEDEX_NUMBER:
             return parseInt(ka) - parseInt(kb);
 
         case RankMethod.LAST_MODIFICATION:
-            const dap = new Date(a.portrait_modified)
-            const dbp = new Date(b.portrait_modified)
-            const das = new Date(a.sprite_modified)
-            const dbs = new Date(b.sprite_modified)
+            const dap = new Date(a[MinPath.PORTRAIT_MODIFIED])
+            const dbp = new Date(b[MinPath.PORTRAIT_MODIFIED])
+            const das = new Date(a[MinPath.SPRITE_MODIFIED])
+            const dbs = new Date(b[MinPath.SPRITE_MODIFIED])
             return Math.max(dbp.getTime(), dbs.getTime()) - Math.max(dap.getTime(), das.getTime())
 
         case RankMethod.NAME:
-            return a.name.localeCompare(b.name);
+            return a[MinPath.NAME].localeCompare(b[MinPath.NAME]);
 
         case RankMethod.PORTRAIT_AUTHOR:
-            return a.portrait_credit.primary.localeCompare(b.portrait_credit.primary)
+            return a[MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY].localeCompare(b[MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY])
     
         case RankMethod.SPRITE_AUTHOR:
-            return a.sprite_credit.primary.localeCompare(b.sprite_credit.primary)
+            return a[MinPath.SPRITE_CREDIT][MinPath.PRIMARY].localeCompare(b[MinPath.SPRITE_CREDIT][MinPath.PRIMARY])
 
         default:
             return 0;
