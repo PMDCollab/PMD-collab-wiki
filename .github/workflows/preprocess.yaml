@@ -1,7 +1,7 @@
 on:
+  push:
   schedule:
-    - cron: '30 8 * * *' #runs at 08:30 UTC everyday
-
+    - cron: '30 8 * * *' #runs at 08:30 UTC everyday]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,8 +16,11 @@ jobs:
       working-directory: app/
     - run: npm run preprocess
       working-directory: app/
-    - run: npm run deploy
-      working-directory: app/
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: app/build # The folder the action should deploy.
     - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
