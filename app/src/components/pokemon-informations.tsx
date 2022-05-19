@@ -1,14 +1,16 @@
-import { Action } from "../types/enum";
 import { Credit, MinPath } from "../types/ITracker"
 import Credits from "./credits";
 import Emotions from "./emotions";
 import { formatDate } from "./pokemon-thumbnail";
 import SpritePreview from "./sprite-preview";
+import mappedActionsFile from '../mappedActions.json'
+
+const mappedActions = mappedActionsFile as {[key: string]: string}
 
 export default function PokemonInformations(props:{
-    portraitFiles: { [key: string]: boolean },
+    portraitFiles: number[],
     portraitCredit: Credit,
-    spriteFiles: { [key: string]: boolean },
+    spriteFiles: number[],
     spriteCredit: Credit,
     infoKey: string,
     spriteModified: string,
@@ -33,8 +35,8 @@ export default function PokemonInformations(props:{
             <Credits primary={props.spriteCredit[MinPath.PRIMARY]} secondary={props.spriteCredit[MinPath.SECONDARY]}/>
         </div>
         {Object.keys(props.spriteFiles).length !== 0 ? <div  style={{display:'flex', flexWrap:'wrap'}}>
-            {(Object.keys(props.spriteFiles) as Action[]).map(
-                k => <SpritePreview key={k} infoKey={props.infoKey} action={k}/>
+            {props.spriteFiles.map(
+                k => <SpritePreview key={k} infoKey={props.infoKey} action={mappedActions[k.toString()]}/>
             )}
         </div>: <p>No sprites available for now.</p>}
 

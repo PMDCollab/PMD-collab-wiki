@@ -1,10 +1,10 @@
 import { XMLParser } from "fast-xml-parser";
 import { useCallback, useState } from "react";
-import { Action, CDN_URL, IPMDCollab } from "../types/enum";
+import { CDN_URL, IPMDCollab } from "../types/enum";
 import GameContainer from "./phaser/game-container";
 
 
-export default function SpritePreview(props:{infoKey: string, action: Action}) {
+export default function SpritePreview(props:{infoKey: string, action: string}) {
     const [initialized, setInitialized] = useState<boolean>(false);
 
     const container = useCallback((node: HTMLDivElement) =>{

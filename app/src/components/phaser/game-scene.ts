@@ -1,10 +1,11 @@
 import Phaser from "phaser";
-import { Action, AnimationType, CDN_URL, IAnim } from "../../types/enum";
+import { AnimationType, CDN_URL, IAnim } from "../../types/enum";
 import { MyGame } from "./game-container";
+import mappedActions from '../../mappedActions.json'
 
 export default class GameScene extends Phaser.Scene {
     metadata: IAnim | undefined;
-    action: Action = Action.IDLE;
+    action = mappedActions[0];
     infoKey: string = '';
 
     constructor() {
@@ -13,9 +14,11 @@ export default class GameScene extends Phaser.Scene {
 
     init(){
         const g = this.game as MyGame;
+        console.log(g.action)
+        console.log(g.animationData.Anims.Anim)
         this.metadata = g.animationData.Anims.Anim.find(m=>m.Name === g.action);
         if(this.metadata?.CopyOf){
-            this.action = this.metadata.CopyOf as Action;
+            this.action = this.metadata.CopyOf;
             this.metadata = g.animationData.Anims.Anim.find(m=>m.Name === this.action);
         }
         else{

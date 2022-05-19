@@ -16,18 +16,16 @@ export interface ITracker{
     [MinPath.PORTRAIT_MODIFIED]: string
     [MinPath.SPRITE_MODIFIED]: string
     [MinPath.PORTRAIT_CREDIT]: Credit
-    [MinPath.PORTRAIT_FILES]: { [key: string]: boolean }
+    [MinPath.PORTRAIT_FILES]: number[]
     [MinPath.SPRITE_CREDIT]: Credit
-    [MinPath.SPRITE_FILES]: { [key: string]: boolean }
+    [MinPath.SPRITE_FILES]: number[]
     [MinPath.RELATED]: string[]
 }
 
 export interface Credit {
-    [MinPath.PRIMARY]:   string
+    [MinPath.PRIMARY]: string
     [MinPath.SECONDARY]: string[]
 }
-
-
 
 export enum Name {
     Empty = "",

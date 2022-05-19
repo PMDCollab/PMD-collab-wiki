@@ -1,7 +1,8 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
-import { CDN_URL, Emotion } from '../types/enum';
+import { CDN_URL } from '../types/enum';
 import { ITracker, MinPath } from '../types/ITracker';
+import mappedEmotions from '../mappedEmotions.json'
 
 export default function PokemonThumbnail(props: {
         info: ITracker,
@@ -35,8 +36,10 @@ export default function PokemonThumbnail(props: {
         date = <p style={{fontSize: '0.45em', margin: '0px'}}>{formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}</p>
     }
 
-    if (props.info[MinPath.PORTRAIT_FILES][Emotion.NORMAL] !== undefined) {
-        image = <img className='my-img' alt='' src={`${CDN_URL}/portrait/${props.infoKey}/${Emotion.NORMAL}.png`}/>;
+
+
+    if (props.info[MinPath.PORTRAIT_FILES]["0"] !== undefined) {    
+        image = <img className='my-img' alt='' src={`${CDN_URL}/portrait/${props.infoKey}/${mappedEmotions["0"]}.png`}/>;
     } else if (Object.keys(props.info[MinPath.PORTRAIT_FILES]).length > 0) {
         image = <img className='my-img' alt='' src={`${CDN_URL}/portrait/${props.infoKey}/${Object.keys(props.info[MinPath.PORTRAIT_FILES])[0]}.png`}/>;
     } else {

@@ -1,13 +1,13 @@
 import Phaser from "phaser";
-import { Action, IAnimData } from "../../types/enum";
+import { IAnimData } from "../../types/enum";
 import GameScene from "./game-scene";
 
 export default class GameContainer{
     div: HTMLDivElement;
     infoKey: string;
-    action: Action;
+    action: string;
     game: MyGame;
-    constructor(div: HTMLDivElement, infoKey: string, action: Action, animationData: IAnimData){
+    constructor(div: HTMLDivElement, infoKey: string, action: string, animationData: IAnimData){
         this.div = div;
         this.infoKey = infoKey;
         this.action = action;
@@ -22,15 +22,16 @@ export default class GameContainer{
             autoFocus: false,
             input: false
           };
+          console.log(action)
           this.game = new MyGame(config, infoKey, action, animationData);
     }
 }
 
 export class MyGame extends Phaser.Game{
     infoKey: string;
-    action: Action;
+    action: string;
     animationData: IAnimData;
-    constructor(config: Phaser.Types.Core.GameConfig | undefined, infoKey: string, action: Action, animationData: IAnimData){
+    constructor(config: Phaser.Types.Core.GameConfig | undefined, infoKey: string, action: string, animationData: IAnimData){
         super(config);
         this.infoKey = infoKey;
         this.action = action;
