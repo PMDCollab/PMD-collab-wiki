@@ -20,11 +20,6 @@ jobs:
     - name: build
       run: npm run build
       working-directory: app/
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4.3.3
-      with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: app/build # The folder the action should deploy.
     - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
       with:
         # The arguments for the `git add` command (see the paragraph below for more info)
@@ -53,3 +48,8 @@ jobs:
         # - exitAtEnd -> the action will go on, every pathspec error will be logged at the end, the step will fail.
         # Default: ignore
         pathspec_error_handling: ignore
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: app/build # The folder the action should deploy.
