@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { AnimationType, CDN_URL, IAnim } from "../../types/enum";
+import { AnimationType, CDN_URL, Dungeon, IAnim } from "../../types/enum";
 import { MyGame } from "./game-container";
 import mappedActions from '../../mappedActions.json'
 
@@ -7,7 +7,8 @@ export default class GameScene extends Phaser.Scene {
     metadata: IAnim | undefined;
     action = mappedActions[0];
     infoKey: string = '';
-
+    dungeon: Dungeon | undefined;
+    
     constructor() {
         super({key: 'gameScene'});
     }
@@ -23,12 +24,12 @@ export default class GameScene extends Phaser.Scene {
             this.action = g.action;
         }
         this.infoKey = g.infoKey;
+        this.dungeon = g.dungeon;
     }
 
     preload(){
-
         const m = this.metadata as IAnim;
-        this.load.image('small-ba',`${process.env.PUBLIC_URL}/small-ba.png`);
+        this.load.image('small-ba',`${process.env.PUBLIC_URL}/maps/${this.dungeon}.png`);
         this.load.spritesheet(`${this.infoKey}/${this.action}-${AnimationType.ANIM}`,`${CDN_URL}/sprite/${this.infoKey}/${this.action}-${AnimationType.ANIM}.png`, {frameWidth: m.FrameWidth, frameHeight: m.FrameHeight});
         this.load.spritesheet(`${this.infoKey}/${this.action}-${AnimationType.SHADOW}`,`${CDN_URL}/sprite/${this.infoKey}/${this.action}-${AnimationType.SHADOW}.png`, {frameWidth: m.FrameWidth, frameHeight: m.FrameHeight});
     }
@@ -54,7 +55,7 @@ export default class GameScene extends Phaser.Scene {
       });
 
         this.add.image(100,100,'small-ba').setScale(2,2);
-        this.add.sprite(110,115,`${this.infoKey}/${this.action}-${AnimationType.SHADOW}`).setScale(2,2).setTintFill(0xffffff).play(AnimationType.SHADOW);
-        this.add.sprite(110,110,`${this.infoKey}/${this.action}-${AnimationType.ANIM}`).setScale(2,2).play(AnimationType.ANIM);
+        this.add.sprite(100,110,`${this.infoKey}/${this.action}-${AnimationType.SHADOW}`).setScale(2,2).setTintFill(0xffffff).play(AnimationType.SHADOW);
+        this.add.sprite(100,105,`${this.infoKey}/${this.action}-${AnimationType.ANIM}`).setScale(2,2).play(AnimationType.ANIM);
     }
 }

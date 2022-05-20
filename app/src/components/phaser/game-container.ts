@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { IAnimData } from "../../types/enum";
+import { Dungeon, IAnimData } from "../../types/enum";
 import GameScene from "./game-scene";
 
 export default class GameContainer{
@@ -7,10 +7,12 @@ export default class GameContainer{
     infoKey: string;
     action: string;
     game: MyGame;
-    constructor(div: HTMLDivElement, infoKey: string, action: string, animationData: IAnimData){
+    dungeon: Dungeon;
+    constructor(div: HTMLDivElement, infoKey: string, action: string, animationData: IAnimData, dungeon: Dungeon){
         this.div = div;
         this.infoKey = infoKey;
         this.action = action;
+        this.dungeon = dungeon;
         const config = {
             type: Phaser.CANVAS,
             width: 200,
@@ -22,7 +24,7 @@ export default class GameContainer{
             autoFocus: false,
             input: false
           };
-          this.game = new MyGame(config, infoKey, action, animationData);
+          this.game = new MyGame(config, infoKey, action, animationData, dungeon);
     }
 }
 
@@ -30,8 +32,10 @@ export class MyGame extends Phaser.Game{
     infoKey: string;
     action: string;
     animationData: IAnimData;
-    constructor(config: Phaser.Types.Core.GameConfig | undefined, infoKey: string, action: string, animationData: IAnimData){
+    dungeon: Dungeon
+    constructor(config: Phaser.Types.Core.GameConfig | undefined, infoKey: string, action: string, animationData: IAnimData, dungeon: Dungeon){
         super(config);
+        this.dungeon = dungeon;
         this.infoKey = infoKey;
         this.action = action;
         this.animationData = animationData;

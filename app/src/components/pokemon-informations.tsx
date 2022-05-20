@@ -4,7 +4,8 @@ import Emotions from "./emotions";
 import { formatDate } from "./pokemon-thumbnail";
 import SpritePreview from "./sprite-preview";
 import mappedActionsFile from '../mappedActions.json'
-import {DISCORD_APP_URL} from '../types/enum'
+import {DISCORD_APP_URL, Dungeon} from '../types/enum'
+import { useRef } from "react"
 
 const mappedActions = mappedActionsFile as {[key: string]: string}
 
@@ -21,6 +22,7 @@ export default function PokemonInformations(props:{
     spriteLink: string,
     spriteRecolorLink: string
     }){
+    const bg = useRef<Dungeon>(Object.keys(Dungeon)[Math.floor(Math.random() * Object.keys(Dungeon).length)] as Dungeon)
     const portraitDate = props.portraitModified !== '' ? new Date(props.portraitModified): undefined;
     const spriteDate = props.spriteModified !== '' ? new Date(props.spriteModified): undefined;
     const pl = props.portraitLink && props.portraitLink !== '' ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} href={`${DISCORD_APP_URL}${props.portraitLink}`} rel="noreferrer">Download all portraits</a> : null
@@ -53,7 +55,7 @@ export default function PokemonInformations(props:{
         </div>
         {Object.keys(props.spriteFiles).length !== 0 ? <div  style={{display:'flex', flexWrap:'wrap'}}>
             {props.spriteFiles.map(
-                k => <SpritePreview key={k} infoKey={props.infoKey} action={mappedActions[k.toString()]}/>
+                k => <SpritePreview key={k} infoKey={props.infoKey} dungeon={bg.current} action={mappedActions[k.toString()]}/>
             )}
         </div>: <p>No sprites available for now.</p>}
 
