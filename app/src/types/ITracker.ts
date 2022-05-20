@@ -8,7 +8,11 @@ export enum MinPath{
     SPRITE_FILES = 'sf',
     RELATED = 'r',
     PRIMARY= 'p',
-    SECONDARY= 's'
+    SECONDARY= 's',
+    PORTRAIT_LINK = 'pl',
+    PORTRAIT_RECOLOR_LINK = 'prl',
+    SPRITE_LINK = 'sl',
+    SPRITE_RECOLOR_LINK = 'srl'
 }
 
 export interface ITracker{
@@ -20,6 +24,10 @@ export interface ITracker{
     [MinPath.SPRITE_CREDIT]: Credit
     [MinPath.SPRITE_FILES]: number[]
     [MinPath.RELATED]: string[]
+    [MinPath.PORTRAIT_LINK]: string
+    [MinPath.PORTRAIT_RECOLOR_LINK]: string
+    [MinPath.SPRITE_LINK]: string
+    [MinPath.SPRITE_RECOLOR_LINK]: string
 }
 
 export interface Credit {

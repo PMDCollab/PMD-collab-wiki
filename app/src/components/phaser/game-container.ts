@@ -22,7 +22,6 @@ export default class GameContainer{
             autoFocus: false,
             input: false
           };
-          console.log(action)
           this.game = new MyGame(config, infoKey, action, animationData);
     }
 }

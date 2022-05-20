@@ -14,8 +14,6 @@ export default class GameScene extends Phaser.Scene {
 
     init(){
         const g = this.game as MyGame;
-        console.log(g.action)
-        console.log(g.animationData.Anims.Anim)
         this.metadata = g.animationData.Anims.Anim.find(m=>m.Name === g.action);
         if(this.metadata?.CopyOf){
             this.action = this.metadata.CopyOf;

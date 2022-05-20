@@ -1,6 +1,7 @@
 const fs = require('fs')
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args))
 const CDN_URL = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master"
+const DISCORD_APP_URL = 'https://cdn.discordapp.com/attachments/'
 const {DataFrame} = require('dataframe-js')
 
 const flatMetadata = {}
@@ -33,9 +34,6 @@ async function preprocess(){
         mappedIndexAction[i] = a
     })
 
-    console.log(mappedEmotionIndex)
-    console.log(mappedIndexEmotion)
-
     const response = await fetch(`${CDN_URL}/tracker.json`)
     const metadata = await response.json()
 
@@ -54,6 +52,10 @@ async function preprocess(){
             flatMetadata[infoKey].sc.p = info.sprite_credit.primary
             flatMetadata[infoKey].sc.s = info.sprite_credit.secondary
             flatMetadata[infoKey].sf = Object.keys(info.sprite_files).map(k => mappedActionIndex[k.toString()])
+            flatMetadata[infoKey].pl = info.portrait_link.split(DISCORD_APP_URL)[1]
+            flatMetadata[infoKey].prl = info.portrait_recolor_link.split(DISCORD_APP_URL)[1]
+            flatMetadata[infoKey].sl = info.sprite_link.split(DISCORD_APP_URL)[1]
+            flatMetadata[infoKey].srl = info.sprite_recolor_link.split(DISCORD_APP_URL)[1]
         }
         if(info.subgroups){
             Object.keys(info.subgroups).forEach(s =>{

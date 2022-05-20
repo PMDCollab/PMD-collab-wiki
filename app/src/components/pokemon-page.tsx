@@ -26,6 +26,10 @@ export default function PokemonPage(props:{
                 spriteFiles={tracker[infoKey][MinPath.SPRITE_FILES]}
                 spriteModified={tracker[infoKey][MinPath.SPRITE_MODIFIED]}
                 portraitModified={tracker[infoKey][MinPath.PORTRAIT_MODIFIED]}
+                spriteLink={tracker[infoKey][MinPath.SPRITE_LINK]}
+                spriteRecolorLink={tracker[infoKey][MinPath.SPRITE_RECOLOR_LINK]}
+                portraitLink={tracker[infoKey][MinPath.PORTRAIT_LINK]}
+                portraitRecolorLink={tracker[infoKey][MinPath.PORTRAIT_RECOLOR_LINK]}
                 infoKey={`${infoKey}`}
             />
         </TabPanel>);
@@ -33,7 +37,7 @@ export default function PokemonPage(props:{
     
     return <div className="App">
         <Buttons/>
-        <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.85)', display:'flex', flexFlow:'column', overflowY:'scroll'}}>
+        <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.9)', display:'flex', flexFlow:'column', overflowY:'scroll'}}>
             <h1 style={{fontSize:'1.4em'}}>{props.info[MinPath.NAME]} {props.infoKey}</h1>
             <Tabs>
                 <TabList>
