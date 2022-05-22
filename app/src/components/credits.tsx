@@ -18,7 +18,7 @@ export default function Credits(props:{
 
     {props.secondary.length !== 0 ? <div style={{display:'flex', flexFlow:'column', justifyContent:'space-between'}}>
         <p style={{fontSize:'0.7em'}}>Others</p>
-        <div style={{display:'flex', justifyContent:'space-around'}}>
+        <div style={{display:'flex', justifyContent:'space-around', gap:'0.7em'}}>
             {props.secondary.map(s=>findCredits(s))}
         </div>
     </div> : null}
