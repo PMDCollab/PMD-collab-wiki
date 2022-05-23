@@ -19,6 +19,9 @@ export default function PokemonPage(props:{
     const prevIndex = (parseInt(props.infoKey) - 1).toString().padStart(4,'0')
     const nextIndex = (parseInt(props.infoKey) + 1).toString().padStart(4,'0')
 
+    const prevLink = tracker[prevIndex] ? <Link to={`/${prevIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', left:'20px'}}>{'<'} {tracker[prevIndex][MinPath.NAME]} {prevIndex}</p></Link> : null
+    const nextLink = tracker[nextIndex] ? <Link to={`/${nextIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', right:'20px'}}>{nextIndex} {tracker[nextIndex][MinPath.NAME]} {'>'}</p></Link> : null
+
     props.info[MinPath.RELATED].forEach(infoKey=>{
         tablist.push(<Tab key={infoKey}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{`${tracker[infoKey][MinPath.NAME]}`}</p></Tab>);
         tabPanelList.push(<TabPanel key={`${infoKey}`}>
@@ -41,12 +44,10 @@ export default function PokemonPage(props:{
     return <div className="App">
         <Buttons/>
         <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.9)', display:'flex', flexFlow:'column', overflowY:'scroll'}}>
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-                <Link to={`/${prevIndex}`}>
-                    <p className="nes-text is-primary" style={{fontSize:'0.6em'}}>{'<'} {tracker[prevIndex][MinPath.NAME]} {prevIndex}</p>
-                </Link>
+            <div style={{display:'flex', justifyContent:'center'}}>
+                {prevLink}
                 <h1 style={{fontSize:'1.3em'}}>{props.info[MinPath.NAME]} {props.infoKey}</h1>
-                <Link to={`/${nextIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em'}}>{nextIndex} {tracker[nextIndex][MinPath.NAME]} {'>'}</p></Link>
+                {nextLink}
             </div>
             <Tabs>
                 <TabList>
