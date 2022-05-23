@@ -7,7 +7,7 @@ export default function Credits(props:{
         secondary: string[]
     }){
     function findCredits(name :string){
-        return <a className='nes-text is-primary' style={{fontSize:'0.7em', margin: '0px', marginRight:'20px'}} key={name} href={mappedContacts[name]}>{name}</a>;
+        return <a className='nes-text is-primary' style={{fontSize:'0.7em', margin: '0px'}} key={name} href={mappedContacts[name]}>{name}</a>;
     }
 
     return  <div style={{display:'flex', flexGrow: '.3', justifyContent: 'space-around'}}>
