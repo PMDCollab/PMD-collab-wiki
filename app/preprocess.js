@@ -38,6 +38,24 @@ async function preprocess(){
     const metadata = await response.json()
 
     function flattenMetadata(info, infoKey, infoName){
+        if(info.sprite_files){
+            let otherDetected = false
+            Object.values(info.sprite_files).forEach(t => {
+                if(!(t.toString() === 'false' || t.toString() === 'true')){
+                    otherDetected = true
+                }
+            })
+
+            Object.values(info.portrait_files).forEach(t => {
+                if(!(t.toString() === 'false' || t.toString() === 'true')){
+                    otherDetected = true
+                }
+            })
+
+            if(otherDetected){
+                console.log('error with', infoKey, infoName)
+            }
+        }
         if((info.sprite_files && Object.keys(info.sprite_files).length > 0) || (info.portrait_files && Object.keys(info.portrait_files).length > 0)){
             flatMetadata[infoKey] = {}
             flatMetadata[infoKey].r = []
