@@ -25,10 +25,10 @@ export default function PokemonInformations(props:{
     const bg = useRef<Dungeon>(Object.keys(Dungeon)[Math.floor(Math.random() * Object.keys(Dungeon).length)] as Dungeon)
     const portraitDate = props.portraitModified !== '' ? new Date(props.portraitModified): undefined;
     const spriteDate = props.spriteModified !== '' ? new Date(props.spriteModified): undefined;
-    const pl = props.portraitLink && props.portraitLink !== '' ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} href={`${DISCORD_APP_URL}${props.portraitLink}`} rel="noreferrer">Download all portraits</a> : null
-    const prl = props.portraitRecolorLink && props.portraitRecolorLink !== '' ? <a target="_blank" style={{fontSize:'0.6em'}} href={`${DISCORD_APP_URL}${props.portraitRecolorLink}`} rel="noreferrer">Download recolor portraits</a>: null
-    const sl = props.spriteLink && props.spriteLink !== '' ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} href={`${DISCORD_APP_URL}${props.spriteLink}`} rel="noreferrer">Download all sprites</a>: null
-    const srl = props.spriteRecolorLink && props.spriteRecolorLink !== '' ? <a target="_blank" style={{fontSize:'0.6em'}} href={`${DISCORD_APP_URL}${props.spriteRecolorLink}`} rel="noreferrer">Download recolor sprites</a>: null
+    const pl = props.portraitLink && props.portraitLink !== '' ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={`${DISCORD_APP_URL}${props.portraitLink}`} rel="noreferrer">Download all portraits</a> : null
+    const prl = props.portraitRecolorLink && props.portraitRecolorLink !== '' ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={`${DISCORD_APP_URL}${props.portraitRecolorLink}`} rel="noreferrer">Download recolor portraits</a>: null
+    const sl = props.spriteLink && props.spriteLink !== '' ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={`${DISCORD_APP_URL}${props.spriteLink}`} rel="noreferrer">Download all sprites</a>: null
+    const srl = props.spriteRecolorLink && props.spriteRecolorLink !== '' ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={`${DISCORD_APP_URL}${props.spriteRecolorLink}`} rel="noreferrer">Download recolor sprites</a>: null
     return <div>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap'}}>
             <div style={{display:'flex', alignItems:'baseline'}}>
