@@ -38,7 +38,7 @@ async function preprocess(){
     const metadata = await response.json()
 
     function flattenMetadata(info, infoKey, infoName){
-        if(info.portrait_files && Object.keys(info.portrait_files).length > 0){
+        if((info.sprite_files && Object.keys(info.sprite_files).length > 0) || (info.portrait_files && Object.keys(info.portrait_files).length > 0)){
             flatMetadata[infoKey] = {}
             flatMetadata[infoKey].r = []
             flatMetadata[infoKey].pm = info.portrait_modified
