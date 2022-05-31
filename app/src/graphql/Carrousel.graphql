@@ -1,0 +1,23 @@
+query Carrousel {
+    monster{
+        id
+        name
+        manual(path:"/"){
+            portraits{
+                creditPrimary{
+                    name
+                }
+                modifiedDate
+                emotion(emotion:"Normal"){
+                    url
+                }
+            }
+            sprites{
+                creditPrimary{
+                    name
+                }
+                modifiedDate
+            }
+        }
+    }
+}
