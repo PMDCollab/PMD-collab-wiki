@@ -5,14 +5,17 @@ import Home from './Home';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import PokemonPage from './components/pokemon-page';
 import About from './About';
-import { ITracker } from './types/ITracker';
-import tracker from './tracker.json'
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    useQuery,
+    gql
+  } from "@apollo/client";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
-const flatMetadata: {[key: string]: ITracker} = tracker as unknown as {[key: string]: ITracker}
 
 root.render(
 <React.StrictMode>
