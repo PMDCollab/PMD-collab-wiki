@@ -172,6 +172,8 @@ export type MonsterFormSprites = {
   action?: Maybe<Sprite>;
   /** A list of all existing sprites for the actions. */
   actions: Array<Sprite>;
+  /** The AnimData.xml url */
+  animDataUrl: Scalars['String'];
   /** Guild Point bounty for this sprite set. */
   bounty: MonsterBounty;
   /** Primary artist credits. */
@@ -255,7 +257,12 @@ export type QuerySearchMonsterArgs = {
 export type Sprite = {
   __typename?: 'Sprite';
   action: Scalars['String'];
-  url: Scalars['String'];
+  /** Anim.png url */
+  animUrl: Scalars['String'];
+  /** Offsets.png url */
+  offsetsUrl: Scalars['String'];
+  /** Shadow.png url */
+  shadowUrl: Scalars['String'];
 };
 
 export type CarrouselQueryVariables = Exact<{
@@ -275,7 +282,7 @@ export type PokemonQueryVariables = Exact<{
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name?: string | null, forms: Array<{ __typename?: 'MonsterForm', path: string, name?: string | null, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate: any, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl: string, recolorSheetUrl: string, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }>, actions: Array<{ __typename?: 'Sprite', action: string, url: string }> } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name?: string | null, forms: Array<{ __typename?: 'MonsterForm', path: string, name?: string | null, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate: any, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl: string, animDataUrl: string, recolorSheetUrl: string, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }>, actions: Array<{ __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowUrl: string }> } }> }> };
 
 
 export const CarrouselDocument = gql`
@@ -392,6 +399,7 @@ export const PokemonDocument = gql`
       }
       sprites {
         zipUrl
+        animDataUrl
         recolorSheetUrl
         creditPrimary {
           name
@@ -403,7 +411,9 @@ export const PokemonDocument = gql`
         }
         actions {
           action
-          url
+          animUrl
+          offsetsUrl
+          shadowUrl
         }
       }
     }

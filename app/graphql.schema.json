@@ -1012,6 +1012,22 @@
             "deprecationReason": null
           },
           {
+            "name": "animDataUrl",
+            "description": "The AnimData.xml url",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "bounty",
             "description": "Guild Point bounty for this sprite set.",
             "args": [],
@@ -1514,8 +1530,40 @@
             "deprecationReason": null
           },
           {
-            "name": "url",
-            "description": null,
+            "name": "animUrl",
+            "description": "Anim.png url",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "offsetsUrl",
+            "description": "Offsets.png url",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shadowUrl",
+            "description": "Shadow.png url",
             "args": [],
             "type": {
               "kind": "NON_NULL",
