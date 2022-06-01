@@ -184,7 +184,7 @@ type MonsterFormSprites {
   recolorSheetUrl: String!
 
   """A list of all existing sprites for the actions."""
-  actions(action: String!): [Sprite!]!
+  actions: [Sprite!]!
 
   """A single sprite for a given action."""
   action(action: String!): Sprite

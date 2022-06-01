@@ -1,0 +1,42 @@
+query Pokemon($id: Int!) {
+    monster(filter: [$id]){
+        id
+        name
+        forms{
+            path
+            portraits{
+                sheetUrl
+                recolorSheetUrl
+                modifiedDate
+                emotions{
+                    emotion
+                    url
+                }
+                creditPrimary{
+                    name
+                    contact
+                }
+                creditSecondary{
+                    name
+                    contact
+                }
+            }
+            sprites{
+                zipUrl
+                recolorSheetUrl
+                creditPrimary{
+                    name
+                    contact
+                }
+                creditSecondary{
+                    name
+                    contact
+                }
+                actions{
+                    action
+                    url
+                }
+            }
+        }
+    }
+}
