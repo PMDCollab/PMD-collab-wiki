@@ -7,7 +7,7 @@ import Buttons from './components/buttons';
 import {RankMethod } from './types/enum';
 import DisplayParameters from './components/display-parameters';
 
-export default function Home() {
+export default function Home(props:{ids: number[]}) {
     const [currentText, setCurrentText] = useState('');
     const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
     const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false);
@@ -37,6 +37,7 @@ export default function Home() {
                     showSpriteAuthor={showSpriteAuthor}
                     showIndex={showIndex}
                     showLastModification={showLastModification}
+                    ids={props.ids}
                 />
             </div>
         </div>
