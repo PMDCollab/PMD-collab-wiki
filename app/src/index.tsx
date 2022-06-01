@@ -44,7 +44,7 @@ async function initialize(){
         <HashRouter>
             <Routes>
               <Route path='/' element={<Home ids={result.data!.monster.map(m=>m.id)}/>}/>
-              {result.data?.monster.map(m=> <Route key={m.id} path={`/${m}`} element={<PokemonPage infoKey={m.id}/>}/>)}
+              {result.data?.monster.map((m,i)=> <Route key={m.id} path={`/${m}`} element={<PokemonPage infoKey={m.id} prevIndex={result.data?.monster[i - 1]?.id} nextIndex={result.data?.monster[i + 1]?.id}/>}/>)}
               <Route path='/About' element={<About/>}/>
             </Routes>
         </HashRouter>
