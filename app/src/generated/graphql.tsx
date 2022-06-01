@@ -261,7 +261,9 @@ export type Sprite = {
   url: Scalars['String'];
 };
 
-export type CarrouselQueryVariables = Exact<{ [key: string]: never; }>;
+export type CarrouselQueryVariables = Exact<{
+  ids: Array<Scalars['Int']> | Scalars['Int'];
+}>;
 
 
 export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name?: string | null, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate: any, creditPrimary: { __typename?: 'Credit', name?: string | null }, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate: any, creditPrimary: { __typename?: 'Credit', name?: string | null } } } | null }> };
@@ -273,8 +275,8 @@ export type KeysQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'M
 
 
 export const CarrouselDocument = gql`
-    query Carrousel {
-  monster {
+    query Carrousel($ids: [Int!]!) {
+  monster(filter: $ids) {
     id
     name
     manual(path: "/") {
@@ -310,10 +312,11 @@ export const CarrouselDocument = gql`
  * @example
  * const { data, loading, error } = useCarrouselQuery({
  *   variables: {
+ *      ids: // value for 'ids'
  *   },
  * });
  */
-export function useCarrouselQuery(baseOptions?: Apollo.QueryHookOptions<CarrouselQuery, CarrouselQueryVariables>) {
+export function useCarrouselQuery(baseOptions: Apollo.QueryHookOptions<CarrouselQuery, CarrouselQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options);
       }

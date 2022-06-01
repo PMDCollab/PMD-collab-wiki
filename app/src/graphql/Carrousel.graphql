@@ -1,5 +1,5 @@
-query Carrousel($offset: Int, $limit: Int) {
-    monster(offset: $offset, limit: $limit){
+query Carrousel($ids: [Int!]!) {
+    monster(filter: $ids){
         id
         name
         manual(path:"/"){
