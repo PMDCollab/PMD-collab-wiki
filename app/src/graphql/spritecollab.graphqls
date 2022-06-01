@@ -194,6 +194,9 @@ type MonsterFormSprites {
 
   """The date and time this sprite set was last updated."""
   modifiedDate: DateTimeUtc!
+
+  """The AnimData.xml url"""
+  animDataUrl: String!
 }
 
 """A bounty for a non-standard phase."""
@@ -248,6 +251,14 @@ type Query {
 """A single sprite for a single action."""
 type Sprite {
   action: String!
-  url: String!
+  
+  """Anim.png url"""
+  animUrl: String!
+
+  """Offsets.png url"""
+  offsetsUrl: String!
+
+  """Shadow.png url"""
+  shadowUrl: String!
 }
 

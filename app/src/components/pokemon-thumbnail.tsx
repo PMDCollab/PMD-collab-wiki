@@ -1,7 +1,5 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
-import { CDN_URL } from '../types/enum';
-import mappedEmotions from '../mappedEmotions.json'
 import { Monster } from '../generated/graphql'
 
 export default function PokemonThumbnail(props: {
