@@ -43,7 +43,7 @@ export default function PokemonInformations(props:{
         </div>
         {props.info.sprites.actions.length !== 0 ? <div  style={{display:'flex', flexWrap:'wrap'}}>
             {props.info.sprites.actions.map(
-                k => <SpritePreview key={k.action} dungeon={bg.current} action={k}/>
+                k => <SpritePreview key={k.action} dungeon={bg.current} sprite={k} animDataUrl={props.info.sprites.animDataUrl}/>
             )}
         </div>: <p>No sprites available for now.</p>}
 
