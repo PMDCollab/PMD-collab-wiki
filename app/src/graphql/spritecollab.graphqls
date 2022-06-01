@@ -115,6 +115,9 @@ type MonsterForm {
 
   """Sprites for this form."""
   sprites: MonsterFormSprites!
+
+  """The name of this monster form."""
+  name: String
 }
 
 type MonsterFormPortraits {
