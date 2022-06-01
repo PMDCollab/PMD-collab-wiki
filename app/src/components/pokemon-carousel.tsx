@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Monster, useCarrouselQuery } from '../generated/graphql'
 import { RankMethod } from '../types/enum';
 import PokemonThumbnail from './pokemon-thumbnail';
@@ -10,17 +11,27 @@ export default function PokemonCarousel(props:{
         showPortraitAuthor: boolean,
         showSpriteAuthor: boolean,
         showLastModification: boolean,
+        ids: number[]
     }){
+    const [index, setIndex] = useState<number>(0)
 
-    const {loading, error, data} = useCarrouselQuery({
-        variables: {
-
-            offset: 0,
-      
-            limit: 10
-      
-          }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {loading, error, data, refetch, fetchMore} = useCarrouselQuery({
+        variables:{
+            ids:props.ids.slice(index, index + 10)
+        }
     })
+
+    useEffect(()=>{
+        if(data && data.monster && index <= props.ids.length){
+            setIndex(index + 10)
+            fetchMore({
+                variables:{
+                    ids:props.ids.slice(index, index + 10)
+                }
+            })
+        }
+    }, [data, index, props.ids, fetchMore])
 
     if(loading) return <p>loading...</p>
     if(error) return <p>Error</p>

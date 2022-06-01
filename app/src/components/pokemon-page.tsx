@@ -1,13 +1,10 @@
 import { ITracker, MinPath } from "../types/ITracker";
 import Buttons from "./buttons";
 import PokemonInformations from "./pokemon-informations";
-import trackerFile from '../tracker.json'
 import { ReactElement } from "react";
 import 'react-tabs/style/react-tabs.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Link } from "react-router-dom";
-
-const tracker = trackerFile as unknown as {[key: string]: ITracker}
 
 export default function PokemonPage(props:{
         infoKey: string,
