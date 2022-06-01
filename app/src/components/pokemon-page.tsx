@@ -1,26 +1,30 @@
-import { ITracker, MinPath } from "../types/ITracker";
 import Buttons from "./buttons";
 import PokemonInformations from "./pokemon-informations";
 import { ReactElement } from "react";
 import 'react-tabs/style/react-tabs.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Link } from "react-router-dom";
+import { Monster, usePokemonQuery } from "../generated/graphql"
 
 export default function PokemonPage(props:{
-        infoKey: string,
-        info: ITracker
+        infoKey: number,
+        prevIndex: number | undefined,
+        nextIndex: number | undefined
     }){
 
-    const tablist = new Array<ReactElement>();
-    const tabPanelList = new Array<ReactElement>();
-    const prevIndex = (parseInt(props.infoKey) - 1).toString().padStart(4,'0')
-    const nextIndex = (parseInt(props.infoKey) + 1).toString().padStart(4,'0')
+    const {loading, error, data} = usePokemonQuery({})
 
-    const prevLink = tracker[prevIndex] ? <Link to={`/${prevIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', left:'20px'}}>{'<'} {tracker[prevIndex][MinPath.NAME]} {prevIndex}</p></Link> : null
-    const nextLink = tracker[nextIndex] ? <Link to={`/${nextIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', right:'20px'}}>{nextIndex} {tracker[nextIndex][MinPath.NAME]} {'>'}</p></Link> : null
+    const tablist = new Array<ReactElement>()
+    const tabPanelList = new Array<ReactElement>()
+    const prevIndex = props.infoKey - 1
+    const nextIndex = props.infoKey - 1
 
-    props.info[MinPath.RELATED].forEach(infoKey=>{
-        tablist.push(<Tab key={infoKey}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{`${tracker[infoKey][MinPath.NAME]}`}</p></Tab>);
+    const prevLink = props.prevIndex ? <Link to={`/${prevIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', left:'20px'}}>{'<'} {prevIndex}</p></Link> : null
+    const nextLink = props.nextIndex ? <Link to={`/${nextIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', right:'20px'}}>{nextIndex} {'>'}</p></Link> : null
+
+    
+    data?.monster[0]?.forms.forEach(form=>{
+        tablist.push(<Tab key={form.path}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{form.path}</p></Tab>);
         tabPanelList.push(<TabPanel key={`${infoKey}`}>
             <PokemonInformations
                 portraitCredit={tracker[infoKey][MinPath.PORTRAIT_CREDIT]}
@@ -37,6 +41,9 @@ export default function PokemonPage(props:{
             />
         </TabPanel>);
     })
+
+    if(loading) return <p>loading...</p>
+    if(error) return <p>Error</p>
     
     return <div className="App">
         <Buttons/>
