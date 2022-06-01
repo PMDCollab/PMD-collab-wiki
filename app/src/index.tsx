@@ -12,18 +12,33 @@ import {
     useQuery,
     gql
   } from "@apollo/client";
+import { KeysDocument, KeysQueryResult } from './generated/graphql'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
-);
+)
 
-root.render(
-<React.StrictMode>
-<HashRouter>
-        <Routes>
-        <Route path='/' element={<Home metadata={flatMetadata}/>}/>
-        {Object.keys(flatMetadata).map(k=>k.split('/').length <= 1 ? <Route key={k} path={`/${k}`} element={<PokemonPage infoKey={k} info={flatMetadata[k]}/>}/> : null)}
-        <Route path='/About' element={<About/>}/>
-        </Routes>
-    </HashRouter>
-</React.StrictMode>)
+const client = new ApolloClient({
+  uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  cache: new InMemoryCache()
+})
+
+
+async function initialize(){
+  const result = await client.query({query: KeysDocument}) as KeysQueryResult
+  
+  root.render(
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <HashRouter>
+            <Routes>
+              <Route path='/' element={<Home/>}/>
+              {result.data?.monster.map(m=> <Route key={m.id} path={`/${m}`} element={<PokemonPage infoKey={m.id}/>}/>)}
+              <Route path='/About' element={<About/>}/>
+            </Routes>
+        </HashRouter>
+      </ApolloProvider>
+    </React.StrictMode>)
+}
+
+initialize()
