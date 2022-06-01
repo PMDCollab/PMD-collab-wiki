@@ -195,11 +195,6 @@ export type MonsterFormSpritesActionArgs = {
   action: Scalars['String'];
 };
 
-
-export type MonsterFormSpritesActionsArgs = {
-  action: Scalars['String'];
-};
-
 /** A bounty for a non-standard phase. */
 export type OtherBounty = {
   __typename?: 'OtherBounty';
@@ -272,6 +267,13 @@ export type KeysQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type KeysQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number }> };
+
+export type PokemonQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name?: string | null, forms: Array<{ __typename?: 'MonsterForm', path: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate: any, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl: string, recolorSheetUrl: string, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }>, actions: Array<{ __typename?: 'Sprite', action: string, url: string }> } }> }> };
 
 
 export const CarrouselDocument = gql`
@@ -361,3 +363,75 @@ export function useKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<KeysQ
 export type KeysQueryHookResult = ReturnType<typeof useKeysQuery>;
 export type KeysLazyQueryHookResult = ReturnType<typeof useKeysLazyQuery>;
 export type KeysQueryResult = Apollo.QueryResult<KeysQuery, KeysQueryVariables>;
+export const PokemonDocument = gql`
+    query Pokemon($id: Int!) {
+  monster(filter: [$id]) {
+    id
+    name
+    forms {
+      path
+      portraits {
+        sheetUrl
+        recolorSheetUrl
+        modifiedDate
+        emotions {
+          emotion
+          url
+        }
+        creditPrimary {
+          name
+          contact
+        }
+        creditSecondary {
+          name
+          contact
+        }
+      }
+      sprites {
+        zipUrl
+        recolorSheetUrl
+        creditPrimary {
+          name
+          contact
+        }
+        creditSecondary {
+          name
+          contact
+        }
+        actions {
+          action
+          url
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePokemonQuery__
+ *
+ * To run a query within a React component, call `usePokemonQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePokemonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePokemonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePokemonQuery(baseOptions: Apollo.QueryHookOptions<PokemonQuery, PokemonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options);
+      }
+export function usePokemonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PokemonQuery, PokemonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options);
+        }
+export type PokemonQueryHookResult = ReturnType<typeof usePokemonQuery>;
+export type PokemonLazyQueryHookResult = ReturnType<typeof usePokemonLazyQuery>;
+export type PokemonQueryResult = Apollo.QueryResult<PokemonQuery, PokemonQueryVariables>;
