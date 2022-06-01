@@ -1,11 +1,10 @@
+import { Monster, useCarrouselQuery } from '../generated/graphql'
 import { RankMethod } from '../types/enum';
-import { ITracker, MinPath } from '../types/ITracker'
 import PokemonThumbnail from './pokemon-thumbnail';
 
 
 export default function PokemonCarousel(props:{
         currentText:string,
-        metadata: {[key: string]: ITracker},
         rankBy: RankMethod,
         showIndex: boolean,
         showPortraitAuthor: boolean,
@@ -13,19 +12,32 @@ export default function PokemonCarousel(props:{
         showLastModification: boolean,
     }){
 
+    const {loading, error, data} = useCarrouselQuery({
+        variables: {
+
+            offset: 0,
+      
+            limit: 10
+      
+          }
+    })
+
+    if(loading) return <p>loading...</p>
+    if(error) return <p>Error</p>
+
     const lowerCaseText = props.currentText.toLowerCase()
     return <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-between', overflowY:'scroll', overflowX:'hidden'}}>
-        {Object.keys(props.metadata)
-        .filter(k=>k.split('/').length < 2)
-        .filter(k=>props.metadata[k][MinPath.NAME].toLowerCase().includes(lowerCaseText) 
-        || props.metadata[k][MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY].toLowerCase().includes(lowerCaseText)
-        || props.metadata[k][MinPath.SPRITE_CREDIT][MinPath.PRIMARY].toLowerCase().includes(lowerCaseText)
-        || k.includes(lowerCaseText))
-        .sort((a,b) => rankFunction(props.rankBy, a, b, props.metadata[a], props.metadata[b]))
+        {
+        data?.monster
+        .filter(k=>k?.name?.toLowerCase().includes(lowerCaseText) 
+        || k?.manual?.portraits?.creditPrimary?.name?.toLowerCase().includes(lowerCaseText)
+        || k?.manual?.portraits?.creditPrimary?.name?.toLowerCase().includes(lowerCaseText)
+        || k?.id.toString().includes(lowerCaseText))
+        .sort((a,b) => rankFunction(props.rankBy, a as Monster, b as Monster))
         .map(k=><PokemonThumbnail
-            key={k}
-            infoKey={k}
-            info={props.metadata[k]}
+            key={k!.id}
+            infoKey={k!.id}
+            info={k! as Monster}
             showIndex={props.showIndex}
             showPortraitAuthor={props.showPortraitAuthor}
             showSpriteAuthor={props.showSpriteAuthor}
@@ -37,32 +49,40 @@ export default function PokemonCarousel(props:{
 
 function rankFunction(
         rankBy: RankMethod,
-        ka: string,
-        kb: string,
-        a: ITracker,
-        b: ITracker
-        ){
+        a: Monster,
+        b: Monster
+        ): number{
+    let result: number | undefined = 0
+
     switch (rankBy) {
         case RankMethod.POKEDEX_NUMBER:
-            return parseInt(ka) - parseInt(kb);
+            result = a.id - b.id
+            break
 
         case RankMethod.LAST_MODIFICATION:
-            const dap = new Date(a[MinPath.PORTRAIT_MODIFIED])
-            const dbp = new Date(b[MinPath.PORTRAIT_MODIFIED])
-            const das = new Date(a[MinPath.SPRITE_MODIFIED])
-            const dbs = new Date(b[MinPath.SPRITE_MODIFIED])
-            return Math.max(dbp.getTime(), dbs.getTime()) - Math.max(dap.getTime(), das.getTime())
+            const dap = new Date(a.manual?.portraits.modifiedDate)
+            const dbp = new Date(b.manual?.portraits.modifiedDate)
+            const das = new Date(a.manual?.sprites.modifiedDate)
+            const dbs = new Date(b.manual?.sprites.modifiedDate)
+            result = Math.max(dbp.getTime(), dbs.getTime()) - Math.max(dap.getTime(), das.getTime())
+            break
 
         case RankMethod.NAME:
-            return a[MinPath.NAME].localeCompare(b[MinPath.NAME]);
+            result = a.name?.localeCompare(b.name!)
+            break
 
         case RankMethod.PORTRAIT_AUTHOR:
-            return a[MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY].localeCompare(b[MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY])
+            result = a.manual?.portraits?.creditPrimary.name?.localeCompare(b.manual?.portraits?.creditPrimary.name!)
+            break
     
         case RankMethod.SPRITE_AUTHOR:
-            return a[MinPath.SPRITE_CREDIT][MinPath.PRIMARY].localeCompare(b[MinPath.SPRITE_CREDIT][MinPath.PRIMARY])
+            result = a.manual?.sprites?.creditPrimary.name?.localeCompare(b.manual?.sprites?.creditPrimary.name!)
+            break
 
         default:
-            return 0;
-    }
+            result = 0;
+            break
+        }
+    const r = result ? result : 0
+    return r
 }

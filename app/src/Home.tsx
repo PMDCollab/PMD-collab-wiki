@@ -4,11 +4,10 @@ import PokemonCarousel from './components/pokemon-carousel';
 import Search from './components/search';
 import { useState } from 'react';
 import Buttons from './components/buttons';
-import { ITracker } from './types/ITracker';
 import {RankMethod } from './types/enum';
 import DisplayParameters from './components/display-parameters';
 
-export default function Home(props:{metadata: {[key: string]: ITracker}}) {
+export default function Home() {
     const [currentText, setCurrentText] = useState('');
     const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
     const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false);
@@ -33,7 +32,6 @@ export default function Home(props:{metadata: {[key: string]: ITracker}}) {
                 </div>
                 <PokemonCarousel 
                     currentText={currentText}
-                    metadata={props.metadata}
                     rankBy={rankBy}
                     showPortraitAuthor={showPortraitAuthor}
                     showSpriteAuthor={showSpriteAuthor}
