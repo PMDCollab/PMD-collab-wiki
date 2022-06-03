@@ -1,12 +1,12 @@
 import { Credit } from '../generated/graphql'
 
 export default function Credits(props:{
-        primary: Credit,
+        primary: Credit | undefined | null,
         secondary: Credit[]
     }){
 
     return  <div style={{display:'flex', flexGrow: '.3', justifyContent: 'space-around'}}>
-    {props.primary.name ? <div style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'baseline'}}>
+    {props.primary?.name ? <div style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'baseline'}}>
         <p style={{fontSize:'0.7em'}}>by</p>
         <a className='nes-text is-primary' style={{fontSize:'0.7em', margin: '0px'}} key={props.primary.id} href={props.primary.contact ? props.primary.contact : ''}>{props.primary.name}</a>
     </div>: null}

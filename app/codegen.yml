@@ -1,5 +1,5 @@
 overwrite: true
-schema: "C:\\Users\\arnaud.gregoire\\Desktop\\PMD-collab-wiki\\app\\src\\graphql\\spritecollab.graphqls"
+schema: "src/graphql/schema.graphqls"
 documents: "src/**/*.graphql"
 generates:
   src/generated/graphql.tsx:

@@ -1,4 +1,4 @@
-export const CDN_URL = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master";
+export const CDN_URL = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master"
 export const DISCORD_APP_URL = 'https://cdn.discordapp.com/attachments/'
 
 export type CreditInformation = {

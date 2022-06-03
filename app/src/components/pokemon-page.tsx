@@ -1,9 +1,9 @@
-import Buttons from "./buttons";
-import PokemonInformations from "./pokemon-informations";
-import { ReactElement } from "react";
-import 'react-tabs/style/react-tabs.css';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { Link } from "react-router-dom";
+import Buttons from "./buttons"
+import PokemonInformations from "./pokemon-informations"
+import { ReactElement } from "react"
+import 'react-tabs/style/react-tabs.css'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import { Link } from "react-router-dom"
 import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 
 export default function PokemonPage(props:{
@@ -24,13 +24,13 @@ export default function PokemonPage(props:{
 
     
     data?.monster[0]?.forms.forEach(form=>{
-        tablist.push(<Tab key={form.path}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{form.name}</p></Tab>);
+        tablist.push(<Tab key={form.path}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{form.name}</p></Tab>)
         tabPanelList.push(<TabPanel key={`${props.infoKey}`}>
             <PokemonInformations
                 info={form as MonsterForm}
                 infoKey={props.infoKey}
             />
-        </TabPanel>);
+        </TabPanel>)
     })
 
     if(loading) return <p>loading...</p>

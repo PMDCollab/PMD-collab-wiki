@@ -1,7 +1,8 @@
+/* eslint-disable no-case-declarations */
 import { useEffect, useState } from 'react'
 import { Monster, useCarrouselQuery } from '../generated/graphql'
-import { RankMethod } from '../types/enum';
-import PokemonThumbnail from './pokemon-thumbnail';
+import { RankMethod } from '../types/enum'
+import PokemonThumbnail from './pokemon-thumbnail'
 
 
 export default function PokemonCarousel(props:{
@@ -83,15 +84,15 @@ function rankFunction(
             break
 
         case RankMethod.PORTRAIT_AUTHOR:
-            result = a.manual?.portraits?.creditPrimary.name?.localeCompare(b.manual?.portraits?.creditPrimary.name!)
+            result = a.manual?.portraits?.creditPrimary?.name?.localeCompare(b.manual?.portraits?.creditPrimary?.name ? b.manual?.portraits?.creditPrimary?.name : '')
             break
     
         case RankMethod.SPRITE_AUTHOR:
-            result = a.manual?.sprites?.creditPrimary.name?.localeCompare(b.manual?.sprites?.creditPrimary.name!)
+            result = a.manual?.sprites?.creditPrimary?.name?.localeCompare(b.manual?.sprites?.creditPrimary?.name ? b.manual?.sprites?.creditPrimary?.name: '')
             break
 
         default:
-            result = 0;
+            result = 0
             break
         }
     const r = result ? result : 0

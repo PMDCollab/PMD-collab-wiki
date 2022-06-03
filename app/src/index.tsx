@@ -1,11 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './style/index.css';
-import Home from './Home';
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import PokemonPage from './components/pokemon-page';
-import About from './About';
-import {ApolloClient,InMemoryCache,ApolloProvider} from "@apollo/client";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './style/index.css'
+import Home from './Home'
+import { HashRouter, Routes, Route } from 'react-router-dom'
+import PokemonPage from './components/pokemon-page'
+import About from './About'
+import {ApolloClient,InMemoryCache,ApolloProvider} from "@apollo/client"
 import { KeysDocument, KeysQueryResult } from './generated/graphql'
 
 const root = ReactDOM.createRoot(
@@ -25,7 +26,7 @@ const client = new ApolloClient({
             // Concatenate the incoming list items with
             // the existing list items.
             merge(existing = [], incoming) {
-              return [...existing, ...incoming];
+              return [...existing, ...incoming]
             },
           }
         }

@@ -37,6 +37,15 @@ type Config {
   actionMap: [ActionId!]!
 }
 
+"""A sprite, which is a copy of another sprite."""
+type CopyOf {
+  """Action of this sprite."""
+  action: String!
+
+  """Which action this sprite is a copy of."""
+  copyOf: String!
+}
+
 type Credit {
   """Discord ID or absentee ID. Guaranteed to be an ASCII string."""
   id: String!
@@ -54,6 +63,12 @@ type Credit {
 scalar DateTimeUtc
 
 type Monster {
+  """ID of this monster."""
+  id: Int!
+
+  """Human-readable name of this monster."""
+  name: String!
+
   """All forms that exist for this monster."""
   forms: [MonsterForm!]!
 
@@ -66,12 +81,6 @@ type Monster {
   collapsed until a unique form is found.
   """
   manual(path: String!): MonsterForm
-
-  """The id of this monster."""
-  id: Int!
-
-  """The name of this monster."""
-  name: String
 }
 
 """
@@ -96,10 +105,22 @@ type MonsterBounty {
 }
 
 type MonsterForm {
+  """The ID of the monster, that this form belongs to."""
+  monsterId: Int!
+
   """
-  The full path to this form as it's specified in the SpriteCollab JSON file and repository file structure.
+  The path to this form (without the monster ID) as it's specified in the
+  SpriteCollab tracker.json file and repository file structure.
   """
   path: String!
+
+  """Human-readable name of this form."""
+  name: String!
+
+  """
+  Human-readable full name of this form (excluding the monster name itself).
+  """
+  fullName: String!
 
   """Whether or not this form is considered for a shiny."""
   isShiny: Boolean!
@@ -115,9 +136,6 @@ type MonsterForm {
 
   """Sprites for this form."""
   sprites: MonsterFormSprites!
-
-  """The name of this monster form."""
-  name: String
 }
 
 type MonsterFormPortraits {
@@ -134,7 +152,7 @@ type MonsterFormPortraits {
   phaseRaw: Int!
 
   """Primary artist credits."""
-  creditPrimary: Credit!
+  creditPrimary: Credit
 
   """All other artists credited."""
   creditSecondary: [Credit!]!
@@ -152,13 +170,13 @@ type MonsterFormPortraits {
   emotion(emotion: String!): Portrait
 
   """A list of all existing flipped portraits for the emotions."""
-  emotionFlipped(emotion: String!): Portrait
-
-  """A single flipped portrait for a given emotion."""
   emotionsFlipped: [Portrait!]!
 
+  """A single flipped portrait for a given emotion."""
+  emotionFlipped(emotion: String!): Portrait
+
   """The date and time this portrait set was last updated."""
-  modifiedDate: DateTimeUtc!
+  modifiedDate: DateTimeUtc
 }
 
 type MonsterFormSprites {
@@ -175,28 +193,28 @@ type MonsterFormSprites {
   phaseRaw: Int!
 
   """Primary artist credits."""
-  creditPrimary: Credit!
+  creditPrimary: Credit
 
   """All other artists credited."""
   creditSecondary: [Credit!]!
 
+  """URL to the AnimData XML file for this sprite set."""
+  animDataXml: String
+
   """URL to a SpriteBot format ZIP archive of all sprites."""
-  zipUrl: String!
+  zipUrl: String
 
   """URL to a SpriteBot format recolor sheet."""
-  recolorSheetUrl: String!
+  recolorSheetUrl: String
 
   """A list of all existing sprites for the actions."""
-  actions: [Sprite!]!
+  actions: [SpriteUnion!]!
 
   """A single sprite for a given action."""
-  action(action: String!): Sprite
+  action(action: String!): SpriteUnion
 
   """The date and time this sprite set was last updated."""
-  modifiedDate: DateTimeUtc!
-
-  """The AnimData.xml url"""
-  animDataUrl: String!
+  modifiedDate: DateTimeUtc
 }
 
 """A bounty for a non-standard phase."""
@@ -212,7 +230,7 @@ enum Phase {
   FULL
 
   """
-  Returned if the phase value is non-standard. Use phase_raw to get the raw ID.
+  Returned if the phase value is non-standard. Use phaseRaw to get the raw ID.
   """
   UNKNOWN
 }
@@ -227,7 +245,9 @@ type Query {
   """Version of this API."""
   apiVersion: String!
 
-  """Search for a monster by (parts) of its name."""
+  """
+  Search for a monster by (parts) of its name. Results are sorted by best match.
+  """
   searchMonster(monsterName: String!): [Monster!]!
 
   """Retrieve a list of monsters."""
@@ -237,7 +257,7 @@ type Query {
   ): [Monster!]!
 
   """
-  Search for a credit entry by (parts) of the ID, the author name or the contact info.
+  Search for a credit entry by (parts) of the ID, the author name or the contact info. Results are sorted by best match.
   """
   searchCredit(query: String!): [Credit!]!
 
@@ -245,20 +265,33 @@ type Query {
   credit: [Credit!]!
 
   """Configuration for this instance of SpriteCollab."""
-  config: [Config!]!
+  config: Config!
 }
 
 """A single sprite for a single action."""
 type Sprite {
+  """Action of this sprite."""
   action: String!
-  
-  """Anim.png url"""
+
+  """
+  URL to the sprite sheet containing the actual frames for the animation.
+  """
   animUrl: String!
 
-  """Offsets.png url"""
+  """
+  URL to the sprite sheet containing the sprite offset pixels for each frame.
+  """
   offsetsUrl: String!
 
-  """Shadow.png url"""
-  shadowUrl: String!
+  """
+  URL to the sprite sheet containing the shadow placeholders for each frame.
+  """
+  shadowsUrl: String!
 }
+
+"""
+A single sprite for a single action that is either a copy of another sprite (as
+defined in the AnimData.xml) or has it's own sprite data.
+"""
+union SpriteUnion = Sprite | CopyOf
 

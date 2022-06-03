@@ -1,4 +1,4 @@
-import Buttons from "./components/buttons";
+import Buttons from "./components/buttons"
 
 export default function About(){
     return (
@@ -21,5 +21,5 @@ Portrait submissions should follow these rules and guidelines: </p>
                 </div>
             </div>
         </div>
-      );
+      )
 }

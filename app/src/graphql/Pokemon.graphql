@@ -24,7 +24,7 @@ query Pokemon($id: Int!) {
             }
             sprites{
                 zipUrl
-                animDataUrl
+                animDataXml
                 recolorSheetUrl
                 creditPrimary{
                     name
@@ -35,10 +35,16 @@ query Pokemon($id: Int!) {
                     contact
                 }
                 actions{
-                    action
-                    animUrl
-                    offsetsUrl
-                    shadowUrl
+                     ... on Sprite{
+                        action
+                        animUrl
+                        offsetsUrl
+                        shadowsUrl
+                    }
+                    ... on CopyOf{
+                        action
+                        copyOf
+                    }
                 }
             }
         }

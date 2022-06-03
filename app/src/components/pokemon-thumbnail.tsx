@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
+import { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
 import { Monster } from '../generated/graphql'
 
 export default function PokemonThumbnail(props: {
@@ -17,11 +17,11 @@ export default function PokemonThumbnail(props: {
     let spriteAuthor: ReactElement | null = null
 
     if(props.showPortraitAuthor){
-        portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info?.manual?.portraits?.creditPrimary.name}</p> 
+        portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info?.manual?.portraits?.creditPrimary?.name}</p> 
     }
 
     if(props.showSpriteAuthor){
-        spriteAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.manual?.sprites.creditPrimary.name}</p> 
+        spriteAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.manual?.sprites.creditPrimary?.name}</p> 
     }
 
     if(props.showIndex){
@@ -37,9 +37,9 @@ export default function PokemonThumbnail(props: {
 
 
     if (props.info.manual?.portraits.emotion?.url) {    
-        image = <img className='my-img' alt='' src={props.info.manual.portraits.emotion?.url}/>;
+        image = <img className='my-img' alt='' src={props.info.manual.portraits.emotion?.url}/>
     } else {
-        image = <h1 style={{height:'80px', margin:'0px'}}>?</h1>;
+        image = <h1 style={{height:'80px', margin:'0px'}}>?</h1>
     }
 
     return <Link to={props.infoKey.toString()} className='my-link'>
@@ -56,20 +56,20 @@ export default function PokemonThumbnail(props: {
 
 export function formatDate(n: number | undefined) {
     if(n){
-        const date = new Date(n);
+        const date = new Date(n)
         return  pad( date.getDate() ) +
             '/' + pad( date.getMonth() + 1 ) +
             '/' + date.getFullYear()
     }
     else{
-        return '';
+        return ''
     }
 
 }
 
 export function pad(number: number) {
     if ( number < 10 ) {
-        return '0' + number;
+        return '0' + number
         }
-    return number;
+    return number
 }

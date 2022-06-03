@@ -1,11 +1,11 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { gql } from '@apollo/client'
+import * as Apollo from '@apollo/client'
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions = {} as const;
+const defaultOptions = {} as const
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -51,6 +51,15 @@ export type Config = {
   portraitTileY: Scalars['Int'];
 };
 
+/** A sprite, which is a copy of another sprite. */
+export type CopyOf = {
+  __typename?: 'CopyOf';
+  /** Action of this sprite. */
+  action: Scalars['String'];
+  /** Which action this sprite is a copy of. */
+  copyOf: Scalars['String'];
+};
+
 export type Credit = {
   __typename?: 'Credit';
   /** Contact information for this author. */
@@ -67,7 +76,7 @@ export type Monster = {
   forms: Array<MonsterForm>;
   /** Get a specific form for this monster. */
   get?: Maybe<MonsterForm>;
-  /** The id of this monster. */
+  /** ID of this monster. */
   id: Scalars['Int'];
   /**
    * Manually enter the path to a monster, seperated by /. This should match the
@@ -75,8 +84,8 @@ export type Monster = {
    * collapsed until a unique form is found.
    */
   manual?: Maybe<MonsterForm>;
-  /** The name of this monster. */
-  name?: Maybe<Scalars['String']>;
+  /** Human-readable name of this monster. */
+  name: Scalars['String'];
 };
 
 
@@ -112,13 +121,20 @@ export type MonsterForm = {
   __typename?: 'MonsterForm';
   /** Whether or not this form is canon. */
   canon: Scalars['Boolean'];
+  /** Human-readable full name of this form (excluding the monster name itself). */
+  fullName: Scalars['String'];
   /** Whether or not this form is considered for a female monsters. */
   isFemale: Scalars['Boolean'];
   /** Whether or not this form is considered for a shiny. */
   isShiny: Scalars['Boolean'];
-  /** The name of this monster form. */
-  name?: Maybe<Scalars['String']>;
-  /** The full path to this form as it's specified in the SpriteCollab JSON file and repository file structure. */
+  /** The ID of the monster, that this form belongs to. */
+  monsterId: Scalars['Int'];
+  /** Human-readable name of this form. */
+  name: Scalars['String'];
+  /**
+   * The path to this form (without the monster ID) as it's specified in the
+   * SpriteCollab tracker.json file and repository file structure.
+   */
   path: Scalars['String'];
   /** Portraits for this form. */
   portraits: MonsterFormPortraits;
@@ -131,19 +147,19 @@ export type MonsterFormPortraits = {
   /** Guild Point bounty for this portrait set. */
   bounty: MonsterBounty;
   /** Primary artist credits. */
-  creditPrimary: Credit;
+  creditPrimary?: Maybe<Credit>;
   /** All other artists credited. */
   creditSecondary: Array<Credit>;
   /** A single portrait for a given emotion. */
   emotion?: Maybe<Portrait>;
-  /** A list of all existing flipped portraits for the emotions. */
+  /** A single flipped portrait for a given emotion. */
   emotionFlipped?: Maybe<Portrait>;
   /** A list of all existing portraits for the emotions. */
   emotions: Array<Portrait>;
-  /** A single flipped portrait for a given emotion. */
+  /** A list of all existing flipped portraits for the emotions. */
   emotionsFlipped: Array<Portrait>;
   /** The date and time this portrait set was last updated. */
-  modifiedDate: Scalars['DateTimeUtc'];
+  modifiedDate?: Maybe<Scalars['DateTimeUtc']>;
   /** Current completion phase of the portraits. */
   phase: Phase;
   /** Current completion phase of the portraits (raw ID). */
@@ -169,29 +185,29 @@ export type MonsterFormPortraitsEmotionFlippedArgs = {
 export type MonsterFormSprites = {
   __typename?: 'MonsterFormSprites';
   /** A single sprite for a given action. */
-  action?: Maybe<Sprite>;
+  action?: Maybe<SpriteUnion>;
   /** A list of all existing sprites for the actions. */
-  actions: Array<Sprite>;
-  /** The AnimData.xml url */
-  animDataUrl: Scalars['String'];
+  actions: Array<SpriteUnion>;
+  /** URL to the AnimData XML file for this sprite set. */
+  animDataXml?: Maybe<Scalars['String']>;
   /** Guild Point bounty for this sprite set. */
   bounty: MonsterBounty;
   /** Primary artist credits. */
-  creditPrimary: Credit;
+  creditPrimary?: Maybe<Credit>;
   /** All other artists credited. */
   creditSecondary: Array<Credit>;
   /** The date and time this sprite set was last updated. */
-  modifiedDate: Scalars['DateTimeUtc'];
+  modifiedDate?: Maybe<Scalars['DateTimeUtc']>;
   /** Current completion phase of the sprites. */
   phase: Phase;
   /** Current completion phase of the sprites (raw ID). */
   phaseRaw: Scalars['Int'];
   /** URL to a SpriteBot format recolor sheet. */
-  recolorSheetUrl: Scalars['String'];
+  recolorSheetUrl?: Maybe<Scalars['String']>;
   /** Whether or not this form should have sprites. */
   required: Scalars['Boolean'];
   /** URL to a SpriteBot format ZIP archive of all sprites. */
-  zipUrl: Scalars['String'];
+  zipUrl?: Maybe<Scalars['String']>;
 };
 
 
@@ -211,7 +227,7 @@ export enum Phase {
   Exists = 'EXISTS',
   Full = 'FULL',
   Incomplete = 'INCOMPLETE',
-  /** Returned if the phase value is non-standard. Use phase_raw to get the raw ID. */
+  /** Returned if the phase value is non-standard. Use phaseRaw to get the raw ID. */
   Unknown = 'UNKNOWN'
 }
 
@@ -227,14 +243,14 @@ export type Query = {
   /** Version of this API. */
   apiVersion: Scalars['String'];
   /** Configuration for this instance of SpriteCollab. */
-  config: Array<Config>;
+  config: Config;
   /** Retrieve a list of credits. */
   credit: Array<Credit>;
   /** Retrieve a list of monsters. */
   monster: Array<Monster>;
-  /** Search for a credit entry by (parts) of the ID, the author name or the contact info. */
+  /** Search for a credit entry by (parts) of the ID, the author name or the contact info. Results are sorted by best match. */
   searchCredit: Array<Credit>;
-  /** Search for a monster by (parts) of its name. */
+  /** Search for a monster by (parts) of its name. Results are sorted by best match. */
   searchMonster: Array<Monster>;
 };
 
@@ -256,21 +272,28 @@ export type QuerySearchMonsterArgs = {
 /** A single sprite for a single action. */
 export type Sprite = {
   __typename?: 'Sprite';
+  /** Action of this sprite. */
   action: Scalars['String'];
-  /** Anim.png url */
+  /** URL to the sprite sheet containing the actual frames for the animation. */
   animUrl: Scalars['String'];
-  /** Offsets.png url */
+  /** URL to the sprite sheet containing the sprite offset pixels for each frame. */
   offsetsUrl: Scalars['String'];
-  /** Shadow.png url */
-  shadowUrl: Scalars['String'];
+  /** URL to the sprite sheet containing the shadow placeholders for each frame. */
+  shadowsUrl: Scalars['String'];
 };
+
+/**
+ * A single sprite for a single action that is either a copy of another sprite (as
+ * defined in the AnimData.xml) or has it's own sprite data.
+ */
+export type SpriteUnion = CopyOf | Sprite;
 
 export type CarrouselQueryVariables = Exact<{
   ids: Array<Scalars['Int']> | Scalars['Int'];
 }>;
 
 
-export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name?: string | null, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate: any, creditPrimary: { __typename?: 'Credit', name?: string | null }, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate: any, creditPrimary: { __typename?: 'Credit', name?: string | null } } } | null }> };
+export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null } } | null }> };
 
 export type KeysQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -282,7 +305,7 @@ export type PokemonQueryVariables = Exact<{
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name?: string | null, forms: Array<{ __typename?: 'MonsterForm', path: string, name?: string | null, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate: any, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl: string, animDataUrl: string, recolorSheetUrl: string, creditPrimary: { __typename?: 'Credit', name?: string | null, contact?: string | null }, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }>, actions: Array<{ __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowUrl: string }> } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string }> } }> }> };
 
 
 export const CarrouselDocument = gql`
@@ -309,7 +332,7 @@ export const CarrouselDocument = gql`
     }
   }
 }
-    `;
+    `
 
 /**
  * __useCarrouselQuery__
@@ -329,11 +352,11 @@ export const CarrouselDocument = gql`
  */
 export function useCarrouselQuery(baseOptions: Apollo.QueryHookOptions<CarrouselQuery, CarrouselQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options);
+        return Apollo.useQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options)
       }
 export function useCarrouselLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CarrouselQuery, CarrouselQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options);
+          return Apollo.useLazyQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options)
         }
 export type CarrouselQueryHookResult = ReturnType<typeof useCarrouselQuery>;
 export type CarrouselLazyQueryHookResult = ReturnType<typeof useCarrouselLazyQuery>;
@@ -344,7 +367,7 @@ export const KeysDocument = gql`
     id
   }
 }
-    `;
+    `
 
 /**
  * __useKeysQuery__
@@ -363,11 +386,11 @@ export const KeysDocument = gql`
  */
 export function useKeysQuery(baseOptions?: Apollo.QueryHookOptions<KeysQuery, KeysQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options);
+        return Apollo.useQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options)
       }
 export function useKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<KeysQuery, KeysQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options);
+          return Apollo.useLazyQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options)
         }
 export type KeysQueryHookResult = ReturnType<typeof useKeysQuery>;
 export type KeysLazyQueryHookResult = ReturnType<typeof useKeysLazyQuery>;
@@ -399,7 +422,7 @@ export const PokemonDocument = gql`
       }
       sprites {
         zipUrl
-        animDataUrl
+        animDataXml
         recolorSheetUrl
         creditPrimary {
           name
@@ -410,16 +433,22 @@ export const PokemonDocument = gql`
           contact
         }
         actions {
-          action
-          animUrl
-          offsetsUrl
-          shadowUrl
+          ... on Sprite {
+            action
+            animUrl
+            offsetsUrl
+            shadowsUrl
+          }
+          ... on CopyOf {
+            action
+            copyOf
+          }
         }
       }
     }
   }
 }
-    `;
+    `
 
 /**
  * __usePokemonQuery__
@@ -439,11 +468,11 @@ export const PokemonDocument = gql`
  */
 export function usePokemonQuery(baseOptions: Apollo.QueryHookOptions<PokemonQuery, PokemonQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options);
+        return Apollo.useQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options)
       }
 export function usePokemonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PokemonQuery, PokemonQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options);
+          return Apollo.useLazyQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options)
         }
 export type PokemonQueryHookResult = ReturnType<typeof usePokemonQuery>;
 export type PokemonLazyQueryHookResult = ReturnType<typeof usePokemonLazyQuery>;

@@ -42,9 +42,8 @@ export default function PokemonInformations(props:{
             <Credits primary={props.info.sprites.creditPrimary} secondary={props.info.sprites.creditSecondary}/>
         </div>
         {props.info.sprites.actions.length !== 0 ? <div  style={{display:'flex', flexWrap:'wrap'}}>
-            {props.info.sprites.actions.map(
-                k => <SpritePreview key={k.action} dungeon={bg.current} sprite={k} animDataUrl={props.info.sprites.animDataUrl}/>
-            )}
+            {props.info.sprites.actions.map(k => k.__typename === 'Sprite' && props.info.sprites.animDataXml
+             ? <SpritePreview key={k.action} dungeon={bg.current} sprite={k} animDataUrl={props.info.sprites.animDataXml}/> : null)}
         </div>: <p>No sprites available for now.</p>}
 
     </div>

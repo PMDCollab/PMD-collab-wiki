@@ -256,6 +256,49 @@
       },
       {
         "kind": "OBJECT",
+        "name": "CopyOf",
+        "description": "A sprite, which is a copy of another sprite.",
+        "fields": [
+          {
+            "name": "action",
+            "description": "Action of this sprite.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "copyOf",
+            "description": "Which action this sprite is a copy of.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "Credit",
         "description": null,
         "fields": [
@@ -417,7 +460,7 @@
           },
           {
             "name": "id",
-            "description": "The id of this monster.",
+            "description": "ID of this monster.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -462,12 +505,16 @@
           },
           {
             "name": "name",
-            "description": "The name of this monster.",
+            "description": "Human-readable name of this monster.",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -587,6 +634,22 @@
             "deprecationReason": null
           },
           {
+            "name": "fullName",
+            "description": "Human-readable full name of this form (excluding the monster name itself).",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "isFemale",
             "description": "Whether or not this form is considered for a female monsters.",
             "args": [],
@@ -619,20 +682,40 @@
             "deprecationReason": null
           },
           {
-            "name": "name",
-            "description": "The name of this monster form.",
+            "name": "monsterId",
+            "description": "The ID of the monster, that this form belongs to.",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "Human-readable name of this form.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "path",
-            "description": "The full path to this form as it's specified in the SpriteCollab JSON file and repository file structure.",
+            "description": "The path to this form (without the monster ID) as it's specified in the\nSpriteCollab tracker.json file and repository file structure.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -710,13 +793,9 @@
             "description": "Primary artist credits.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Credit",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "Credit",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -776,7 +855,7 @@
           },
           {
             "name": "emotionFlipped",
-            "description": "A list of all existing flipped portraits for the emotions.",
+            "description": "A single flipped portrait for a given emotion.",
             "args": [
               {
                 "name": "emotion",
@@ -829,7 +908,7 @@
           },
           {
             "name": "emotionsFlipped",
-            "description": "A single flipped portrait for a given emotion.",
+            "description": "A list of all existing flipped portraits for the emotions.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -856,13 +935,9 @@
             "description": "The date and time this portrait set was last updated.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "DateTimeUtc",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "DateTimeUtc",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -980,8 +1055,8 @@
               }
             ],
             "type": {
-              "kind": "OBJECT",
-              "name": "Sprite",
+              "kind": "UNION",
+              "name": "SpriteUnion",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1001,8 +1076,8 @@
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Sprite",
+                    "kind": "UNION",
+                    "name": "SpriteUnion",
                     "ofType": null
                   }
                 }
@@ -1012,17 +1087,13 @@
             "deprecationReason": null
           },
           {
-            "name": "animDataUrl",
-            "description": "The AnimData.xml url",
+            "name": "animDataXml",
+            "description": "URL to the AnimData XML file for this sprite set.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1048,13 +1119,9 @@
             "description": "Primary artist credits.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Credit",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "Credit",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1088,13 +1155,9 @@
             "description": "The date and time this sprite set was last updated.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "DateTimeUtc",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "DateTimeUtc",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1136,13 +1199,9 @@
             "description": "URL to a SpriteBot format recolor sheet.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1168,13 +1227,9 @@
             "description": "URL to a SpriteBot format ZIP archive of all sprites.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1256,7 +1311,7 @@
           },
           {
             "name": "UNKNOWN",
-            "description": "Returned if the phase value is non-standard. Use phase_raw to get the raw ID.",
+            "description": "Returned if the phase value is non-standard. Use phaseRaw to get the raw ID.",
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -1335,17 +1390,9 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Config",
-                    "ofType": null
-                  }
-                }
+                "kind": "OBJECT",
+                "name": "Config",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -1422,7 +1469,7 @@
           },
           {
             "name": "searchCredit",
-            "description": "Search for a credit entry by (parts) of the ID, the author name or the contact info.",
+            "description": "Search for a credit entry by (parts) of the ID, the author name or the contact info. Results are sorted by best match.",
             "args": [
               {
                 "name": "query",
@@ -1463,7 +1510,7 @@
           },
           {
             "name": "searchMonster",
-            "description": "Search for a monster by (parts) of its name.",
+            "description": "Search for a monster by (parts) of its name. Results are sorted by best match.",
             "args": [
               {
                 "name": "monsterName",
@@ -1515,7 +1562,7 @@
         "fields": [
           {
             "name": "action",
-            "description": null,
+            "description": "Action of this sprite.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1531,7 +1578,7 @@
           },
           {
             "name": "animUrl",
-            "description": "Anim.png url",
+            "description": "URL to the sprite sheet containing the actual frames for the animation.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1547,7 +1594,7 @@
           },
           {
             "name": "offsetsUrl",
-            "description": "Offsets.png url",
+            "description": "URL to the sprite sheet containing the sprite offset pixels for each frame.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1562,8 +1609,8 @@
             "deprecationReason": null
           },
           {
-            "name": "shadowUrl",
-            "description": "Shadow.png url",
+            "name": "shadowsUrl",
+            "description": "URL to the sprite sheet containing the shadow placeholders for each frame.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1582,6 +1629,27 @@
         "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "SpriteUnion",
+        "description": "A single sprite for a single action that is either a copy of another sprite (as\ndefined in the AnimData.xml) or has it's own sprite data.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "CopyOf",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Sprite",
+            "ofType": null
+          }
+        ]
       },
       {
         "kind": "SCALAR",

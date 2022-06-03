@@ -1,19 +1,19 @@
-import './style/app.css';
-import "nes.css/css/nes.min.css";
-import PokemonCarousel from './components/pokemon-carousel';
-import Search from './components/search';
-import { useState } from 'react';
-import Buttons from './components/buttons';
-import {RankMethod } from './types/enum';
-import DisplayParameters from './components/display-parameters';
+import './style/app.css'
+import "nes.css/css/nes.min.css"
+import PokemonCarousel from './components/pokemon-carousel'
+import Search from './components/search'
+import { useState } from 'react'
+import Buttons from './components/buttons'
+import {RankMethod } from './types/enum'
+import DisplayParameters from './components/display-parameters'
 
 export default function Home(props:{ids: number[]}) {
-    const [currentText, setCurrentText] = useState('');
-    const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
-    const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false);
-    const [showSpriteAuthor, setSpriteAuthor] = useState<boolean>(false);
-    const [showIndex, setShowIndex] = useState<boolean>(false);
-    const [showLastModification, setShowLastModification] = useState<boolean>(false);
+    const [currentText, setCurrentText] = useState('')
+    const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER)
+    const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false)
+    const [showSpriteAuthor, setSpriteAuthor] = useState<boolean>(false)
+    const [showIndex, setShowIndex] = useState<boolean>(false)
+    const [showLastModification, setShowLastModification] = useState<boolean>(false)
 
 
     return (
