@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 export default function HomeButton(){
     return <Link className="my-link" to={'/'}>

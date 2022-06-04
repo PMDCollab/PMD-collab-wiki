@@ -4,6 +4,7 @@
   "homepage": "https://sprites.pmdcollab.org/",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.6.5",
     "@types/node": "^16.11.27",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
@@ -27,7 +28,8 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "preprocess": "node preprocess.js"
+    "preprocess": "node preprocess.js",
+    "graphql": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +49,11 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "2.4.11",
+    "@graphql-codegen/typescript-operations": "2.4.0",
+    "@graphql-codegen/typescript-react-apollo": "3.2.14",
     "@types/dataframe-js": "^1.4.0",
     "node-fetch": "^3.2.4"
   }

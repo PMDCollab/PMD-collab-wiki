@@ -1,0 +1,23 @@
+query Carrousel($ids: [Int!]!) {
+    monster(filter: $ids){
+        id
+        name
+        manual(path:"/"){
+            portraits{
+                creditPrimary{
+                    name
+                }
+                modifiedDate
+                emotion(emotion:"Normal"){
+                    url
+                }
+            }
+            sprites{
+                creditPrimary{
+                    name
+                }
+                modifiedDate
+            }
+        }
+    }
+}

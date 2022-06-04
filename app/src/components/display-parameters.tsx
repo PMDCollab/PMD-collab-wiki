@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react"
 
 export default function DisplayParameters(props:{
     setShowIndex: Dispatch<SetStateAction<boolean>>,

@@ -1,31 +1,61 @@
-import { RankMethod } from '../types/enum';
-import { ITracker, MinPath } from '../types/ITracker'
-import PokemonThumbnail from './pokemon-thumbnail';
-
+/* eslint-disable no-case-declarations */
+import { useEffect, useState } from 'react'
+import { Monster, useCarrouselQuery } from '../generated/graphql'
+import { RankMethod, REQUEST_ITEMS_SIZE } from '../types/enum'
+import PokemonThumbnail from './pokemon-thumbnail'
 
 export default function PokemonCarousel(props:{
         currentText:string,
-        metadata: {[key: string]: ITracker},
         rankBy: RankMethod,
         showIndex: boolean,
         showPortraitAuthor: boolean,
         showSpriteAuthor: boolean,
         showLastModification: boolean,
+        ids: number[]
     }){
+    const [index, setIndex] = useState<number>(0)
+    const [monsters, setMonsters] = useState<Monster[]>([])
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {loading, error, data, refetch, fetchMore} = useCarrouselQuery({
+        variables:{
+            ids:props.ids.slice(index, index + REQUEST_ITEMS_SIZE)
+        }
+    })
+
+    useEffect(()=>{
+        if(data && data.monster.length > 0){
+            const ms = [...monsters];
+            (data?.monster as Monster[]).forEach(m=>ms.push(m))
+            setMonsters(ms)
+        }
+
+        if(data && data.monster && index <= props.ids.length){
+            setIndex(index + REQUEST_ITEMS_SIZE)
+            fetchMore({
+                variables:{
+                    ids:props.ids.slice(index, index + REQUEST_ITEMS_SIZE)
+                }
+            })
+        }
+    }, [data, index, props.ids, fetchMore])
+
+    if(loading && monsters.length == 0) return <p>loading...</p>
+    if(error) return <p>Error</p>
 
     const lowerCaseText = props.currentText.toLowerCase()
     return <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-between', overflowY:'scroll', overflowX:'hidden'}}>
-        {Object.keys(props.metadata)
-        .filter(k=>k.split('/').length < 2)
-        .filter(k=>props.metadata[k][MinPath.NAME].toLowerCase().includes(lowerCaseText) 
-        || props.metadata[k][MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY].toLowerCase().includes(lowerCaseText)
-        || props.metadata[k][MinPath.SPRITE_CREDIT][MinPath.PRIMARY].toLowerCase().includes(lowerCaseText)
-        || k.includes(lowerCaseText))
-        .sort((a,b) => rankFunction(props.rankBy, a, b, props.metadata[a], props.metadata[b]))
+        {
+        monsters
+        .filter(k=>k?.name?.toLowerCase().includes(lowerCaseText) 
+        || k?.manual?.portraits?.creditPrimary?.name?.toLowerCase().includes(lowerCaseText)
+        || k?.manual?.portraits?.creditPrimary?.name?.toLowerCase().includes(lowerCaseText)
+        || k?.id.toString().includes(lowerCaseText))
+        .sort((a,b) => rankFunction(props.rankBy, a as Monster, b as Monster))
         .map(k=><PokemonThumbnail
-            key={k}
-            infoKey={k}
-            info={props.metadata[k]}
+            key={k!.id}
+            infoKey={k!.id}
+            info={k! as Monster}
             showIndex={props.showIndex}
             showPortraitAuthor={props.showPortraitAuthor}
             showSpriteAuthor={props.showSpriteAuthor}
@@ -37,32 +67,40 @@ export default function PokemonCarousel(props:{
 
 function rankFunction(
         rankBy: RankMethod,
-        ka: string,
-        kb: string,
-        a: ITracker,
-        b: ITracker
-        ){
+        a: Monster,
+        b: Monster
+        ): number{
+    let result: number | undefined = 0
+
     switch (rankBy) {
         case RankMethod.POKEDEX_NUMBER:
-            return parseInt(ka) - parseInt(kb);
+            result = a.id - b.id
+            break
 
         case RankMethod.LAST_MODIFICATION:
-            const dap = new Date(a[MinPath.PORTRAIT_MODIFIED])
-            const dbp = new Date(b[MinPath.PORTRAIT_MODIFIED])
-            const das = new Date(a[MinPath.SPRITE_MODIFIED])
-            const dbs = new Date(b[MinPath.SPRITE_MODIFIED])
-            return Math.max(dbp.getTime(), dbs.getTime()) - Math.max(dap.getTime(), das.getTime())
+            const dap = new Date(a.manual?.portraits.modifiedDate)
+            const dbp = new Date(b.manual?.portraits.modifiedDate)
+            const das = new Date(a.manual?.sprites.modifiedDate)
+            const dbs = new Date(b.manual?.sprites.modifiedDate)
+            result = Math.max(dbp.getTime(), dbs.getTime()) - Math.max(dap.getTime(), das.getTime())
+            break
 
         case RankMethod.NAME:
-            return a[MinPath.NAME].localeCompare(b[MinPath.NAME]);
+            result = a.name?.localeCompare(b.name!)
+            break
 
         case RankMethod.PORTRAIT_AUTHOR:
-            return a[MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY].localeCompare(b[MinPath.PORTRAIT_CREDIT][MinPath.PRIMARY])
+            result = a.manual?.portraits?.creditPrimary?.name?.localeCompare(b.manual?.portraits?.creditPrimary?.name ? b.manual?.portraits?.creditPrimary?.name : '')
+            break
     
         case RankMethod.SPRITE_AUTHOR:
-            return a[MinPath.SPRITE_CREDIT][MinPath.PRIMARY].localeCompare(b[MinPath.SPRITE_CREDIT][MinPath.PRIMARY])
+            result = a.manual?.sprites?.creditPrimary?.name?.localeCompare(b.manual?.sprites?.creditPrimary?.name ? b.manual?.sprites?.creditPrimary?.name: '')
+            break
 
         default:
-            return 0;
-    }
+            result = 0
+            break
+        }
+    const r = result ? result : 0
+    return r
 }

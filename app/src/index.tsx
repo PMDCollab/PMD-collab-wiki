@@ -1,26 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './style/index.css';
-import Home from './Home';
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import PokemonPage from './components/pokemon-page';
-import About from './About';
-import { ITracker } from './types/ITracker';
-import tracker from './tracker.json'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './style/index.css'
+import Home from './Home'
+import { HashRouter, Routes, Route } from 'react-router-dom'
+import PokemonPage from './components/pokemon-page'
+import About from './About'
+import {ApolloClient,InMemoryCache,ApolloProvider} from "@apollo/client"
+import { KeysDocument, KeysQueryResult } from './generated/graphql'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
-);
+)
 
-const flatMetadata: {[key: string]: ITracker} = tracker as unknown as {[key: string]: ITracker}
+const cache = new InMemoryCache()
 
-root.render(
-<React.StrictMode>
-<HashRouter>
-        <Routes>
-        <Route path='/' element={<Home metadata={flatMetadata}/>}/>
-        {Object.keys(flatMetadata).map(k=>k.split('/').length <= 1 ? <Route key={k} path={`/${k}`} element={<PokemonPage infoKey={k} info={flatMetadata[k]}/>}/> : null)}
-        <Route path='/About' element={<About/>}/>
-        </Routes>
-    </HashRouter>
-</React.StrictMode>)
+const client = new ApolloClient({
+  uri: 'https://spriteserver.pmdcollab.org/graphql',
+  cache: cache
+})
+
+
+async function initialize(){
+  const result = await client.query({query: KeysDocument}) as KeysQueryResult
+  if(result.data){
+    const sortedMonsters = result.data?.monster.slice().sort((a,b)=>a.id-b.id)
+    root.render(
+      <React.StrictMode>
+        <ApolloProvider client={client}>
+          <HashRouter>
+              <Routes>
+                <Route path='/' element={<Home ids={sortedMonsters.map(m=>m.id)}/>}/>
+                {sortedMonsters.map((m,i)=> <Route key={m.id} path={`/${m.id}`} element={<PokemonPage infoKey={m.id} prevIndex={sortedMonsters[i - 1]?.id} nextIndex={sortedMonsters[i + 1]?.id}/>}/>)}
+                <Route path='/About' element={<About/>}/>
+              </Routes>
+          </HashRouter>
+        </ApolloProvider>
+      </React.StrictMode>)
+  }
+}
+
+initialize()
