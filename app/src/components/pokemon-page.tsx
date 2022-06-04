@@ -12,36 +12,33 @@ export default function PokemonPage(props:{
         nextIndex: number | undefined
     }){
 
-    const {loading, error, data} = usePokemonQuery({})
+    const {loading, error, data} = usePokemonQuery({variables:{id:props.infoKey}})
 
     const tablist = new Array<ReactElement>()
     const tabPanelList = new Array<ReactElement>()
-    const prevIndex = props.infoKey - 1
-    const nextIndex = props.infoKey - 1
 
-    const prevLink = props.prevIndex ? <Link to={`/${prevIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', left:'20px'}}>{'<'} {prevIndex}</p></Link> : null
-    const nextLink = props.nextIndex ? <Link to={`/${nextIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', right:'20px'}}>{nextIndex} {'>'}</p></Link> : null
+    const prevLink = props.prevIndex ? <Link to={`/${props.prevIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', left:'20px'}}>{'<'} {props.prevIndex}</p></Link> : null
+    const nextLink = props.nextIndex ? <Link to={`/${props.nextIndex}`}><p className="nes-text is-primary" style={{fontSize:'0.6em', position:'absolute', right:'20px'}}>{props.nextIndex} {'>'}</p></Link> : null
 
     
     data?.monster[0]?.forms.forEach(form=>{
-        tablist.push(<Tab key={form.path}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{form.name}</p></Tab>)
-        tabPanelList.push(<TabPanel key={`${props.infoKey}`}>
+        tablist.push(<Tab key={form.path}><p style={{fontSize:'0.6em'}} className={tablist.length%2 === 0 ? 'nes-pointer nes-text is-primary': 'nes-pointer'}>{form.fullName}</p></Tab>)
+        tabPanelList.push(<TabPanel key={`${form.path}`}>
             <PokemonInformations
                 info={form as MonsterForm}
                 infoKey={props.infoKey}
             />
         </TabPanel>)
     })
-
-    if(loading) return <p>loading...</p>
-    if(error) return <p>Error</p>
     
     return <div className="App">
         <Buttons/>
         <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.9)', display:'flex', flexFlow:'column', overflowY:'scroll'}}>
             <div style={{display:'flex', justifyContent:'center'}}>
+                {loading ? <h1 style={{fontSize:'1.3em'}}>loading...</h1>: null}
+                {error ? <h1 style={{fontSize:'1.3em'}}>error</h1>: null}
                 {prevLink}
-                <h1 style={{fontSize:'1.3em'}}>{data?.monster[0].name} {props.infoKey}</h1>
+                <h1 style={{fontSize:'1.3em'}}>N°{props.infoKey} {data?.monster[0].name}</h1>
                 {nextLink}
             </div>
             <Tabs>

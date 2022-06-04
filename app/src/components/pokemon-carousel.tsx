@@ -1,9 +1,8 @@
 /* eslint-disable no-case-declarations */
 import { useEffect, useState } from 'react'
 import { Monster, useCarrouselQuery } from '../generated/graphql'
-import { RankMethod } from '../types/enum'
+import { RankMethod, REQUEST_ITEMS_SIZE } from '../types/enum'
 import PokemonThumbnail from './pokemon-thumbnail'
-
 
 export default function PokemonCarousel(props:{
         currentText:string,
@@ -15,32 +14,39 @@ export default function PokemonCarousel(props:{
         ids: number[]
     }){
     const [index, setIndex] = useState<number>(0)
+    const [monsters, setMonsters] = useState<Monster[]>([])
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {loading, error, data, refetch, fetchMore} = useCarrouselQuery({
         variables:{
-            ids:props.ids.slice(index, index + 10)
+            ids:props.ids.slice(index, index + REQUEST_ITEMS_SIZE)
         }
     })
 
     useEffect(()=>{
+        if(data && data.monster.length > 0){
+            const ms = [...monsters];
+            (data?.monster as Monster[]).forEach(m=>ms.push(m))
+            setMonsters(ms)
+        }
+
         if(data && data.monster && index <= props.ids.length){
-            setIndex(index + 10)
+            setIndex(index + REQUEST_ITEMS_SIZE)
             fetchMore({
                 variables:{
-                    ids:props.ids.slice(index, index + 10)
+                    ids:props.ids.slice(index, index + REQUEST_ITEMS_SIZE)
                 }
             })
         }
     }, [data, index, props.ids, fetchMore])
 
-    if(loading) return <p>loading...</p>
+    if(loading && monsters.length == 0) return <p>loading...</p>
     if(error) return <p>Error</p>
 
     const lowerCaseText = props.currentText.toLowerCase()
     return <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-between', overflowY:'scroll', overflowX:'hidden'}}>
         {
-        data?.monster
+        monsters
         .filter(k=>k?.name?.toLowerCase().includes(lowerCaseText) 
         || k?.manual?.portraits?.creditPrimary?.name?.toLowerCase().includes(lowerCaseText)
         || k?.manual?.portraits?.creditPrimary?.name?.toLowerCase().includes(lowerCaseText)

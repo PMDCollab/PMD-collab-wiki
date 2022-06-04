@@ -13,44 +13,31 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 
+const cache = new InMemoryCache()
+
 const client = new ApolloClient({
   uri: 'https://spriteserver.pmdcollab.org/graphql',
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          feed: {
-            // Don't cache separate results based on
-            // any of this field's arguments.
-            keyArgs: false,
-            // Concatenate the incoming list items with
-            // the existing list items.
-            merge(existing = [], incoming) {
-              return [...existing, ...incoming]
-            },
-          }
-        }
-      }
-    }
-  })
+  cache: cache
 })
 
 
 async function initialize(){
   const result = await client.query({query: KeysDocument}) as KeysQueryResult
-  
-  root.render(
-    <React.StrictMode>
-      <ApolloProvider client={client}>
-        <HashRouter>
-            <Routes>
-              <Route path='/' element={<Home ids={result.data!.monster.map(m=>m.id)}/>}/>
-              {result.data?.monster.map((m,i)=> <Route key={m.id} path={`/${m}`} element={<PokemonPage infoKey={m.id} prevIndex={result.data?.monster[i - 1]?.id} nextIndex={result.data?.monster[i + 1]?.id}/>}/>)}
-              <Route path='/About' element={<About/>}/>
-            </Routes>
-        </HashRouter>
-      </ApolloProvider>
-    </React.StrictMode>)
+  if(result.data){
+    const sortedMonsters = result.data?.monster.slice().sort((a,b)=>a.id-b.id)
+    root.render(
+      <React.StrictMode>
+        <ApolloProvider client={client}>
+          <HashRouter>
+              <Routes>
+                <Route path='/' element={<Home ids={sortedMonsters.map(m=>m.id)}/>}/>
+                {sortedMonsters.map((m,i)=> <Route key={m.id} path={`/${m.id}`} element={<PokemonPage infoKey={m.id} prevIndex={sortedMonsters[i - 1]?.id} nextIndex={sortedMonsters[i + 1]?.id}/>}/>)}
+                <Route path='/About' element={<About/>}/>
+              </Routes>
+          </HashRouter>
+        </ApolloProvider>
+      </React.StrictMode>)
+  }
 }
 
 initialize()

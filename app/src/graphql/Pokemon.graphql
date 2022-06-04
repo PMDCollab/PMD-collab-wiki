@@ -5,6 +5,7 @@ query Pokemon($id: Int!) {
         forms{
             path
             name
+            fullName
             portraits{
                 sheetUrl
                 recolorSheetUrl
