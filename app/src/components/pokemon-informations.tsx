@@ -1,7 +1,7 @@
-import Credits from "./credits";
-import Emotions from "./emotions";
-import { formatDate } from "./pokemon-thumbnail";
-import SpritePreview from "./sprite-preview";
+import Credits from "./credits"
+import Emotions from "./emotions"
+import { formatDate } from "./pokemon-thumbnail"
+import SpritePreview from "./sprite-preview"
 import {Dungeon} from '../types/enum'
 import { useRef } from "react"
 import { MonsterForm } from "../generated/graphql"
@@ -11,8 +11,8 @@ export default function PokemonInformations(props:{
     infoKey: number
     }){
     const bg = useRef<Dungeon>(Object.keys(Dungeon)[Math.floor(Math.random() * Object.keys(Dungeon).length)] as Dungeon)
-    const portraitDate = props.info.portraits.modifiedDate ? new Date(props.info.portraits.modifiedDate): undefined;
-    const spriteDate = props.info.sprites.modifiedDate  ? new Date(props.info.sprites.modifiedDate): undefined;
+    const portraitDate = props.info.portraits.modifiedDate ? new Date(props.info.portraits.modifiedDate): undefined
+    const spriteDate = props.info.sprites.modifiedDate  ? new Date(props.info.sprites.modifiedDate): undefined
     const pl = props.info.portraits.sheetUrl ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={props.info.portraits.recolorSheetUrl} rel="noreferrer">Download all portraits</a> : null
     const prl = props.info.portraits.recolorSheetUrl ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={props.info.portraits.recolorSheetUrl} rel="noreferrer">Download recolor portraits</a>: null
     const sl = props.info.sprites.zipUrl ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={props.info.sprites.zipUrl} rel="noreferrer">Download all sprites</a>: null
@@ -51,7 +51,7 @@ export default function PokemonInformations(props:{
 
 function getLastModification(t: Date | undefined){
     if(t){
-        return 'Modified at ' + formatDate(t.getTime());
+        return 'Modified at ' + formatDate(t.getTime())
     }
-    return '';
+    return ''
 }

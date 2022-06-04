@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 )
 
 const client = new ApolloClient({
-  uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  uri: 'https://spriteserver.pmdcollab.org/graphql',
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
