@@ -13,6 +13,7 @@ query Pokemon($id: Int!) {
                 emotions{
                     emotion
                     url
+                    locked
                 }
                 creditPrimary{
                     name
@@ -45,6 +46,7 @@ query Pokemon($id: Int!) {
                         animUrl
                         offsetsUrl
                         shadowsUrl
+                        locked
                     }
                     ... on CopyOf{
                         action

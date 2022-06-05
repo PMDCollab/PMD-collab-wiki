@@ -1,11 +1,11 @@
-import { gql } from '@apollo/client'
-import * as Apollo from '@apollo/client'
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions = {} as const
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -313,7 +313,7 @@ export type PokemonQueryVariables = Exact<{
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string }> } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }> } }> }> };
 
 
 export const CarrouselDocument = gql`
@@ -340,7 +340,7 @@ export const CarrouselDocument = gql`
     }
   }
 }
-    `
+    `;
 
 /**
  * __useCarrouselQuery__
@@ -360,11 +360,11 @@ export const CarrouselDocument = gql`
  */
 export function useCarrouselQuery(baseOptions: Apollo.QueryHookOptions<CarrouselQuery, CarrouselQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options)
+        return Apollo.useQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options);
       }
 export function useCarrouselLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CarrouselQuery, CarrouselQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options)
+          return Apollo.useLazyQuery<CarrouselQuery, CarrouselQueryVariables>(CarrouselDocument, options);
         }
 export type CarrouselQueryHookResult = ReturnType<typeof useCarrouselQuery>;
 export type CarrouselLazyQueryHookResult = ReturnType<typeof useCarrouselLazyQuery>;
@@ -375,7 +375,7 @@ export const KeysDocument = gql`
     id
   }
 }
-    `
+    `;
 
 /**
  * __useKeysQuery__
@@ -394,11 +394,11 @@ export const KeysDocument = gql`
  */
 export function useKeysQuery(baseOptions?: Apollo.QueryHookOptions<KeysQuery, KeysQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options)
+        return Apollo.useQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options);
       }
 export function useKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<KeysQuery, KeysQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options)
+          return Apollo.useLazyQuery<KeysQuery, KeysQueryVariables>(KeysDocument, options);
         }
 export type KeysQueryHookResult = ReturnType<typeof useKeysQuery>;
 export type KeysLazyQueryHookResult = ReturnType<typeof useKeysLazyQuery>;
@@ -419,6 +419,7 @@ export const PokemonDocument = gql`
         emotions {
           emotion
           url
+          locked
         }
         creditPrimary {
           name
@@ -451,6 +452,7 @@ export const PokemonDocument = gql`
             animUrl
             offsetsUrl
             shadowsUrl
+            locked
           }
           ... on CopyOf {
             action
@@ -461,7 +463,7 @@ export const PokemonDocument = gql`
     }
   }
 }
-    `
+    `;
 
 /**
  * __usePokemonQuery__
@@ -481,11 +483,11 @@ export const PokemonDocument = gql`
  */
 export function usePokemonQuery(baseOptions: Apollo.QueryHookOptions<PokemonQuery, PokemonQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options)
+        return Apollo.useQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options);
       }
 export function usePokemonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PokemonQuery, PokemonQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options)
+          return Apollo.useLazyQuery<PokemonQuery, PokemonQueryVariables>(PokemonDocument, options);
         }
 export type PokemonQueryHookResult = ReturnType<typeof usePokemonQuery>;
 export type PokemonLazyQueryHookResult = ReturnType<typeof usePokemonLazyQuery>;
