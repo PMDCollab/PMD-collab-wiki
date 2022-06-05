@@ -290,6 +290,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "locked",
+            "description": "Whether or not this sprite is locked and requires special permissions to be updated.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -1325,7 +1341,7 @@
         "fields": [
           {
             "name": "emotion",
-            "description": null,
+            "description": "Name of the emotion.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1340,8 +1356,24 @@
             "deprecationReason": null
           },
           {
+            "name": "locked",
+            "description": "Whether or not this sprite is locked and requires special permissions to be updated.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "url",
-            "description": null,
+            "description": "URL to the portraits.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1586,6 +1618,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "locked",
+            "description": "Whether or not this sprite is locked and requires special permissions to be updated.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },

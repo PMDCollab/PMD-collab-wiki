@@ -13,8 +13,9 @@ export default function Credits(props:{
     {props.secondary.length !== 0 ? <div style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'baseline'}}>
         <p style={{fontSize:'0.7em'}}>Others</p>
         <div style={{display:'flex', justifyContent:'space-around', gap:'0.7em'}}>
-            {props.secondary.map(s=><div key={s.name} style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'baseline'}}>
-        <a className='nes-text is-primary' style={{fontSize:'0.7em', margin: '0px'}} href={s.contact ? s.contact : ''}>{s.name}</a>
+            {props.secondary.map(s=><div key={s.id} style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'baseline'}}>
+        {s.name ? <a className='nes-text is-primary' style={{fontSize:'0.7em', margin: '0px'}} href={s.contact ? s.contact : ''}>{s.name}</a>:
+        <p className='nes-text' style={{fontSize:'0.7em', margin: '0px'}}>ID #{s.id}</p>}
     </div>)}
         </div>
     </div> : null}

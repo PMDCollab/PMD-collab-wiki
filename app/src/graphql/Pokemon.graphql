@@ -17,10 +17,12 @@ query Pokemon($id: Int!) {
                 creditPrimary{
                     name
                     contact
+                    id
                 }
                 creditSecondary{
                     name
                     contact
+                    id
                 }
             }
             sprites{
@@ -30,10 +32,12 @@ query Pokemon($id: Int!) {
                 creditPrimary{
                     name
                     contact
+                    id
                 }
                 creditSecondary{
                     name
                     contact
+                    id
                 }
                 actions{
                      ... on Sprite{

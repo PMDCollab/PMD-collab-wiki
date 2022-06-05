@@ -58,6 +58,8 @@ export type CopyOf = {
   action: Scalars['String'];
   /** Which action this sprite is a copy of. */
   copyOf: Scalars['String'];
+  /** Whether or not this sprite is locked and requires special permissions to be updated. */
+  locked: Scalars['Boolean'];
 };
 
 export type Credit = {
@@ -234,7 +236,11 @@ export enum Phase {
 /** A single portrait for a single emotion. */
 export type Portrait = {
   __typename?: 'Portrait';
+  /** Name of the emotion. */
   emotion: Scalars['String'];
+  /** Whether or not this sprite is locked and requires special permissions to be updated. */
+  locked: Scalars['Boolean'];
+  /** URL to the portraits. */
   url: Scalars['String'];
 };
 
@@ -276,6 +282,8 @@ export type Sprite = {
   action: Scalars['String'];
   /** URL to the sprite sheet containing the actual frames for the animation. */
   animUrl: Scalars['String'];
+  /** Whether or not this sprite is locked and requires special permissions to be updated. */
+  locked: Scalars['Boolean'];
   /** URL to the sprite sheet containing the sprite offset pixels for each frame. */
   offsetsUrl: Scalars['String'];
   /** URL to the sprite sheet containing the shadow placeholders for each frame. */
@@ -305,7 +313,7 @@ export type PokemonQueryVariables = Exact<{
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string }> } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string }> } }> }> };
 
 
 export const CarrouselDocument = gql`
@@ -415,10 +423,12 @@ export const PokemonDocument = gql`
         creditPrimary {
           name
           contact
+          id
         }
         creditSecondary {
           name
           contact
+          id
         }
       }
       sprites {
@@ -428,10 +438,12 @@ export const PokemonDocument = gql`
         creditPrimary {
           name
           contact
+          id
         }
         creditSecondary {
           name
           contact
+          id
         }
         actions {
           ... on Sprite {

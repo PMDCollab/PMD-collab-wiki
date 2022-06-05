@@ -42,6 +42,11 @@ type CopyOf {
   """Action of this sprite."""
   action: String!
 
+  """
+  Whether or not this sprite is locked and requires special permissions to be updated.
+  """
+  locked: Boolean!
+
   """Which action this sprite is a copy of."""
   copyOf: String!
 }
@@ -237,7 +242,15 @@ enum Phase {
 
 """A single portrait for a single emotion."""
 type Portrait {
+  """Name of the emotion."""
   emotion: String!
+
+  """
+  Whether or not this sprite is locked and requires special permissions to be updated.
+  """
+  locked: Boolean!
+
+  """URL to the portraits."""
   url: String!
 }
 
@@ -274,6 +287,11 @@ type Sprite {
   action: String!
 
   """
+  Whether or not this sprite is locked and requires special permissions to be updated.
+  """
+  locked: Boolean!
+
+  """
   URL to the sprite sheet containing the actual frames for the animation.
   """
   animUrl: String!
@@ -294,4 +312,3 @@ A single sprite for a single action that is either a copy of another sprite (as
 defined in the AnimData.xml) or has it's own sprite data.
 """
 union SpriteUnion = Sprite | CopyOf
-
