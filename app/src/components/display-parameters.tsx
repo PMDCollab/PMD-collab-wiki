@@ -5,6 +5,7 @@ export default function DisplayParameters(props:{
     setPortraitAuthor: Dispatch<SetStateAction<boolean>>,
     setSpriteAuthor: Dispatch<SetStateAction<boolean>>,
     setShowLastModification: Dispatch<SetStateAction<boolean>>
+    setShowBounty: Dispatch<SetStateAction<boolean>>
 }){
     return <div style={{display:'flex', flexFlow:'column', alignItems:'start'}}>
         <label className="my-label">
@@ -22,6 +23,10 @@ export default function DisplayParameters(props:{
         <label className="my-label">
             <input type="checkbox" className="nes-checkbox my-cursor" onChange={e=>{props.setShowLastModification(e.target.checked)}} />
             <span style={{fontSize:'0.7em'}}>Last Change</span>
+        </label>
+        <label className="my-label">
+            <input type="checkbox" className="nes-checkbox my-cursor" onChange={e=>{props.setShowBounty(e.target.checked)}} />
+            <span style={{fontSize:'0.7em'}}>Bounty</span>
         </label>
     </div>
 }

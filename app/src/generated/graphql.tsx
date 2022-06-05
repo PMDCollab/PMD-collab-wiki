@@ -301,7 +301,7 @@ export type CarrouselQueryVariables = Exact<{
 }>;
 
 
-export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null } } | null }> };
+export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty: { __typename?: 'MonsterBounty', exists?: number | null, full?: number | null, incomplete?: number | null }, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty: { __typename?: 'MonsterBounty', exists?: number | null, full?: number | null, incomplete?: number | null } } } | null }> };
 
 export type KeysQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -313,7 +313,7 @@ export type PokemonQueryVariables = Exact<{
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }> } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, modifiedDate?: any | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }> }> };
 
 
 export const CarrouselDocument = gql`
@@ -326,6 +326,11 @@ export const CarrouselDocument = gql`
         creditPrimary {
           name
         }
+        bounty {
+          exists
+          full
+          incomplete
+        }
         modifiedDate
         emotion(emotion: "Normal") {
           url
@@ -334,6 +339,11 @@ export const CarrouselDocument = gql`
       sprites {
         creditPrimary {
           name
+        }
+        bounty {
+          exists
+          full
+          incomplete
         }
         modifiedDate
       }
@@ -416,6 +426,11 @@ export const PokemonDocument = gql`
         sheetUrl
         recolorSheetUrl
         modifiedDate
+        bounty {
+          incomplete
+          exists
+          full
+        }
         emotions {
           emotion
           url
@@ -435,6 +450,7 @@ export const PokemonDocument = gql`
       sprites {
         zipUrl
         animDataXml
+        modifiedDate
         recolorSheetUrl
         creditPrimary {
           name
@@ -458,6 +474,11 @@ export const PokemonDocument = gql`
             action
             copyOf
           }
+        }
+        bounty {
+          incomplete
+          exists
+          full
         }
       }
     }

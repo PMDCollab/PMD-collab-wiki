@@ -10,6 +10,11 @@ query Pokemon($id: Int!) {
                 sheetUrl
                 recolorSheetUrl
                 modifiedDate
+                bounty{
+                    incomplete
+                    exists
+                    full
+                }
                 emotions{
                     emotion
                     url
@@ -29,6 +34,7 @@ query Pokemon($id: Int!) {
             sprites{
                 zipUrl
                 animDataXml
+                modifiedDate
                 recolorSheetUrl
                 creditPrimary{
                     name
@@ -52,6 +58,11 @@ query Pokemon($id: Int!) {
                         action
                         copyOf
                     }
+                }
+                bounty{
+                    incomplete
+                    exists
+                    full
                 }
             }
         }

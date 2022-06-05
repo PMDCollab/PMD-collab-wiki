@@ -1,3 +1,5 @@
+import { faCoins } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { Monster } from '../generated/graphql'
@@ -8,13 +10,15 @@ export default function PokemonThumbnail(props: {
         showIndex: boolean,
         showSpriteAuthor: boolean,
         showPortraitAuthor: boolean,
-        showLastModification: boolean
+        showLastModification: boolean,
+        showBounty: boolean
     }){
     let image: ReactElement | null = null
     let date: ReactElement | null = null
     let index: ReactElement | null = null
     let portraitAuthor: ReactElement | null = null
     let spriteAuthor: ReactElement | null = null
+    let bounty: ReactElement | null = null
 
     if(props.showPortraitAuthor){
         portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info?.manual?.portraits?.creditPrimary?.name}</p> 
@@ -34,6 +38,17 @@ export default function PokemonThumbnail(props: {
         date = <p style={{fontSize: '0.45em', margin: '0px'}}>{formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}</p>
     }
 
+    if(props.showBounty){
+        bounty = <div style={{display:'flex'}}>
+            <p style={{margin:'0px', fontSize:'0.55em', marginRight:'2px'}}>{Math.max(props.info.manual?.portraits.bounty.exists ? props.info.manual?.portraits.bounty.exists: 0,
+                props.info.manual?.portraits.bounty.full ? props.info.manual?.portraits.bounty.full: 0,
+                props.info.manual?.portraits.bounty.incomplete ? props.info.manual?.portraits.bounty.incomplete: 0,
+                props.info.manual?.sprites.bounty.exists ? props.info.manual?.sprites.bounty.exists: 0,
+                props.info.manual?.sprites.bounty.full ? props.info.manual?.sprites.bounty.full: 0,
+                props.info.manual?.sprites.bounty.incomplete ? props.info.manual?.sprites.bounty.incomplete: 0)}</p>
+            <FontAwesomeIcon icon={faCoins} size="xs"/>
+        </div>
+    }
 
 
     if (props.info.manual?.portraits.emotion?.url) {    
@@ -50,6 +65,7 @@ export default function PokemonThumbnail(props: {
             {portraitAuthor}
             {spriteAuthor}
             {date}
+            {bounty}
         </div>
     </Link>
 }

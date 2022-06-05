@@ -5,6 +5,7 @@ import SpritePreview from "./sprite-preview"
 import {Dungeon} from '../types/enum'
 import { useRef } from "react"
 import { MonsterForm } from "../generated/graphql"
+import Bounty from "./bounty"
 
 export default function PokemonInformations(props:{
     info: MonsterForm
@@ -19,11 +20,15 @@ export default function PokemonInformations(props:{
     const spriteRecolorSheetUrl = props.info.sprites.recolorSheetUrl ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={props.info.sprites.recolorSheetUrl} rel="noreferrer">Download recolor sprites</a>: null
     return <div>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap'}}>
-            <div style={{display:'flex', alignItems:'baseline'}}>
+            <div style={{display:'flex', alignItems:'baseline', gap:'10px'}}>
                 <div>
                     <h4 style={{textAlign:'left'}}>Portraits</h4>
-                    <p style={{textAlign:'left',fontSize: '0.6em', margin: '0px'}}>{getLastModification(portraitDate)}</p>
+                    <div style={{display:'flex', gap:'10px'}}>
+                        <p style={{textAlign:'left',fontSize: '0.6em', margin: '0px', width:'min-content'}}>{getLastModification(portraitDate)}</p>
+                        <Bounty bounty={props.info.portraits.bounty}/>
+                    </div>
                 </div>
+
                 {portraitSheetUrl}
                 {portraitRecolorSheetUrl}
             </div>
@@ -31,11 +36,15 @@ export default function PokemonInformations(props:{
         </div>
         {props.info.portraits.emotions.length !== 0 ? <Emotions emotions={props.info.portraits.emotions}/>: <p>No portraits available for now.</p>}
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap'}}>
-            <div style={{display:'flex', alignItems:'baseline'}}>
+            <div style={{display:'flex', alignItems:'baseline', gap:'10px'}}>
                 <div>
                     <h4 style={{textAlign:'left'}}>Sprites</h4>
-                    <p style={{textAlign:'left', fontSize: '0.6em', margin: '0px'}}>{getLastModification(spriteDate)}</p>
+                    <div style={{display:'flex', gap:'10px'}}>
+                        <p style={{textAlign:'left', fontSize: '0.6em', margin: '0px', width:'min-content'}}>{getLastModification(spriteDate)}</p>
+                        <Bounty bounty={props.info.sprites.bounty}/>
+                    </div>
                 </div>
+
                 {zipUrl}
                 {spriteRecolorSheetUrl}
             </div>

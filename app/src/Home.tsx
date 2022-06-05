@@ -14,14 +14,14 @@ export default function Home(props:{ids: number[]}) {
     const [showSpriteAuthor, setSpriteAuthor] = useState<boolean>(false)
     const [showIndex, setShowIndex] = useState<boolean>(false)
     const [showLastModification, setShowLastModification] = useState<boolean>(false)
-
+    const [showBounty, setShowBounty] = useState<boolean>(false)
 
     return (
         <div className="App">
             <Buttons/>
             <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.85)', display:'flex', flexFlow:'column', alignItems:'center'}}>
                 <div style={{display:'flex', width:'100%', alignContent:'center', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap'}}>
-                  <DisplayParameters setSpriteAuthor={setSpriteAuthor} setPortraitAuthor={setPortraitAuthor} setShowIndex={setShowIndex} setShowLastModification={setShowLastModification}/>
+                  <DisplayParameters setSpriteAuthor={setSpriteAuthor} setPortraitAuthor={setPortraitAuthor} setShowIndex={setShowIndex} setShowLastModification={setShowLastModification} setShowBounty={setShowBounty}/>
                   <Search currentText={currentText} setCurrentText={setCurrentText}/>
                   <div className="nes-select is-inline" style={{display:'flex', alignItems:'center', width:'initial'}}>
                   <p style={{fontSize:'0.7em'}}>Rank by</p>
@@ -37,6 +37,7 @@ export default function Home(props:{ids: number[]}) {
                     showSpriteAuthor={showSpriteAuthor}
                     showIndex={showIndex}
                     showLastModification={showLastModification}
+                    showBounty={showBounty}
                     ids={props.ids}
                 />
             </div>

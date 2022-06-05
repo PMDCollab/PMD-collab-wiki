@@ -11,6 +11,7 @@ export default function PokemonCarousel(props:{
         showPortraitAuthor: boolean,
         showSpriteAuthor: boolean,
         showLastModification: boolean,
+        showBounty: boolean,
         ids: number[]
     }){
     const [index, setIndex] = useState<number>(0)
@@ -60,6 +61,7 @@ export default function PokemonCarousel(props:{
             showPortraitAuthor={props.showPortraitAuthor}
             showSpriteAuthor={props.showSpriteAuthor}
             showLastModification={props.showLastModification}
+            showBounty={props.showBounty}
             />
         )}
     </div>
@@ -97,6 +99,22 @@ function rankFunction(
             result = a.manual?.sprites?.creditPrimary?.name?.localeCompare(b.manual?.sprites?.creditPrimary?.name ? b.manual?.sprites?.creditPrimary?.name: '')
             break
 
+        case RankMethod.BOUNTY:
+            result = 
+            Math.max(b.manual?.portraits.bounty.exists ? b.manual?.portraits.bounty.exists: 0,
+                b.manual?.portraits.bounty.full ? b.manual?.portraits.bounty.full: 0,
+                b.manual?.portraits.bounty.incomplete ? b.manual?.portraits.bounty.incomplete: 0,
+                b.manual?.sprites.bounty.exists ? b.manual?.sprites.bounty.exists: 0,
+                b.manual?.sprites.bounty.full ? b.manual?.sprites.bounty.full: 0,
+                b.manual?.sprites.bounty.incomplete ? b.manual?.sprites.bounty.incomplete: 0)
+            -
+            Math.max(a.manual?.portraits.bounty.exists ? a.manual?.portraits.bounty.exists: 0,
+                a.manual?.portraits.bounty.full ? a.manual?.portraits.bounty.full: 0,
+                a.manual?.portraits.bounty.incomplete ? a.manual?.portraits.bounty.incomplete: 0,
+                a.manual?.sprites.bounty.exists ? a.manual?.sprites.bounty.exists: 0,
+                a.manual?.sprites.bounty.full ? a.manual?.sprites.bounty.full: 0,
+                a.manual?.sprites.bounty.incomplete ? a.manual?.sprites.bounty.incomplete: 0)
+                break
         default:
             result = 0
             break

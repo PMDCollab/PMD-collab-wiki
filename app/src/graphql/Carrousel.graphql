@@ -7,6 +7,11 @@ query Carrousel($ids: [Int!]!) {
                 creditPrimary{
                     name
                 }
+                bounty{
+                    exists
+                    full
+                    incomplete
+                }
                 modifiedDate
                 emotion(emotion:"Normal"){
                     url
@@ -15,6 +20,11 @@ query Carrousel($ids: [Int!]!) {
             sprites{
                 creditPrimary{
                     name
+                }
+                bounty{
+                    exists
+                    full
+                    incomplete
                 }
                 modifiedDate
             }

@@ -49,7 +49,8 @@ export enum RankMethod{
     LAST_MODIFICATION = 'Last Modification',
     NAME = 'Name',
     PORTRAIT_AUTHOR = 'Portrait Author',
-    SPRITE_AUTHOR = 'Sprite Author'
+    SPRITE_AUTHOR = 'Sprite Author',
+    BOUNTY = 'Bounty'
 }
 
 export enum Dungeon {
