@@ -13,10 +13,10 @@ export default function PokemonInformations(props:{
     const bg = useRef<Dungeon>(Object.keys(Dungeon)[Math.floor(Math.random() * Object.keys(Dungeon).length)] as Dungeon)
     const portraitDate = props.info.portraits.modifiedDate ? new Date(props.info.portraits.modifiedDate): undefined
     const spriteDate = props.info.sprites.modifiedDate  ? new Date(props.info.sprites.modifiedDate): undefined
-    const pl = props.info.portraits.sheetUrl ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={props.info.portraits.recolorSheetUrl} rel="noreferrer">Download all portraits</a> : null
-    const prl = props.info.portraits.recolorSheetUrl ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={props.info.portraits.recolorSheetUrl} rel="noreferrer">Download recolor portraits</a>: null
-    const sl = props.info.sprites.zipUrl ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={props.info.sprites.zipUrl} rel="noreferrer">Download all sprites</a>: null
-    const srl = props.info.sprites.recolorSheetUrl ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={props.info.sprites.recolorSheetUrl} rel="noreferrer">Download recolor sprites</a>: null
+    const portraitSheetUrl = props.info.portraits.sheetUrl ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={props.info.portraits.sheetUrl} rel="noreferrer">Download all portraits</a> : null
+    const portraitRecolorSheetUrl = props.info.portraits.recolorSheetUrl ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={props.info.portraits.recolorSheetUrl} rel="noreferrer">Download recolor portraits</a>: null
+    const zipUrl = props.info.sprites.zipUrl ? <a target="_blank" style={{fontSize:'0.6em', marginRight:'5%'}} className='nes-text is-primary' href={props.info.sprites.zipUrl} rel="noreferrer">Download all sprites</a>: null
+    const spriteRecolorSheetUrl = props.info.sprites.recolorSheetUrl ? <a target="_blank" style={{fontSize:'0.6em'}} className='nes-text is-primary' href={props.info.sprites.recolorSheetUrl} rel="noreferrer">Download recolor sprites</a>: null
     return <div>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap'}}>
             <div style={{display:'flex', alignItems:'baseline'}}>
@@ -24,8 +24,8 @@ export default function PokemonInformations(props:{
                     <h4 style={{textAlign:'left'}}>Portraits</h4>
                     <p style={{textAlign:'left',fontSize: '0.6em', margin: '0px'}}>{getLastModification(portraitDate)}</p>
                 </div>
-                {pl}
-                {prl}
+                {portraitSheetUrl}
+                {portraitRecolorSheetUrl}
             </div>
             <Credits primary={props.info.portraits.creditPrimary} secondary={props.info.portraits.creditSecondary}/>
         </div>
@@ -36,8 +36,8 @@ export default function PokemonInformations(props:{
                     <h4 style={{textAlign:'left'}}>Sprites</h4>
                     <p style={{textAlign:'left', fontSize: '0.6em', margin: '0px'}}>{getLastModification(spriteDate)}</p>
                 </div>
-                {sl}
-                {srl}
+                {zipUrl}
+                {spriteRecolorSheetUrl}
             </div>
             <Credits primary={props.info.sprites.creditPrimary} secondary={props.info.sprites.creditSecondary}/>
         </div>

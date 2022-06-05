@@ -14,7 +14,6 @@ export default function Credits(props:{
         <p style={{fontSize:'0.7em'}}>Others</p>
         <div style={{display:'flex', justifyContent:'space-around', gap:'0.7em'}}>
             {props.secondary.map(s=><div key={s.name} style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'baseline'}}>
-        <p style={{fontSize:'0.7em'}}>by</p>
         <a className='nes-text is-primary' style={{fontSize:'0.7em', margin: '0px'}} href={s.contact ? s.contact : ''}>{s.name}</a>
     </div>)}
         </div>
