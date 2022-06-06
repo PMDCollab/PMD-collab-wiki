@@ -78,7 +78,7 @@ export default function PokemonThumbnail(props: {
     }
 
     return <Link to={props.infoKey.toString()} className='my-link'>
-        <div className='my-container nes-container nes-pointer grow' style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'center', minWidth: '100px', maxWidth: '100px', margin:'10px'}}>
+        <div className='my-container nes-container nes-pointer grow' style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'center', minWidth: '100px', margin:'10px'}}>
              {image}
             <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info.name}</p>
             {index}
