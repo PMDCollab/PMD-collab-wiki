@@ -1,8 +1,19 @@
+fragment myCredit on Credit{
+  name
+  contact
+  id
+}
+
+fragment myBounty on MonsterBounty{
+    incomplete
+    exists
+    full
+}
+
 query Pokemon($id: Int!) {
     monster(filter: [$id]){
         id
         name
-        rawId
         forms{
             path
             name
@@ -12,9 +23,7 @@ query Pokemon($id: Int!) {
                 recolorSheetUrl
                 modifiedDate
                 bounty{
-                    incomplete
-                    exists
-                    full
+                    ...myBounty
                 }
                 emotions{
                     emotion
@@ -22,16 +31,10 @@ query Pokemon($id: Int!) {
                     locked
                 }
                 creditPrimary{
-                    discordHandle
-                    name
-                    contact
-                    id
+				    ...myCredit
                 }
                 creditSecondary{
-                    discordHandle
-                    name
-                    contact
-                    id
+                    ...myCredit
                 }
             }
             sprites{
@@ -40,16 +43,10 @@ query Pokemon($id: Int!) {
                 modifiedDate
                 recolorSheetUrl
                 creditPrimary{
-                    discordHandle
-                    name
-                    contact
-                    id
+                    ...myCredit
                 }
                 creditSecondary{
-                    discordHandle
-                    name
-                    contact
-                    id
+                    ...myCredit
                 }
                 actions{
                      ... on Sprite{
@@ -65,9 +62,7 @@ query Pokemon($id: Int!) {
                     }
                 }
                 bounty{
-                    incomplete
-                    exists
-                    full
+                    ...myBounty
                 }
             }
         }

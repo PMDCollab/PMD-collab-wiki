@@ -309,26 +309,43 @@ export type Sprite = {
  */
 export type SpriteUnion = CopyOf | Sprite;
 
+export type MyBountyFragment = { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null };
+
 export type CarrouselQueryVariables = Exact<{
   ids: Array<Scalars['Int']> | Scalars['Int'];
 }>;
 
 
-export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms: Array<{ __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } }, sprites: { __typename?: 'MonsterFormSprites', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }>, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty: { __typename?: 'MonsterBounty', exists?: number | null, full?: number | null, incomplete?: number | null } } } | null }> };
+export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms: Array<{ __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } }, sprites: { __typename?: 'MonsterFormSprites', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }>, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null } } | null }> };
 
 export type KeysQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type KeysQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, rawId: string }> };
 
+export type MyCreditFragment = { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string };
+
 export type PokemonQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, modifiedDate?: any | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, modifiedDate?: any | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }> }> };
 
-
+export const MyBountyFragmentDoc = gql`
+    fragment myBounty on MonsterBounty {
+  incomplete
+  exists
+  full
+}
+    `;
+export const MyCreditFragmentDoc = gql`
+    fragment myCredit on Credit {
+  name
+  contact
+  id
+}
+    `;
 export const CarrouselDocument = gql`
     query Carrousel($ids: [Int!]!) {
   monster(filter: $ids) {
@@ -338,16 +355,12 @@ export const CarrouselDocument = gql`
     forms {
       portraits {
         bounty {
-          incomplete
-          exists
-          full
+          ...myBounty
         }
       }
       sprites {
         bounty {
-          incomplete
-          exists
-          full
+          ...myBounty
         }
       }
     }
@@ -365,17 +378,12 @@ export const CarrouselDocument = gql`
         creditPrimary {
           name
         }
-        bounty {
-          exists
-          full
-          incomplete
-        }
         modifiedDate
       }
     }
   }
 }
-    `;
+    ${MyBountyFragmentDoc}`;
 
 /**
  * __useCarrouselQuery__
@@ -444,7 +452,6 @@ export const PokemonDocument = gql`
   monster(filter: [$id]) {
     id
     name
-    rawId
     forms {
       path
       name
@@ -454,9 +461,7 @@ export const PokemonDocument = gql`
         recolorSheetUrl
         modifiedDate
         bounty {
-          incomplete
-          exists
-          full
+          ...myBounty
         }
         emotions {
           emotion
@@ -464,16 +469,10 @@ export const PokemonDocument = gql`
           locked
         }
         creditPrimary {
-          discordHandle
-          name
-          contact
-          id
+          ...myCredit
         }
         creditSecondary {
-          discordHandle
-          name
-          contact
-          id
+          ...myCredit
         }
       }
       sprites {
@@ -482,16 +481,10 @@ export const PokemonDocument = gql`
         modifiedDate
         recolorSheetUrl
         creditPrimary {
-          discordHandle
-          name
-          contact
-          id
+          ...myCredit
         }
         creditSecondary {
-          discordHandle
-          name
-          contact
-          id
+          ...myCredit
         }
         actions {
           ... on Sprite {
@@ -507,15 +500,14 @@ export const PokemonDocument = gql`
           }
         }
         bounty {
-          incomplete
-          exists
-          full
+          ...myBounty
         }
       }
     }
   }
 }
-    `;
+    ${MyBountyFragmentDoc}
+${MyCreditFragmentDoc}`;
 
 /**
  * __usePokemonQuery__

@@ -1,3 +1,9 @@
+fragment myBounty on MonsterBounty{
+    incomplete
+    exists
+    full
+}
+
 query Carrousel($ids: [Int!]!) {
     monster(filter: $ids){
         id
@@ -6,16 +12,12 @@ query Carrousel($ids: [Int!]!) {
         forms{
             portraits{
                 bounty{
-                    incomplete
-                    exists
-                    full
+                    ...myBounty
                 }
             }
             sprites{
                 bounty{
-                    incomplete
-                    exists
-                    full
+                    ...myBounty
                 }
             }
         }
@@ -32,11 +34,6 @@ query Carrousel($ids: [Int!]!) {
             sprites{
                 creditPrimary{
                     name
-                }
-                bounty{
-                    exists
-                    full
-                    incomplete
                 }
                 modifiedDate
             }
