@@ -11,7 +11,8 @@ export default function PokemonCarousel(props:{
         showPortraitAuthor: boolean,
         showSpriteAuthor: boolean,
         showLastModification: boolean,
-        showBounty: boolean,
+        showPortraitBounty: boolean,
+        showSpriteBounty: boolean,
         ids: number[]
     }){
     const [index, setIndex] = useState<number>(0)
@@ -55,13 +56,14 @@ export default function PokemonCarousel(props:{
         .sort((a,b) => rankFunction(props.rankBy, a as Monster, b as Monster))
         .map(k=><PokemonThumbnail
             key={k!.id}
-            infoKey={k!.id}
+            infoKey={k!.rawId}
             info={k! as Monster}
             showIndex={props.showIndex}
             showPortraitAuthor={props.showPortraitAuthor}
             showSpriteAuthor={props.showSpriteAuthor}
             showLastModification={props.showLastModification}
-            showBounty={props.showBounty}
+            showPortraitBounty={props.showPortraitBounty}
+            showSpriteBounty={props.showSpriteBounty}
             />
         )}
     </div>
@@ -73,7 +75,8 @@ function rankFunction(
         b: Monster
         ): number{
     let result: number | undefined = 0
-
+    const aBounties = new Array<number>()
+    const bBounties = new Array<number>()
     switch (rankBy) {
         case RankMethod.POKEDEX_NUMBER:
             result = a.id - b.id
@@ -99,22 +102,37 @@ function rankFunction(
             result = a.manual?.sprites?.creditPrimary?.name?.localeCompare(b.manual?.sprites?.creditPrimary?.name ? b.manual?.sprites?.creditPrimary?.name: '')
             break
 
-        case RankMethod.BOUNTY:
-            result = 
-            Math.max(b.manual?.portraits.bounty.exists ? b.manual?.portraits.bounty.exists: 0,
-                b.manual?.portraits.bounty.full ? b.manual?.portraits.bounty.full: 0,
-                b.manual?.portraits.bounty.incomplete ? b.manual?.portraits.bounty.incomplete: 0,
-                b.manual?.sprites.bounty.exists ? b.manual?.sprites.bounty.exists: 0,
-                b.manual?.sprites.bounty.full ? b.manual?.sprites.bounty.full: 0,
-                b.manual?.sprites.bounty.incomplete ? b.manual?.sprites.bounty.incomplete: 0)
-            -
-            Math.max(a.manual?.portraits.bounty.exists ? a.manual?.portraits.bounty.exists: 0,
-                a.manual?.portraits.bounty.full ? a.manual?.portraits.bounty.full: 0,
-                a.manual?.portraits.bounty.incomplete ? a.manual?.portraits.bounty.incomplete: 0,
-                a.manual?.sprites.bounty.exists ? a.manual?.sprites.bounty.exists: 0,
-                a.manual?.sprites.bounty.full ? a.manual?.sprites.bounty.full: 0,
-                a.manual?.sprites.bounty.incomplete ? a.manual?.sprites.bounty.incomplete: 0)
-                break
+        case RankMethod.PORTRAIT_BOUNTY:
+            a.forms.forEach(f=>{
+                f.portraits.bounty.exists ? aBounties.push(f.portraits.bounty.exists) : null
+                f.portraits.bounty.full ? aBounties.push(f.portraits.bounty.full): null
+                f.portraits.bounty.incomplete ? aBounties.push(f.portraits.bounty.incomplete): null
+            })
+
+            b.forms.forEach(f=>{
+                f.portraits.bounty.exists ? bBounties.push(f.portraits.bounty.exists) : null
+                f.portraits.bounty.full ? bBounties.push(f.portraits.bounty.full): null
+                f.portraits.bounty.incomplete ? bBounties.push(f.portraits.bounty.incomplete): null
+            })
+            result = Math.max(...bBounties) - Math.max(...aBounties)
+            break
+
+        case RankMethod.SPRITE_BOUNTY:
+
+            a.forms.forEach(f=>{
+                f.sprites.bounty.exists ? aBounties.push(f.sprites.bounty.exists) : null
+                f.sprites.bounty.full ? aBounties.push(f.sprites.bounty.full): null
+                f.sprites.bounty.incomplete ? aBounties.push(f.sprites.bounty.incomplete): null
+            })
+
+            b.forms.forEach(f=>{
+                f.sprites.bounty.exists ? bBounties.push(f.sprites.bounty.exists) : null
+                f.sprites.bounty.full ? bBounties.push(f.sprites.bounty.full): null
+                f.sprites.bounty.incomplete ? bBounties.push(f.sprites.bounty.incomplete): null
+            })
+            result = Math.max(...bBounties) - Math.max(...aBounties)
+            break
+            
         default:
             result = 0
             break

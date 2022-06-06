@@ -2,6 +2,7 @@ query Pokemon($id: Int!) {
     monster(filter: [$id]){
         id
         name
+        rawId
         forms{
             path
             name
@@ -21,11 +22,13 @@ query Pokemon($id: Int!) {
                     locked
                 }
                 creditPrimary{
+                    discordHandle
                     name
                     contact
                     id
                 }
                 creditSecondary{
+                    discordHandle
                     name
                     contact
                     id
@@ -37,11 +40,13 @@ query Pokemon($id: Int!) {
                 modifiedDate
                 recolorSheetUrl
                 creditPrimary{
+                    discordHandle
                     name
                     contact
                     id
                 }
                 creditSecondary{
+                    discordHandle
                     name
                     contact
                     id

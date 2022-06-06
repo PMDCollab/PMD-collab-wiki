@@ -8,8 +8,9 @@ import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 
 export default function PokemonPage(props:{
         infoKey: number,
-        prevIndex: number | undefined,
-        nextIndex: number | undefined
+        prevIndex: string | undefined,
+        nextIndex: string | undefined,
+        rawId: string
     }){
 
     const {loading, error, data} = usePokemonQuery({variables:{id:props.infoKey}})
@@ -38,7 +39,7 @@ export default function PokemonPage(props:{
                 {loading ? <h1 style={{fontSize:'1.3em'}}>loading...</h1>: null}
                 {error ? <h1 style={{fontSize:'1.3em'}}>error</h1>: null}
                 {prevLink}
-                <h1 style={{fontSize:'1.3em'}}>N°{props.infoKey} {data?.monster[0].name}</h1>
+                <h1 style={{fontSize:'1.3em'}}>{props.rawId} {data?.monster[0].name}</h1>
                 {nextLink}
             </div>
             <Tabs>

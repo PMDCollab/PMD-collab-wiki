@@ -50,7 +50,8 @@ export enum RankMethod{
     NAME = 'Name',
     PORTRAIT_AUTHOR = 'Portrait Author',
     SPRITE_AUTHOR = 'Sprite Author',
-    BOUNTY = 'Bounty'
+    PORTRAIT_BOUNTY = 'Portrait Bounty',
+    SPRITE_BOUNTY = 'Sprite Bounty'
 }
 
 export enum Dungeon {

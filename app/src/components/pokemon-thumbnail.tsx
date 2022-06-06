@@ -6,19 +6,21 @@ import { Monster } from '../generated/graphql'
 
 export default function PokemonThumbnail(props: {
         info: Monster,
-        infoKey: number,
+        infoKey: string,
         showIndex: boolean,
         showSpriteAuthor: boolean,
         showPortraitAuthor: boolean,
         showLastModification: boolean,
-        showBounty: boolean
+        showPortraitBounty: boolean,
+        showSpriteBounty: boolean
     }){
     let image: ReactElement | null = null
     let date: ReactElement | null = null
     let index: ReactElement | null = null
     let portraitAuthor: ReactElement | null = null
     let spriteAuthor: ReactElement | null = null
-    let bounty: ReactElement | null = null
+    let portraitBounty: ReactElement | null = null
+    let spriteBounty: ReactElement | null = null
 
     if(props.showPortraitAuthor){
         portraitAuthor = <p style={{fontSize: '0.55em', margin: '0px'}}>{props.info?.manual?.portraits?.creditPrimary?.name}</p> 
@@ -38,14 +40,32 @@ export default function PokemonThumbnail(props: {
         date = <p style={{fontSize: '0.45em', margin: '0px'}}>{formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}</p>
     }
 
-    if(props.showBounty){
-        bounty = <div style={{display:'flex'}}>
-            <p style={{margin:'0px', fontSize:'0.55em', marginRight:'2px'}}>{Math.max(props.info.manual?.portraits.bounty.exists ? props.info.manual?.portraits.bounty.exists: 0,
-                props.info.manual?.portraits.bounty.full ? props.info.manual?.portraits.bounty.full: 0,
-                props.info.manual?.portraits.bounty.incomplete ? props.info.manual?.portraits.bounty.incomplete: 0,
-                props.info.manual?.sprites.bounty.exists ? props.info.manual?.sprites.bounty.exists: 0,
-                props.info.manual?.sprites.bounty.full ? props.info.manual?.sprites.bounty.full: 0,
-                props.info.manual?.sprites.bounty.incomplete ? props.info.manual?.sprites.bounty.incomplete: 0)}</p>
+    if(props.showPortraitBounty){
+        const bounties = new Array<number>()
+        props.info.forms.forEach(f=>{
+            f.portraits.bounty.exists ? bounties.push(f.portraits.bounty.exists) : null
+            f.portraits.bounty.full ? bounties.push(f.portraits.bounty.full) : null
+            f.portraits.bounty.incomplete ? bounties.push(f.portraits.bounty.incomplete) : null
+        })
+        portraitBounty = <div style={{display:'flex'}}>
+            <p style={{margin:'0px', fontSize:'0.55em', marginRight:'2px'}}>{
+                bounties.length > 0 ? Math.max(...bounties): 0
+            }</p>
+            <FontAwesomeIcon icon={faCoins} size="xs"/>
+        </div>
+    }
+
+    if(props.showSpriteBounty){
+        const bounties = new Array<number>()
+        props.info.forms.forEach(f=>{
+            f.sprites.bounty.exists ? bounties.push(f.sprites.bounty.exists) : null
+            f.sprites.bounty.full ? bounties.push(f.sprites.bounty.full) : null
+            f.sprites.bounty.incomplete ? bounties.push(f.sprites.bounty.incomplete) : null
+        })
+        spriteBounty = <div style={{display:'flex'}}>
+            <p style={{margin:'0px', fontSize:'0.55em', marginRight:'2px'}}>{
+                bounties.length > 0 ? Math.max(...bounties): 0
+            }</p>
             <FontAwesomeIcon icon={faCoins} size="xs"/>
         </div>
     }
@@ -65,7 +85,8 @@ export default function PokemonThumbnail(props: {
             {portraitAuthor}
             {spriteAuthor}
             {date}
-            {bounty}
+            {portraitBounty}
+            {spriteBounty}
         </div>
     </Link>
 }

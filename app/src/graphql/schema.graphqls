@@ -62,6 +62,13 @@ type Credit {
 
   """Contact information for this author."""
   contact: String
+
+  """
+  Discord name and discriminator in the form Name#Discriminator (eg.
+  Capypara#7887), if this is a credit for a Discord profile, and the server can
+  resolve the ID to a Discord profile.
+  """
+  discordHandle: String
 }
 
 """DateTime"""
@@ -70,6 +77,11 @@ scalar DateTimeUtc
 type Monster {
   """ID of this monster."""
   id: Int!
+
+  """
+  Raw ID of this monster, as a string. This is a 4-character numeric string, padded with leading zeroes.
+  """
+  rawId: String!
 
   """Human-readable name of this monster."""
   name: String!
@@ -118,6 +130,12 @@ type MonsterForm {
   SpriteCollab tracker.json file and repository file structure.
   """
   path: String!
+
+  """
+  The path to this form (including the monster ID) as it's specified in the
+  SpriteCollab tracker.json file and repository file structure.
+  """
+  fullPath: String!
 
   """Human-readable name of this form."""
   name: String!

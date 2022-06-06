@@ -66,6 +66,12 @@ export type Credit = {
   __typename?: 'Credit';
   /** Contact information for this author. */
   contact?: Maybe<Scalars['String']>;
+  /**
+   * Discord name and discriminator in the form Name#Discriminator (eg.
+   * Capypara#7887), if this is a credit for a Discord profile, and the server can
+   * resolve the ID to a Discord profile.
+   */
+  discordHandle?: Maybe<Scalars['String']>;
   /** Discord ID or absentee ID. Guaranteed to be an ASCII string. */
   id: Scalars['String'];
   /** The human-readable name of the author. Guaranteed to be an ASCII string. */
@@ -88,6 +94,8 @@ export type Monster = {
   manual?: Maybe<MonsterForm>;
   /** Human-readable name of this monster. */
   name: Scalars['String'];
+  /** Raw ID of this monster, as a string. This is a 4-character numeric string, padded with leading zeroes. */
+  rawId: Scalars['String'];
 };
 
 
@@ -125,6 +133,11 @@ export type MonsterForm = {
   canon: Scalars['Boolean'];
   /** Human-readable full name of this form (excluding the monster name itself). */
   fullName: Scalars['String'];
+  /**
+   * The path to this form (including the monster ID) as it's specified in the
+   * SpriteCollab tracker.json file and repository file structure.
+   */
+  fullPath: Scalars['String'];
   /** Whether or not this form is considered for a female monsters. */
   isFemale: Scalars['Boolean'];
   /** Whether or not this form is considered for a shiny. */
@@ -301,19 +314,19 @@ export type CarrouselQueryVariables = Exact<{
 }>;
 
 
-export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty: { __typename?: 'MonsterBounty', exists?: number | null, full?: number | null, incomplete?: number | null }, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty: { __typename?: 'MonsterBounty', exists?: number | null, full?: number | null, incomplete?: number | null } } } | null }> };
+export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms: Array<{ __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } }, sprites: { __typename?: 'MonsterFormSprites', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }>, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty: { __typename?: 'MonsterBounty', exists?: number | null, full?: number | null, incomplete?: number | null } } } | null }> };
 
 export type KeysQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type KeysQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number }> };
+export type KeysQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, rawId: string }> };
 
 export type PokemonQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, modifiedDate?: any | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, modifiedDate?: any | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string } | null, creditSecondary: Array<{ __typename?: 'Credit', discordHandle?: string | null, name?: string | null, contact?: string | null, id: string }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }> }> };
 
 
 export const CarrouselDocument = gql`
@@ -321,15 +334,27 @@ export const CarrouselDocument = gql`
   monster(filter: $ids) {
     id
     name
+    rawId
+    forms {
+      portraits {
+        bounty {
+          incomplete
+          exists
+          full
+        }
+      }
+      sprites {
+        bounty {
+          incomplete
+          exists
+          full
+        }
+      }
+    }
     manual(path: "/") {
       portraits {
         creditPrimary {
           name
-        }
-        bounty {
-          exists
-          full
-          incomplete
         }
         modifiedDate
         emotion(emotion: "Normal") {
@@ -383,6 +408,7 @@ export const KeysDocument = gql`
     query Keys {
   monster {
     id
+    rawId
   }
 }
     `;
@@ -418,6 +444,7 @@ export const PokemonDocument = gql`
   monster(filter: [$id]) {
     id
     name
+    rawId
     forms {
       path
       name
@@ -437,11 +464,13 @@ export const PokemonDocument = gql`
           locked
         }
         creditPrimary {
+          discordHandle
           name
           contact
           id
         }
         creditSecondary {
+          discordHandle
           name
           contact
           id
@@ -453,11 +482,13 @@ export const PokemonDocument = gql`
         modifiedDate
         recolorSheetUrl
         creditPrimary {
+          discordHandle
           name
           contact
           id
         }
         creditSecondary {
+          discordHandle
           name
           contact
           id

@@ -2,15 +2,27 @@ query Carrousel($ids: [Int!]!) {
     monster(filter: $ids){
         id
         name
+        rawId
+        forms{
+            portraits{
+                bounty{
+                    incomplete
+                    exists
+                    full
+                }
+            }
+            sprites{
+                bounty{
+                    incomplete
+                    exists
+                    full
+                }
+            }
+        }
         manual(path:"/"){
             portraits{
                 creditPrimary{
                     name
-                }
-                bounty{
-                    exists
-                    full
-                    incomplete
                 }
                 modifiedDate
                 emotion(emotion:"Normal"){
