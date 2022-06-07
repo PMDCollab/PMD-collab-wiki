@@ -55,9 +55,9 @@ export default function PokemonCarousel(props:{
         || k?.id.toString().includes(lowerCaseText))
         .sort((a,b) => rankFunction(props.rankBy, a as Monster, b as Monster))
         .map(k=><PokemonThumbnail
-            key={k!.id}
-            infoKey={k!.rawId}
-            info={k! as Monster}
+            key={k.id}
+            infoKey={k.rawId}
+            info={k as Monster}
             showIndex={props.showIndex}
             showPortraitAuthor={props.showPortraitAuthor}
             showSpriteAuthor={props.showSpriteAuthor}
@@ -91,7 +91,7 @@ function rankFunction(
             break
 
         case RankMethod.NAME:
-            result = a.name?.localeCompare(b.name!)
+            result = a.name?.localeCompare(b.name)
             break
 
         case RankMethod.PORTRAIT_AUTHOR:

@@ -2,6 +2,7 @@ fragment myCredit on Credit{
   name
   contact
   id
+  discordHandle
 }
 
 fragment myBounty on MonsterBounty{

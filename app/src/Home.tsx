@@ -6,6 +6,7 @@ import { useState } from 'react'
 import Buttons from './components/buttons'
 import {RankMethod } from './types/enum'
 import DisplayParameters from './components/display-parameters'
+import PokemonRanking from './components/pokemon-ranking'
 
 export default function Home(props:{ids: number[]}) {
     const [currentText, setCurrentText] = useState('')
@@ -39,43 +40,17 @@ export default function Home(props:{ids: number[]}) {
                   <Search 
                     currentText={currentText} 
                     setCurrentText={setCurrentText}/>
-                  <div className="nes-select is-inline" style={{display:'flex', alignItems:'center', width:'initial'}}>
-                  <p style={{fontSize:'0.7em'}}>Rank by</p>
-                  <select style={{borderWidth:'2px', height:'40px', fontSize:'0.7em'}} value={rankBy} id="default_select" onChange={e=>{
-                      const rankMethod = e.target.value as RankMethod
-                      switch (rankMethod) {
-                            case RankMethod.LAST_MODIFICATION:
-                                setShowLastModification(true)
-                                break
-                        
-                            case RankMethod.POKEDEX_NUMBER:
-                                setShowIndex(true)
-                                break
 
-                            case RankMethod.PORTRAIT_AUTHOR:
-                                setPortraitAuthor(true)
-                                break
-                        
-                            case RankMethod.SPRITE_AUTHOR:
-                                setSpriteAuthor(true)
-                                break
-
-                            case RankMethod.PORTRAIT_BOUNTY:
-                                setShowPortraitBounty(true)
-                                break
-                        
-                            case RankMethod.SPRITE_BOUNTY:
-                                setShowSpriteBounty(true)
-                                break
-
-                            default:
-                                break
-                      }
-                      setRankBy(rankMethod)
-                      }}>
-                      {(Object.values(RankMethod) as RankMethod[]).map(r=><option style={{fontSize:'1.5em', fontFamily: "Press Start 2P"}} key={r} value={r}>{r}</option>)}
-                  </select>
-                  </div>
+                  <PokemonRanking
+                    setSpriteAuthor={setSpriteAuthor}
+                    setPortraitAuthor={setPortraitAuthor}
+                    setShowIndex={setShowIndex}
+                    setShowLastModification={setShowLastModification}
+                    setShowPortraitBounty={setShowPortraitBounty}
+                    setShowSpriteBounty={setShowSpriteBounty}
+                    setRankBy={setRankBy}
+                    rankBy={rankBy}/>
+                    
                 </div>
                 <PokemonCarousel 
                     currentText={currentText}

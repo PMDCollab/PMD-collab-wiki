@@ -9,7 +9,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@types/node": "^16.11.27",
-    "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
     "dataframe-js": "^1.4.4",
     "fast-xml-parser": "^4.0.7",
@@ -58,6 +57,7 @@
     "@graphql-codegen/typescript-operations": "2.4.0",
     "@graphql-codegen/typescript-react-apollo": "3.2.14",
     "@types/dataframe-js": "^1.4.0",
+    "@types/react": "^18.0.12",
     "node-fetch": "^3.2.4"
   }
 }
