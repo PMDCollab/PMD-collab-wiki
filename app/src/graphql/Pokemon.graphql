@@ -31,6 +31,11 @@ query Pokemon($id: Int!) {
                     url
                     locked
                 }
+                emotionsFlipped{
+                    emotion
+                    url
+                    locked
+                }
                 creditPrimary{
 				    ...myCredit
                 }

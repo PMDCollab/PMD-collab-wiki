@@ -34,7 +34,7 @@ export default function PokemonInformations(props:{
             </div>
             <Credits primary={props.info.portraits.creditPrimary} secondary={props.info.portraits.creditSecondary}/>
         </div>
-        {props.info.portraits.emotions.length !== 0 ? <Emotions emotions={props.info.portraits.emotions}/>: <p>No portraits available for now.</p>}
+        {props.info.portraits.emotions.length !== 0 ? <Emotions emotions={props.info.portraits.emotions.concat(props.info.portraits.emotionsFlipped ? props.info.portraits.emotionsFlipped : [])}/>: <p>No portraits available for now.</p>}
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap'}}>
             <div style={{display:'flex', alignItems:'baseline', gap:'10px'}}>
                 <div>

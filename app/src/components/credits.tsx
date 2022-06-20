@@ -21,7 +21,6 @@ export default function Credits(props:{
 }
 
 function Author(props: {credit: Credit | undefined | null}){
-    console.log(props.credit)
     return <div key={props.credit?.id} style={{display:'flex', flexFlow:'column', justifyContent:'space-between', alignItems:'baseline'}}>
     {props.credit?.name ? <a className='nes-text is-primary' style={{fontSize:'0.7em', margin: '0px'}} href={props.credit?.contact ? props.credit?.contact : ''}>{props.credit?.name}</a>:
     <p className='nes-text' style={{fontSize:'0.7em', margin: '0px'}}>{props.credit?.discordHandle}</p>}
