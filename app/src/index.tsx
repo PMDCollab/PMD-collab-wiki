@@ -5,6 +5,7 @@ import './style/index.css'
 import Home from './Home'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import PokemonPage from './components/pokemon-page'
+import NotFound from './NotFound'
 import About from './About'
 import {ApolloClient,InMemoryCache,ApolloProvider} from "@apollo/client"
 import { KeysDocument, KeysQueryResult } from './generated/graphql'
@@ -33,6 +34,7 @@ async function initialize(){
                 <Route path='/' element={<Home ids={sortedMonsters.map(m=>m.id)}/>}/>
                 {sortedMonsters.map((m,i)=> <Route key={m.rawId} path={`/${m.rawId}`} element={<PokemonPage infoKey={m.id} rawId={m.rawId} prevIndex={sortedMonsters[i - 1]?.rawId} nextIndex={sortedMonsters[i + 1]?.rawId}/>}/>)}
                 <Route path='/About' element={<About/>}/>
+                <Route path='*' element={<NotFound/>}/>
               </Routes>
           </HashRouter>
         </ApolloProvider>
