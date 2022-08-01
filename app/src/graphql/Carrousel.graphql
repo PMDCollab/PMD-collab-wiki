@@ -27,7 +27,7 @@ query Carrousel($ids: [Int!]!) {
                     name
                 }
                 modifiedDate
-                emotion(emotion:"Normal"){
+                previewEmotion{
                     url
                 }
             }

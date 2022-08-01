@@ -31,15 +31,9 @@ export type Config = {
   actionMap: Array<ActionId>;
   /** A list of known action. The position is the ID of the action. */
   actions: Array<Scalars['String']>;
-  /**
-   * Returns a list, that for each phase contains a list of actions (by index) that
-   * need to exist for this phase to be considered completed.
-   */
+  /** Returns a list, that for each phase contains a list of actions (by index) that need to exist for this phase to be considered completed. */
   completionActions: Array<Array<Scalars['Int']>>;
-  /**
-   * Returns a list, that for each phase contains a list of emotions (by index)
-   * that need to exist for this phase to be considered completed.
-   */
+  /** Returns a list, that for each phase contains a list of emotions (by index) that need to exist for this phase to be considered completed. */
   completionEmotions: Array<Array<Scalars['Int']>>;
   /** A list of known emotions. The position is the ID of the emotion. */
   emotions: Array<Scalars['String']>;
@@ -66,11 +60,7 @@ export type Credit = {
   __typename?: 'Credit';
   /** Contact information for this author. */
   contact?: Maybe<Scalars['String']>;
-  /**
-   * Discord name and discriminator in the form Name#Discriminator (eg.
-   * Capypara#7887), if this is a credit for a Discord profile, and the server can
-   * resolve the ID to a Discord profile.
-   */
+  /** Discord name and discriminator in the form Name#Discriminator (eg. Capypara#7887), if this is a credit for a Discord profile, and the server can resolve the ID to a Discord profile. */
   discordHandle?: Maybe<Scalars['String']>;
   /** Discord ID or absentee ID. Guaranteed to be an ASCII string. */
   id: Scalars['String'];
@@ -86,11 +76,7 @@ export type Monster = {
   get?: Maybe<MonsterForm>;
   /** ID of this monster. */
   id: Scalars['Int'];
-  /**
-   * Manually enter the path to a monster, seperated by /. This should match the
-   * path as it is stored in SpriteCollab, however the path passed in might be
-   * collapsed until a unique form is found.
-   */
+  /** Manually enter the path to a monster, seperated by /. This should match the path as it is stored in SpriteCollab, however the path passed in might be collapsed until a unique form is found. */
   manual?: Maybe<MonsterForm>;
   /** Human-readable name of this monster. */
   name: Scalars['String'];
@@ -110,10 +96,7 @@ export type MonsterManualArgs = {
   path: Scalars['String'];
 };
 
-/**
- * A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the
- * portrait or sprite has transitioned into a phase.
- */
+/** A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the portrait or sprite has transitioned into a phase. */
 export type MonsterBounty = {
   __typename?: 'MonsterBounty';
   /** Amount of points to reward if the phase changes to Exists. */
@@ -133,10 +116,7 @@ export type MonsterForm = {
   canon: Scalars['Boolean'];
   /** Human-readable full name of this form (excluding the monster name itself). */
   fullName: Scalars['String'];
-  /**
-   * The path to this form (including the monster ID) as it's specified in the
-   * SpriteCollab tracker.json file and repository file structure.
-   */
+  /** The path to this form (including the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure. */
   fullPath: Scalars['String'];
   /** Whether or not this form is considered for a female monsters. */
   isFemale: Scalars['Boolean'];
@@ -146,10 +126,7 @@ export type MonsterForm = {
   monsterId: Scalars['Int'];
   /** Human-readable name of this form. */
   name: Scalars['String'];
-  /**
-   * The path to this form (without the monster ID) as it's specified in the
-   * SpriteCollab tracker.json file and repository file structure.
-   */
+  /** The path to this form (without the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure. */
   path: Scalars['String'];
   /** Portraits for this form. */
   portraits: MonsterFormPortraits;
@@ -179,6 +156,8 @@ export type MonsterFormPortraits = {
   phase: Phase;
   /** Current completion phase of the portraits (raw ID). */
   phaseRaw: Scalars['Int'];
+  /** A single portrait. Return the 'Normal' portrait if avalaible, but may return another one if not present. */
+  previewEmotion?: Maybe<Portrait>;
   /** URL to a SpriteBot format recolor sheet. */
   recolorSheetUrl: Scalars['String'];
   /** Whether or not this form should have portraits. */
@@ -303,10 +282,7 @@ export type Sprite = {
   shadowsUrl: Scalars['String'];
 };
 
-/**
- * A single sprite for a single action that is either a copy of another sprite (as
- * defined in the AnimData.xml) or has it's own sprite data.
- */
+/** A single sprite for a single action that is either a copy of another sprite (as defined in the AnimData.xml) or has it's own sprite data. */
 export type SpriteUnion = CopyOf | Sprite;
 
 export type MyBountyFragment = { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null };
@@ -316,7 +292,7 @@ export type CarrouselQueryVariables = Exact<{
 }>;
 
 
-export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms: Array<{ __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } }, sprites: { __typename?: 'MonsterFormSprites', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }>, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, emotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null } } | null }> };
+export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms: Array<{ __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } }, sprites: { __typename?: 'MonsterFormSprites', bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }>, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, previewEmotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null } } | null }> };
 
 export type KeysQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -371,7 +347,7 @@ export const CarrouselDocument = gql`
           name
         }
         modifiedDate
-        emotion(emotion: "Normal") {
+        previewEmotion {
           url
         }
       }

@@ -114,7 +114,7 @@
           },
           {
             "name": "completionActions",
-            "description": "Returns a list, that for each phase contains a list of actions (by index) that\nneed to exist for this phase to be considered completed.",
+            "description": "Returns a list, that for each phase contains a list of actions (by index) that need to exist for this phase to be considered completed.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -146,7 +146,7 @@
           },
           {
             "name": "completionEmotions",
-            "description": "Returns a list, that for each phase contains a list of emotions (by index)\nthat need to exist for this phase to be considered completed.",
+            "description": "Returns a list, that for each phase contains a list of emotions (by index) that need to exist for this phase to be considered completed.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -332,7 +332,7 @@
           },
           {
             "name": "discordHandle",
-            "description": "Discord name and discriminator in the form Name#Discriminator (eg.\nCapypara#7887), if this is a credit for a Discord profile, and the server can\nresolve the ID to a Discord profile.",
+            "description": "Discord name and discriminator in the form Name#Discriminator (eg. Capypara#7887), if this is a credit for a Discord profile, and the server can resolve the ID to a Discord profile.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -504,7 +504,7 @@
           },
           {
             "name": "manual",
-            "description": "Manually enter the path to a monster, seperated by /. This should match the\npath as it is stored in SpriteCollab, however the path passed in might be\ncollapsed until a unique form is found.",
+            "description": "Manually enter the path to a monster, seperated by /. This should match the path as it is stored in SpriteCollab, however the path passed in might be collapsed until a unique form is found.",
             "args": [
               {
                 "name": "path",
@@ -572,7 +572,7 @@
       {
         "kind": "OBJECT",
         "name": "MonsterBounty",
-        "description": "A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the\nportrait or sprite has transitioned into a phase.",
+        "description": "A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the portrait or sprite has transitioned into a phase.",
         "fields": [
           {
             "name": "exists",
@@ -695,7 +695,7 @@
           },
           {
             "name": "fullPath",
-            "description": "The path to this form (including the monster ID) as it's specified in the\nSpriteCollab tracker.json file and repository file structure.",
+            "description": "The path to this form (including the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -775,7 +775,7 @@
           },
           {
             "name": "path",
-            "description": "The path to this form (without the monster ID) as it's specified in the\nSpriteCollab tracker.json file and repository file structure.",
+            "description": "The path to this form (without the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1030,6 +1030,18 @@
                 "name": "Int",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "previewEmotion",
+            "description": "A single portrait. Return the 'Normal' portrait if avalaible, but may return another one if not present.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Portrait",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1725,7 +1737,7 @@
       {
         "kind": "UNION",
         "name": "SpriteUnion",
-        "description": "A single sprite for a single action that is either a copy of another sprite (as\ndefined in the AnimData.xml) or has it's own sprite data.",
+        "description": "A single sprite for a single action that is either a copy of another sprite (as defined in the AnimData.xml) or has it's own sprite data.",
         "fields": null,
         "inputFields": null,
         "interfaces": null,

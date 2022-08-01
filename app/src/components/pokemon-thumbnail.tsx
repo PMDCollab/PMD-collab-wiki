@@ -71,8 +71,8 @@ export default function PokemonThumbnail(props: {
     }
 
 
-    if (props.info.manual?.portraits.emotion?.url) {    
-        image = <img className='my-img' alt='' src={props.info.manual.portraits.emotion?.url}/>
+    if (props.info.manual?.portraits.previewEmotion?.url) {    
+        image = <img className='my-img' alt='' src={props.info.manual.portraits.previewEmotion?.url}/>
     } else {
         image = <h1 style={{height:'80px', margin:'0px'}}>?</h1>
     }
