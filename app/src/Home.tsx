@@ -4,6 +4,7 @@ import PokemonCarousel from './components/pokemon-carousel'
 import Search from './components/search'
 import { useState } from 'react'
 import Buttons from './components/buttons'
+import MetaInformations from './components/meta-informations'
 import {RankMethod } from './types/enum'
 import DisplayParameters from './components/display-parameters'
 import PokemonRanking from './components/pokemon-ranking'
@@ -64,11 +65,9 @@ export default function Home(props:{ids: number[], meta: Meta}) {
                     showSpriteBounty={showSpriteBounty}
                     ids={props.ids}
                 />
-                <div style={{display:'flex', fontSize:'8px', gap: '10px'}}>
-                  <p>Last update: {new Date(props.meta.assetsUpdateDate).toLocaleString()}</p>
-                  <p>Last Check for updates: {new Date(props.meta.updateCheckedDate).toLocaleString()}</p>
-                  <a target="_blank" href={`https://github.com/PMDCollab/SpriteCollab/commit/${props.meta.assetsCommit}`}>Last Commit</a>
-                </div>
+                <MetaInformations 
+                  meta={props.meta}
+                />
             </div>
         </div>
       )

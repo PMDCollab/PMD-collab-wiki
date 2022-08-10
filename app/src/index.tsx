@@ -32,7 +32,7 @@ async function initialize(){
           <HashRouter>
               <Routes>
                 <Route path='/' element={<Home meta={result.data.meta} ids={sortedMonsters.map(m=>m.id)}/>}/>
-                {sortedMonsters.map((m,i)=> <Route key={m.rawId} path={`/${m.rawId}`} element={<PokemonPage infoKey={m.id} rawId={m.rawId} prevIndex={sortedMonsters[i - 1]?.rawId} nextIndex={sortedMonsters[i + 1]?.rawId}/>}/>)}
+                {sortedMonsters.map((m,i)=> <Route key={m.rawId} path={`/${m.rawId}`} element={<PokemonPage infoKey={m.id} rawId={m.rawId} meta={result.data!.meta} prevIndex={sortedMonsters[i - 1]?.rawId} nextIndex={sortedMonsters[i + 1]?.rawId}/>}/>)}
                 <Route path='/About' element={<About/>}/>
                 <Route path='*' element={<NotFound/>}/>
               </Routes>

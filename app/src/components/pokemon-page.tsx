@@ -4,13 +4,15 @@ import { ReactElement } from "react"
 import 'react-tabs/style/react-tabs.css'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Link } from "react-router-dom"
-import { MonsterForm, usePokemonQuery } from "../generated/graphql"
+import { Meta, MonsterForm, usePokemonQuery } from "../generated/graphql"
+import MetaInformations from './meta-informations'
 
 export default function PokemonPage(props:{
         infoKey: number,
         prevIndex: string | undefined,
         nextIndex: string | undefined,
-        rawId: string
+        rawId: string,
+        meta: Meta
     }){
 
     const {loading, error, data} = usePokemonQuery({variables:{id:props.infoKey}})
@@ -48,6 +50,9 @@ export default function PokemonPage(props:{
                 </TabList>
                 {tabPanelList}
             </Tabs>
+            <MetaInformations
+                meta={props.meta}
+            />
         </div>
     </div>
 }
