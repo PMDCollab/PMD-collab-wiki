@@ -1,3 +1,56 @@
+"""An action mapped uniquely to an ID."""
+type ActionId {
+  id: Int!
+  name: String!
+}
+
+"""Configuration for this instance of SpriteCollab."""
+type Config {
+  """The portrait width and height in pixels."""
+  portraitSize: Int!
+
+  """How many portraits per row a portrait sheet contains."""
+  portraitTileX: Int!
+
+  """How many rows a portrait sheet contains."""
+  portraitTileY: Int!
+
+  """A list of known emotions. The position is the ID of the emotion."""
+  emotions: [String!]!
+
+  """A list of known action. The position is the ID of the action."""
+  actions: [String!]!
+
+  """
+  Returns a list, that for each phase contains a list of emotions (by index)
+  that need to exist for this phase to be considered completed.
+  """
+  completionEmotions: [[Int!]!]!
+
+  """
+  Returns a list, that for each phase contains a list of actions (by index) that
+  need to exist for this phase to be considered completed.
+  """
+  completionActions: [[Int!]!]!
+
+  """A mapping of actions to EoS action indices."""
+  actionMap: [ActionId!]!
+}
+
+"""A sprite, which is a copy of another sprite."""
+type CopyOf {
+  """Action of this sprite."""
+  action: String!
+
+  """
+  Whether or not this sprite is locked and requires special permissions to be updated.
+  """
+  locked: Boolean!
+
+  """Which action this sprite is a copy of."""
+  copyOf: String!
+}
+
 type Credit {
   """Discord ID or absentee ID. Guaranteed to be an ASCII string."""
   id: String!
@@ -11,27 +64,83 @@ type Credit {
   contact: String
 
   """
-  Discord name and discriminator in the form Name#Discriminator (eg. Capypara#7887), if this is a credit for a Discord profile, and the server can resolve the ID to a Discord profile.
+  Discord name and discriminator in the form Name#Discriminator (eg.
+  Capypara#7887), if this is a credit for a Discord profile, and the server can
+  resolve the ID to a Discord profile.
   """
   discordHandle: String
 }
 
-"""The current phase of the sprite or portrait."""
-enum Phase {
-  INCOMPLETE
-  EXISTS
-  FULL
+"""DateTime"""
+scalar DateTimeUtc
+
+type Meta {
+  """Version of this API."""
+  apiVersion: String!
+
+  """Version of spritecollab-srv serving this API."""
+  serverVersion: String!
 
   """
-  Returned if the phase value is non-standard. Use phaseRaw to get the raw ID.
+  Git Commit (https://github.com/PMDCollab/SpriteCollab/) currently checked out to serve the assets.
   """
-  UNKNOWN
+  assetsCommit: String!
+
+  """
+  Date of the last commit in the assets repository
+  (https://github.com/PMDCollab/SpriteCollab) that is currently checked out.
+  """
+  assetsUpdateDate: DateTimeUtc!
+
+  """Date that the server last checked for updates."""
+  updateCheckedDate: DateTimeUtc!
 }
 
-"""A bounty for a non-standard phase."""
-type OtherBounty {
-  phase: Int!
-  bounty: Int!
+type Monster {
+  """ID of this monster."""
+  id: Int!
+
+  """
+  Raw ID of this monster, as a string. This is a 4-character numeric string, padded with leading zeroes.
+  """
+  rawId: String!
+
+  """Human-readable name of this monster."""
+  name: String!
+
+  """All forms that exist for this monster."""
+  forms: [MonsterForm!]!
+
+  """Get a specific form for this monster."""
+  get(formId: Int!, shiny: Boolean!, female: Boolean!): MonsterForm
+
+  """
+  Manually enter the path to a monster, seperated by /. This should match the
+  path as it is stored in SpriteCollab, however the path passed in might be
+  collapsed until a unique form is found.
+  """
+  manual(path: String!): MonsterForm
+}
+
+"""
+A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the
+portrait or sprite has transitioned into a phase.
+"""
+type MonsterBounty {
+  """
+  If true, SpriteBot will not automatically hand out the Guild Point bounty.
+  """
+  modreward: Boolean!
+
+  """Amount of points to reward if the phase changes to Incomplete."""
+  incomplete: Int
+
+  """Amount of points to reward if the phase changes to Exists."""
+  exists: Int
+
+  """Amount of points to reward if the phase changes to Full."""
+  full: Int
+  other: [OtherBounty!]!
 }
 
 type MonsterForm {
@@ -39,12 +148,14 @@ type MonsterForm {
   monsterId: Int!
 
   """
-  The path to this form (without the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.
+  The path to this form (without the monster ID) as it's specified in the
+  SpriteCollab tracker.json file and repository file structure.
   """
   path: String!
 
   """
-  The path to this form (including the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.
+  The path to this form (including the monster ID) as it's specified in the
+  SpriteCollab tracker.json file and repository file structure.
   """
   fullPath: String!
 
@@ -70,79 +181,6 @@ type MonsterForm {
 
   """Sprites for this form."""
   sprites: MonsterFormSprites!
-}
-
-"""DateTime"""
-scalar DateTimeUtc
-
-"""
-A single sprite for a single action that is either a copy of another sprite (as defined in the AnimData.xml) or has it's own sprite data.
-"""
-union SpriteUnion = Sprite | CopyOf
-
-type Query {
-  """Version of this API."""
-  apiVersion: String!
-
-  """
-  Search for a monster by (parts) of its name. Results are sorted by best match.
-  """
-  searchMonster(monsterName: String!): [Monster!]!
-
-  """Retrieve a list of monsters."""
-  monster(
-    """Monster IDs to limit the request to."""
-    filter: [Int!]
-  ): [Monster!]!
-
-  """
-  Search for a credit entry by (parts) of the ID, the author name or the contact info. Results are sorted by best match.
-  """
-  searchCredit(query: String!): [Credit!]!
-
-  """Retrieve a list of credits."""
-  credit: [Credit!]!
-
-  """Configuration for this instance of SpriteCollab."""
-  config: Config!
-}
-
-type MonsterFormSprites {
-  """Whether or not this form should have sprites."""
-  required: Boolean!
-
-  """Guild Point bounty for this sprite set."""
-  bounty: MonsterBounty!
-
-  """Current completion phase of the sprites."""
-  phase: Phase!
-
-  """Current completion phase of the sprites (raw ID)."""
-  phaseRaw: Int!
-
-  """Primary artist credits."""
-  creditPrimary: Credit
-
-  """All other artists credited."""
-  creditSecondary: [Credit!]!
-
-  """URL to the AnimData XML file for this sprite set."""
-  animDataXml: String
-
-  """URL to a SpriteBot format ZIP archive of all sprites."""
-  zipUrl: String
-
-  """URL to a SpriteBot format recolor sheet."""
-  recolorSheetUrl: String
-
-  """A list of all existing sprites for the actions."""
-  actions: [SpriteUnion!]!
-
-  """A single sprite for a given action."""
-  action(action: String!): SpriteUnion
-
-  """The date and time this sprite set was last updated."""
-  modifiedDate: DateTimeUtc
 }
 
 type MonsterFormPortraits {
@@ -191,18 +229,60 @@ type MonsterFormPortraits {
   modifiedDate: DateTimeUtc
 }
 
-"""A sprite, which is a copy of another sprite."""
-type CopyOf {
-  """Action of this sprite."""
-  action: String!
+type MonsterFormSprites {
+  """Whether or not this form should have sprites."""
+  required: Boolean!
+
+  """Guild Point bounty for this sprite set."""
+  bounty: MonsterBounty!
+
+  """Current completion phase of the sprites."""
+  phase: Phase!
+
+  """Current completion phase of the sprites (raw ID)."""
+  phaseRaw: Int!
+
+  """Primary artist credits."""
+  creditPrimary: Credit
+
+  """All other artists credited."""
+  creditSecondary: [Credit!]!
+
+  """URL to the AnimData XML file for this sprite set."""
+  animDataXml: String
+
+  """URL to a SpriteBot format ZIP archive of all sprites."""
+  zipUrl: String
+
+  """URL to a SpriteBot format recolor sheet."""
+  recolorSheetUrl: String
+
+  """A list of all existing sprites for the actions."""
+  actions: [SpriteUnion!]!
+
+  """A single sprite for a given action."""
+  action(action: String!): SpriteUnion
+
+  """The date and time this sprite set was last updated."""
+  modifiedDate: DateTimeUtc
+}
+
+"""A bounty for a non-standard phase."""
+type OtherBounty {
+  phase: Int!
+  bounty: Int!
+}
+
+"""The current phase of the sprite or portrait."""
+enum Phase {
+  INCOMPLETE
+  EXISTS
+  FULL
 
   """
-  Whether or not this sprite is locked and requires special permissions to be updated.
+  Returned if the phase value is non-standard. Use phaseRaw to get the raw ID.
   """
-  locked: Boolean!
-
-  """Which action this sprite is a copy of."""
-  copyOf: String!
+  UNKNOWN
 }
 
 """A single portrait for a single emotion."""
@@ -219,85 +299,34 @@ type Portrait {
   url: String!
 }
 
-"""Configuration for this instance of SpriteCollab."""
-type Config {
-  """The portrait width and height in pixels."""
-  portraitSize: Int!
+type Query {
+  """Version of this API."""
+  apiVersion: String! @deprecated(reason: "Use `meta` instead.")
 
-  """How many portraits per row a portrait sheet contains."""
-  portraitTileX: Int!
-
-  """How many rows a portrait sheet contains."""
-  portraitTileY: Int!
-
-  """A list of known emotions. The position is the ID of the emotion."""
-  emotions: [String!]!
-
-  """A list of known action. The position is the ID of the action."""
-  actions: [String!]!
+  """Meta information about the server and state of the assets."""
+  meta: Meta!
 
   """
-  Returns a list, that for each phase contains a list of emotions (by index) that need to exist for this phase to be considered completed.
+  Search for a monster by (parts) of its name. Results are sorted by best match.
   """
-  completionEmotions: [[Int!]!]!
+  searchMonster(monsterName: String!): [Monster!]!
 
-  """
-  Returns a list, that for each phase contains a list of actions (by index) that need to exist for this phase to be considered completed.
-  """
-  completionActions: [[Int!]!]!
-
-  """A mapping of actions to EoS action indices."""
-  actionMap: [ActionId!]!
-}
-
-type Monster {
-  """ID of this monster."""
-  id: Int!
+  """Retrieve a list of monsters."""
+  monster(
+    """Monster IDs to limit the request to."""
+    filter: [Int!]
+  ): [Monster!]!
 
   """
-  Raw ID of this monster, as a string. This is a 4-character numeric string, padded with leading zeroes.
+  Search for a credit entry by (parts) of the ID, the author name or the contact info. Results are sorted by best match.
   """
-  rawId: String!
+  searchCredit(query: String!): [Credit!]!
 
-  """Human-readable name of this monster."""
-  name: String!
+  """Retrieve a list of credits."""
+  credit: [Credit!]!
 
-  """All forms that exist for this monster."""
-  forms: [MonsterForm!]!
-
-  """Get a specific form for this monster."""
-  get(formId: Int!, shiny: Boolean!, female: Boolean!): MonsterForm
-
-  """
-  Manually enter the path to a monster, seperated by /. This should match the path as it is stored in SpriteCollab, however the path passed in might be collapsed until a unique form is found.
-  """
-  manual(path: String!): MonsterForm
-}
-
-"""
-A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the portrait or sprite has transitioned into a phase.
-"""
-type MonsterBounty {
-  """
-  If true, SpriteBot will not automatically hand out the Guild Point bounty.
-  """
-  modreward: Boolean!
-
-  """Amount of points to reward if the phase changes to Incomplete."""
-  incomplete: Int
-
-  """Amount of points to reward if the phase changes to Exists."""
-  exists: Int
-
-  """Amount of points to reward if the phase changes to Full."""
-  full: Int
-  other: [OtherBounty!]!
-}
-
-"""An action mapped uniquely to an ID."""
-type ActionId {
-  id: Int!
-  name: String!
+  """Configuration for this instance of SpriteCollab."""
+  config: Config!
 }
 
 """A single sprite for a single action."""
@@ -325,3 +354,9 @@ type Sprite {
   """
   shadowsUrl: String!
 }
+
+"""
+A single sprite for a single action that is either a copy of another sprite (as
+defined in the AnimData.xml) or has it's own sprite data.
+"""
+union SpriteUnion = Sprite | CopyOf

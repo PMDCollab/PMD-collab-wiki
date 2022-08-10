@@ -114,7 +114,7 @@
           },
           {
             "name": "completionActions",
-            "description": "Returns a list, that for each phase contains a list of actions (by index) that need to exist for this phase to be considered completed.",
+            "description": "Returns a list, that for each phase contains a list of actions (by index) that\nneed to exist for this phase to be considered completed.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -146,7 +146,7 @@
           },
           {
             "name": "completionEmotions",
-            "description": "Returns a list, that for each phase contains a list of emotions (by index) that need to exist for this phase to be considered completed.",
+            "description": "Returns a list, that for each phase contains a list of emotions (by index)\nthat need to exist for this phase to be considered completed.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -332,7 +332,7 @@
           },
           {
             "name": "discordHandle",
-            "description": "Discord name and discriminator in the form Name#Discriminator (eg. Capypara#7887), if this is a credit for a Discord profile, and the server can resolve the ID to a Discord profile.",
+            "description": "Discord name and discriminator in the form Name#Discriminator (eg.\nCapypara#7887), if this is a credit for a Discord profile, and the server can\nresolve the ID to a Discord profile.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -393,6 +393,97 @@
         "fields": null,
         "inputFields": null,
         "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Meta",
+        "description": null,
+        "fields": [
+          {
+            "name": "apiVersion",
+            "description": "Version of this API.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "assetsCommit",
+            "description": "Git Commit (https://github.com/PMDCollab/SpriteCollab/) currently checked out to serve the assets.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "assetsUpdateDate",
+            "description": "Date of the last commit in the assets repository\n(https://github.com/PMDCollab/SpriteCollab) that is currently checked out.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTimeUtc",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "serverVersion",
+            "description": "Version of spritecollab-srv serving this API.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updateCheckedDate",
+            "description": "Date that the server last checked for updates.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTimeUtc",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -504,7 +595,7 @@
           },
           {
             "name": "manual",
-            "description": "Manually enter the path to a monster, seperated by /. This should match the path as it is stored in SpriteCollab, however the path passed in might be collapsed until a unique form is found.",
+            "description": "Manually enter the path to a monster, seperated by /. This should match the\npath as it is stored in SpriteCollab, however the path passed in might be\ncollapsed until a unique form is found.",
             "args": [
               {
                 "name": "path",
@@ -572,7 +663,7 @@
       {
         "kind": "OBJECT",
         "name": "MonsterBounty",
-        "description": "A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the portrait or sprite has transitioned into a phase.",
+        "description": "A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the\nportrait or sprite has transitioned into a phase.",
         "fields": [
           {
             "name": "exists",
@@ -695,7 +786,7 @@
           },
           {
             "name": "fullPath",
-            "description": "The path to this form (including the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.",
+            "description": "The path to this form (including the monster ID) as it's specified in the\nSpriteCollab tracker.json file and repository file structure.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -775,7 +866,7 @@
           },
           {
             "name": "path",
-            "description": "The path to this form (without the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.",
+            "description": "The path to this form (without the monster ID) as it's specified in the\nSpriteCollab tracker.json file and repository file structure.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1467,8 +1558,8 @@
                 "ofType": null
               }
             },
-            "isDeprecated": false,
-            "deprecationReason": null
+            "isDeprecated": true,
+            "deprecationReason": "Use `meta` instead."
           },
           {
             "name": "config",
@@ -1505,6 +1596,22 @@
                     "ofType": null
                   }
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "meta",
+            "description": "Meta information about the server and state of the assets.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Meta",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -1737,7 +1844,7 @@
       {
         "kind": "UNION",
         "name": "SpriteUnion",
-        "description": "A single sprite for a single action that is either a copy of another sprite (as defined in the AnimData.xml) or has it's own sprite data.",
+        "description": "A single sprite for a single action that is either a copy of another sprite (as\ndefined in the AnimData.xml) or has it's own sprite data.",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
