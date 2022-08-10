@@ -7,8 +7,9 @@ import Buttons from './components/buttons'
 import {RankMethod } from './types/enum'
 import DisplayParameters from './components/display-parameters'
 import PokemonRanking from './components/pokemon-ranking'
+import { Meta } from './generated/graphql'
 
-export default function Home(props:{ids: number[]}) {
+export default function Home(props:{ids: number[], meta: Meta}) {
     const [currentText, setCurrentText] = useState('')
     const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER)
     const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false)
@@ -20,7 +21,7 @@ export default function Home(props:{ids: number[]}) {
     return (
         <div className="App">
             <Buttons/>
-            <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.85)', display:'flex', flexFlow:'column', alignItems:'center'}}>
+            <div className='nes-container' style={{height:'90vh', backgroundColor:'rgba(255,255,255,0.85)', display:'flex', flexFlow:'column', alignItems:'center', gap:'10px'}}>
                 <div style={{display:'flex', width:'100%', alignContent:'center', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap'}}>
                   <DisplayParameters 
                     setSpriteAuthor={setSpriteAuthor}
@@ -63,6 +64,11 @@ export default function Home(props:{ids: number[]}) {
                     showSpriteBounty={showSpriteBounty}
                     ids={props.ids}
                 />
+                <div style={{display:'flex', fontSize:'8px', gap: '10px'}}>
+                  <p>Last update: {new Date(props.meta.assetsUpdateDate).toLocaleString()}</p>
+                  <p>Last Check for updates: {new Date(props.meta.updateCheckedDate).toLocaleString()}</p>
+                  <a target="_blank" href={`https://github.com/PMDCollab/SpriteCollab/commit/${props.meta.assetsCommit}`}>Last Commit</a>
+                </div>
             </div>
         </div>
       )
