@@ -1,13 +1,15 @@
-import AboutButton from "./about-button"
-import DiscordButton from "./discord-button"
-import TwitterButton from './twitter-button'
-import HomeButton from "./home-button"
+import AboutButton from "./button/about-button"
+import DiscordButton from "./button/discord-button"
+import TwitterButton from './button/twitter-button'
+import HomeButton from "./button/home-button"
+import GithubButton from './button/github-button'
 
 export default function Buttons(){
     return <div style={{display:'flex'}}>
         <HomeButton/>
         <DiscordButton/>
         <TwitterButton/>
+        <GithubButton/>
         <AboutButton/>
     </div>
 }
