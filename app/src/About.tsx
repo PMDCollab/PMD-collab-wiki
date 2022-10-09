@@ -6,7 +6,7 @@ export default function About(){
             <Buttons/>
             <div className='nes-container' style={{height:'90vh', overflowY: 'scroll', backgroundColor:'rgba(255,255,255,0.9)', display:'block', fontFamily:'verdana'}}>
                 <h1 className="nes-text is-primary">PMD Collab Sprite Project</h1>
-                <p>Pokemon Mystery Dungeon Collaborative Sprite project</p>
+                <p>Pokemon Mystery Dungeon Collaborative Sprite Project</p>
                 <h3 className="nes-text is-primary"> What is PMD Collab ?</h3>
                 <p>
                     PMD Collab is a participatory project created by fans of the Pokemon Mystery Dungeon games (like Pokemon Mystery Dungeon: Explorers of Sky or Pokemon Mystery Dungeon: Red Rescue Team).
@@ -15,11 +15,11 @@ export default function About(){
                 <div style={{display:'flex', justifyContent:'space-around'}}>
                     <div style={{display:'flex', flexFlow:'column'}}>
                         <h4 className="nes-text is-primary"> Portraits</h4>
-                        <img src="https://spriteserver.pmdcollab.org/assets/portrait_recolor-0025-0000-0001.png"/>
+                        <img src="https://spriteserver.pmdcollab.org/assets/portrait_recolor-0025-0000-0001.png" style={{maxWidth:'30vw'}}/>
                     </div>
                     <div style={{display:'flex', flexFlow:'column'}}>
                         <h4 className="nes-text is-primary"> Sprites</h4>
-                        <img src="https://spriteserver.pmdcollab.org/assets/sprite_recolor-0025-0000-0001.png"/>
+                        <img src="https://spriteserver.pmdcollab.org/assets/sprite_recolor-0025-0000-0001.png"  style={{maxWidth:'30vw'}}/>
                     </div>
                 </div>
 
