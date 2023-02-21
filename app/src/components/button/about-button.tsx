@@ -8,7 +8,7 @@ export default function AboutButton() {
       <button style={{ fontSize: ".8em" }} className="my-btn nes-btn">
         <div style={{ display: "flex", alignItems: "baseline" }}>
           <FontAwesomeIcon icon={faSearch} />
-          <p style={{ margin: "0px", marginLeft: "5px" }}>About</p>
+          <p style={{ margin: "0px", marginLeft: "5px" }}>Term of use</p>
         </div>
       </button>
     </Link>
