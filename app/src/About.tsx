@@ -59,6 +59,14 @@ export default function About() {
           ). You can also help other artists financially to make new sprites for
           the project..
         </p>
+        <h3 className="nes-text is-error"> Terms of Use</h3>
+        <p className="nes-text is-error">
+          You are free to use, copy redistributen or modify sprites and
+          portraits from this repository for your own projects and
+          contributions. When using portraits or sprites from this repository,
+          you must credit the contributors for each portrait and sprite you use.
+          This information can be found on each pokemon's page.
+        </p>
       </div>
     </div>
   )
