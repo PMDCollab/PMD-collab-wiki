@@ -33,6 +33,8 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
           gap: "10px"
         }}
       >
+        <h1 className="nes-text is-primary" style={{margin: "auto"}}>PMDCollab Sprite Project</h1>
+        <h5 style={{margin: "auto"}}>Free to use for ROMhacks, fangames, etc. Don't use for commercial projects.</h5>
         <div
           style={{
             display: "flex",
