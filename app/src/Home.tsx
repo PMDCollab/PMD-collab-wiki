@@ -38,8 +38,8 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
             PMDCollab Sprite Project
           </h1>
           <h5 style={{ margin: "auto" }}>
-            Free to use for ROMhacks, fangames, etc. Don't use for commercial
-            projects.
+            Free to use with credit for ROMhacks, fangames, etc. Don't use for
+            commercial projects.
           </h5>
         </div>
 
