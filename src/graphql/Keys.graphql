@@ -1,0 +1,13 @@
+query Keys {
+    meta{
+        apiVersion
+        serverVersion
+        assetsCommit
+        assetsUpdateDate
+        updateCheckedDate
+    }
+    monster{
+        id
+        rawId
+    }
+}
