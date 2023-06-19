@@ -30,7 +30,8 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
           display: "flex",
           flexFlow: "column",
           alignItems: "center",
-          gap: "10px"
+          gap: "10px",
+          paddingBottom: "0rem"
         }}
       >
         <div>
@@ -92,7 +93,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
           showSpriteBounty={showSpriteBounty}
           ids={props.ids}
         />
-        <div style={{ display: "flex", fontSize: "8px", gap: "10px" }}>
+        <div style={{ display: "flex", fontSize: "8px", gap: "20px" }}>
           <p>
             Last update:{" "}
             {new Date(props.meta.assetsUpdateDate).toLocaleString()}
