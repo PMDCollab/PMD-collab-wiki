@@ -35,10 +35,10 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
         }}
       >
         <div>
-          <h1 className="nes-text is-primary" style={{ margin: "auto" }}>
+          <h1 className="nes-text is-primary" style={{ margin: "auto", fontSize: "4.2vh" }}>
             PMDCollab Sprite Project
           </h1>
-          <h5 style={{ margin: "auto" }}>
+          <h5 style={{ margin: "auto", fontSize: "1.75vh" }}>
             Free to use with credit for ROMhacks, fangames, etc. Don't use for
             commercial projects.
           </h5>
