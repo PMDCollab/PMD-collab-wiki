@@ -14,7 +14,6 @@ export default function PokemonRanking(props: {
   return (
     <div
       className="nes-select is-inline"
-      //TODO: get rank by to center align somehow
       style={{ display: "flex", alignItems: "center", width: "initial" }}
     >
       <p style={{ fontSize: "0.7em", marginBottom: "0rem" }}>Rank by</p>
@@ -24,8 +23,7 @@ export default function PokemonRanking(props: {
         id="default_select"
         onChange={(e) => {
           const rankMethod = e.target.value as RankMethod
-          //TODO: fix it mfer
-          const methodToCheckbox: Partial<Record<RankMethod, Dispatch<SetStateAction<boolean>>>> = {
+          const methodToSetCheckbox: Partial<Record<RankMethod, Dispatch<SetStateAction<boolean>>>> = {
             [RankMethod.LAST_MODIFICATION]: props.setShowLastModification,
             [RankMethod.POKEDEX_NUMBER]: props.setShowIndex,
             [RankMethod.PORTRAIT_AUTHOR]: props.setPortraitAuthor,
@@ -33,7 +31,7 @@ export default function PokemonRanking(props: {
             [RankMethod.PORTRAIT_BOUNTY]: props.setShowPortraitBounty,
             [RankMethod.SPRITE_BOUNTY]: props.setShowSpriteBounty,
           };
-          methodToCheckbox[rankMethod]?.(true);
+          methodToSetCheckbox[rankMethod]?.(true);
 
           props.setRankBy(rankMethod);
         }}

@@ -6,7 +6,7 @@ import GithubButton from "./button/github-button"
 
 export default function Buttons() {
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", flexWrap: "wrap"}}>
       <HomeButton />
       <DiscordButton />
       <TwitterButton />
