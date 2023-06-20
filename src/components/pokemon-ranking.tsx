@@ -16,42 +16,24 @@ export default function PokemonRanking(props: {
       className="nes-select is-inline"
       style={{ display: "flex", alignItems: "center", width: "initial" }}
     >
-      <p style={{ fontSize: "0.7em" }}>Rank by</p>
+      <p style={{ fontSize: "0.7em", marginBottom: "0rem" }}>Rank by</p>
       <select
         style={{ borderWidth: "2px", height: "40px", fontSize: "0.7em" }}
         value={props.rankBy}
         id="default_select"
         onChange={(e) => {
           const rankMethod = e.target.value as RankMethod
-          switch (rankMethod) {
-            case RankMethod.LAST_MODIFICATION:
-              props.setShowLastModification(true)
-              break
+          const methodToSetCheckbox: Partial<Record<RankMethod, Dispatch<SetStateAction<boolean>>>> = {
+            [RankMethod.LAST_MODIFICATION]: props.setShowLastModification,
+            [RankMethod.POKEDEX_NUMBER]: props.setShowIndex,
+            [RankMethod.PORTRAIT_AUTHOR]: props.setPortraitAuthor,
+            [RankMethod.SPRITE_AUTHOR]: props.setSpriteAuthor,
+            [RankMethod.PORTRAIT_BOUNTY]: props.setShowPortraitBounty,
+            [RankMethod.SPRITE_BOUNTY]: props.setShowSpriteBounty,
+          };
+          methodToSetCheckbox[rankMethod]?.(true);
 
-            case RankMethod.POKEDEX_NUMBER:
-              props.setShowIndex(true)
-              break
-
-            case RankMethod.PORTRAIT_AUTHOR:
-              props.setPortraitAuthor(true)
-              break
-
-            case RankMethod.SPRITE_AUTHOR:
-              props.setSpriteAuthor(true)
-              break
-
-            case RankMethod.PORTRAIT_BOUNTY:
-              props.setShowPortraitBounty(true)
-              break
-
-            case RankMethod.SPRITE_BOUNTY:
-              props.setShowSpriteBounty(true)
-              break
-
-            default:
-              break
-          }
-          props.setRankBy(rankMethod)
+          props.setRankBy(rankMethod);
         }}
       >
         {(Object.values(RankMethod) as RankMethod[]).map((r) => (

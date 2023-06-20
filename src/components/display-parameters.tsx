@@ -15,7 +15,7 @@ export default function DisplayParameters(props: {
   showSpriteBounty: boolean
 }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: '200px '.repeat(2), justifyItems: 'left', flexFlow: "column", alignItems: "start" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "210px 210px", justifyItems: 'left', flexFlow: "column", alignItems: "start" }}>
       <label className="my-label">
         <input
           type="checkbox"
