@@ -3,6 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ReactElement } from "react"
 import { Link } from "react-router-dom"
 import { Monster } from "../generated/graphql"
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography
+} from "@mui/material"
 
 export default function PokemonThumbnail(props: {
   info: Monster
@@ -24,31 +32,35 @@ export default function PokemonThumbnail(props: {
 
   if (props.showPortraitAuthor) {
     portraitAuthor = (
-      <p style={{ fontSize: "0.55em", margin: "0px" }}>
+      <Typography align="center" color="GrayText">
         {props.info?.manual?.portraits?.creditPrimary?.name}
-      </p>
+      </Typography>
     )
   }
 
   if (props.showSpriteAuthor) {
     spriteAuthor = (
-      <p style={{ fontSize: "0.55em", margin: "0px" }}>
+      <Typography align="center" color="GrayText">
         {props.info.manual?.sprites.creditPrimary?.name}
-      </p>
+      </Typography>
     )
   }
 
   if (props.showIndex) {
-    index = <p style={{ fontSize: "0.55em", margin: "0px" }}>{props.infoKey}</p>
+    index = (
+      <Typography align="center" color="GrayText">
+        {props.infoKey}
+      </Typography>
+    )
   }
 
   if (props.showLastModification) {
     const portraitDate = new Date(props.info.manual?.portraits.modifiedDate)
     const spriteDate = new Date(props.info.manual?.sprites.modifiedDate)
     date = (
-      <p style={{ fontSize: "0.45em", margin: "0px" }}>
+      <Typography align="center" color="GrayText">
         {formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}
-      </p>
+      </Typography>
     )
   }
 
@@ -64,12 +76,12 @@ export default function PokemonThumbnail(props: {
         : null
     })
     portraitBounty = (
-      <div style={{ display: "flex" }}>
-        <p style={{ margin: "0px", fontSize: "0.55em", marginRight: "2px" }}>
+      <Grid container>
+        <Typography color="GrayText">
           {bounties.length > 0 ? Math.max(...bounties) : 0}
-        </p>
-        <FontAwesomeIcon icon={faCoins} size="xs" />
-      </div>
+        </Typography>
+        <FontAwesomeIcon icon={faCoins} size="sm" />
+      </Grid>
     )
   }
 
@@ -83,49 +95,44 @@ export default function PokemonThumbnail(props: {
         : null
     })
     spriteBounty = (
-      <div style={{ display: "flex" }}>
-        <p style={{ margin: "0px", fontSize: "0.55em", marginRight: "2px" }}>
+      <Grid container>
+        <Typography align="center" color="GrayText">
           {bounties.length > 0 ? Math.max(...bounties) : 0}
-        </p>
-        <FontAwesomeIcon icon={faCoins} size="xs" />
-      </div>
+        </Typography>
+        <FontAwesomeIcon icon={faCoins} size="sm" />
+      </Grid>
     )
   }
 
   if (props.info.manual?.portraits.previewEmotion?.url) {
     image = (
-      <img
-        className="my-img"
-        alt=""
-        src={props.info.manual.portraits.previewEmotion?.url}
+      <CardMedia
+        image={props.info.manual.portraits.previewEmotion?.url}
+        sx={{ height: 120, imageRendering: "pixelated" }}
       />
     )
   } else {
-    image = <h1 style={{ height: "80px", margin: "0px" }}>?</h1>
+    image = <Typography variant="h1">?</Typography>
   }
 
   return (
-    <Link to={props.infoKey.toString()} className="my-link">
-      <div
-        className="my-container nes-container nes-pointer grow"
-        style={{
-          display: "flex",
-          flexFlow: "column",
-          justifyContent: "space-between",
-          alignItems: "center",
-          minWidth: "100px",
-          margin: "10px"
-        }}
-      >
-        {image}
-        <p style={{ fontSize: "0.55em", margin: "0px" }}>{props.info.name}</p>
-        {index}
-        {portraitAuthor}
-        {spriteAuthor}
-        {date}
-        {portraitBounty}
-        {spriteBounty}
-      </div>
+    <Link to={`/${props.infoKey}`}>
+      <Card sx={{ maxWidth: 120, minWidth: 120 }}>
+        <CardActionArea>
+          {image}
+          <CardContent>
+            <Typography align="center" color="GrayText">
+              {props.info.name}
+            </Typography>
+            {index}
+            {portraitAuthor}
+            {spriteAuthor}
+            {date}
+            {portraitBounty}
+            {spriteBounty}
+          </CardContent>
+        </CardActionArea>
+      </Card>
     </Link>
   )
 }

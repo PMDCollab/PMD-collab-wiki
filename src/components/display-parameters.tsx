@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
 import { Dispatch, SetStateAction } from "react"
 
 export default function DisplayParameters(props: {
@@ -15,73 +16,79 @@ export default function DisplayParameters(props: {
   showSpriteBounty: boolean
 }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "210px 210px", justifyItems: 'left', flexFlow: "column", alignItems: "start" }}>
-      <label className="my-label">
-        <input
-          type="checkbox"
-          className="nes-checkbox my-cursor"
-          checked={props.showIndex}
-          onChange={(e) => {
-            props.setShowIndex(e.target.checked)
-          }}
+    <Grid container spacing={2}>
+      <Grid item>
+        <FormControlLabel
+          label={<Typography color="text.secondary">index</Typography>}
+          control={
+            <Checkbox
+              checked={props.showIndex}
+              onChange={(e) => {
+                props.setShowIndex(e.target.checked)
+              }}
+            />
+          }
         />
-        <span style={{ fontSize: "0.7em" }}>Index</span>
-      </label>
-      <label className="my-label">
-        <input
-          type="checkbox"
-          className="nes-checkbox my-cursor"
-          checked={props.showPortraitAuthor}
-          onChange={(e) => {
-            props.setPortraitAuthor(e.target.checked)
-          }}
+        <FormControlLabel
+          label={
+            <Typography color="text.secondary">Portrait Author</Typography>
+          }
+          control={
+            <Checkbox
+              checked={props.showPortraitAuthor}
+              onChange={(e) => {
+                props.setPortraitAuthor(e.target.checked)
+              }}
+            />
+          }
         />
-        <span style={{ fontSize: "0.7em" }}>Portrait Author</span>
-      </label>
-      <label className="my-label">
-        <input
-          type="checkbox"
-          className="nes-checkbox my-cursor"
-          checked={props.showSpriteAuthor}
-          onChange={(e) => {
-            props.setSpriteAuthor(e.target.checked)
-          }}
+        <FormControlLabel
+          label={<Typography color="text.secondary">Sprite Author</Typography>}
+          control={
+            <Checkbox
+              checked={props.showSpriteAuthor}
+              onChange={(e) => {
+                props.setSpriteAuthor(e.target.checked)
+              }}
+            />
+          }
         />
-        <span style={{ fontSize: "0.7em" }}>Sprite Author</span>
-      </label>
-      <label className="my-label">
-        <input
-          type="checkbox"
-          className="nes-checkbox my-cursor"
-          checked={props.showLastModification}
-          onChange={(e) => {
-            props.setShowLastModification(e.target.checked)
-          }}
+        <FormControlLabel
+          label={<Typography color="text.secondary">Last Change</Typography>}
+          control={
+            <Checkbox
+              checked={props.showLastModification}
+              onChange={(e) => {
+                props.setShowLastModification(e.target.checked)
+              }}
+            />
+          }
         />
-        <span style={{ fontSize: "0.7em" }}>Last Change</span>
-      </label>
-      <label className="my-label">
-        <input
-          type="checkbox"
-          className="nes-checkbox my-cursor"
-          checked={props.showPortraitBounty}
-          onChange={(e) => {
-            props.setShowPortraitBounty(e.target.checked)
-          }}
+        <FormControlLabel
+          label={
+            <Typography color="text.secondary">Portrait bounty</Typography>
+          }
+          control={
+            <Checkbox
+              checked={props.showPortraitBounty}
+              onChange={(e) => {
+                props.setShowPortraitBounty(e.target.checked)
+              }}
+            />
+          }
         />
-        <span style={{ fontSize: "0.7em" }}>Portrait Bounty</span>
-      </label>
-      <label className="my-label">
-        <input
-          type="checkbox"
-          className="nes-checkbox my-cursor"
-          checked={props.showSpriteBounty}
-          onChange={(e) => {
-            props.setShowSpriteBounty(e.target.checked)
-          }}
+        <FormControlLabel
+          label={<Typography color="text.secondary">Sprite bounty</Typography>}
+          control={
+            <Checkbox
+              checked={props.showSpriteBounty}
+              onChange={(e) => {
+                props.setShowSpriteBounty(e.target.checked)
+              }}
+            />
+          }
         />
-        <span style={{ fontSize: "0.7em" }}>Sprite Bounty</span>
-      </label>
-    </div>
+      </Grid>
+    </Grid>
   )
 }

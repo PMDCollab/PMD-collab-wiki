@@ -6,6 +6,7 @@ import { Dungeon } from "../types/enum"
 import { useRef } from "react"
 import { MonsterForm } from "../generated/graphql"
 import Bounty from "./bounty"
+import { Box, Grid, Link, Paper, Typography } from "@mui/material"
 
 export default function PokemonInformations(props: {
   info: MonsterForm
@@ -23,85 +24,46 @@ export default function PokemonInformations(props: {
     ? new Date(props.info.sprites.modifiedDate)
     : undefined
   const portraitSheetUrl = props.info.portraits.sheetUrl ? (
-    <a
-      target="_blank"
-      style={{ fontSize: "0.6em", marginRight: "5%" }}
-      className="nes-text is-primary"
-      href={props.info.portraits.sheetUrl}
-      rel="noreferrer"
-    >
-      Download all portraits
-    </a>
+    <Link target="_blank" href={props.info.portraits.sheetUrl}>
+      <Typography>Download all portraits</Typography>
+    </Link>
   ) : null
   const portraitRecolorSheetUrl = props.info.portraits.recolorSheetUrl ? (
-    <a
-      target="_blank"
-      style={{ fontSize: "0.6em" }}
-      className="nes-text is-primary"
-      href={props.info.portraits.recolorSheetUrl}
-      rel="noreferrer"
-    >
-      Download recolor portraits
-    </a>
+    <Link target="_blank" href={props.info.portraits.recolorSheetUrl}>
+      <Typography>Download recolor portraits</Typography>
+    </Link>
   ) : null
   const zipUrl = props.info.sprites.zipUrl ? (
-    <a
-      target="_blank"
-      style={{ fontSize: "0.6em", marginRight: "5%" }}
-      className="nes-text is-primary"
-      href={props.info.sprites.zipUrl}
-      rel="noreferrer"
-    >
-      Download all sprites
-    </a>
+    <Link target="_blank" href={props.info.sprites.zipUrl}>
+      <Typography>Download all sprites</Typography>
+    </Link>
   ) : null
   const spriteRecolorSheetUrl = props.info.sprites.recolorSheetUrl ? (
-    <a
-      target="_blank"
-      style={{ fontSize: "0.6em" }}
-      className="nes-text is-primary"
-      href={props.info.sprites.recolorSheetUrl}
-      rel="noreferrer"
-    >
-      Download recolor sprites
-    </a>
+    <Link target="_blank" href={props.info.sprites.recolorSheetUrl}>
+      <Typography> Download recolor sprites</Typography>
+    </Link>
   ) : null
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap"
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-          <div>
-            <h4 style={{ textAlign: "left" }}>Portraits</h4>
-            <div style={{ display: "flex", gap: "10px" }}>
-              <p
-                style={{
-                  textAlign: "left",
-                  fontSize: "0.6em",
-                  margin: "0px",
-                  width: "min-content"
-                }}
-              >
-                {getLastModification(portraitDate)}
-              </p>
-              <Bounty bounty={props.info.portraits.bounty} />
-            </div>
-          </div>
-
-          {portraitSheetUrl}
-          {portraitRecolorSheetUrl}
-        </div>
-        <Credits
-          primary={props.info.portraits.creditPrimary}
-          secondary={props.info.portraits.creditSecondary}
-        />
-      </div>
+    <Box>
+      <Grid container spacing={2}>
+        <Grid item>
+          <Typography fontWeight="bold" variant="h5">
+            Portraits
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography>{getLastModification(portraitDate)}</Typography>
+        </Grid>
+        <Grid item>
+          <Bounty bounty={props.info.portraits.bounty} />
+        </Grid>
+        <Grid item>{portraitSheetUrl}</Grid>
+        <Grid item>{portraitRecolorSheetUrl}</Grid>
+      </Grid>
+      <Credits
+        primary={props.info.portraits.creditPrimary}
+        secondary={props.info.portraits.creditSecondary}
+      />
       {props.info.portraits.emotions.length !== 0 ? (
         <Emotions
           emotions={props.info.portraits.emotions.concat(
@@ -111,59 +73,50 @@ export default function PokemonInformations(props: {
           )}
         />
       ) : (
-        <p>No portraits available for now.</p>
+        <Typography variant="h3">No portraits available for now.</Typography>
       )}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap"
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-          <div>
-            <h4 style={{ textAlign: "left" }}>Sprites</h4>
-            <div style={{ display: "flex", gap: "10px" }}>
-              <p
-                style={{
-                  textAlign: "left",
-                  fontSize: "0.6em",
-                  margin: "0px",
-                  width: "min-content"
-                }}
-              >
-                {getLastModification(spriteDate)}
-              </p>
-              <Bounty bounty={props.info.sprites.bounty} />
-            </div>
-          </div>
-
-          {zipUrl}
-          {spriteRecolorSheetUrl}
-        </div>
+      <Box sx={{ mt: 4 }}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Typography fontWeight="bold" variant="h5">
+              Sprites
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography>{getLastModification(spriteDate)}</Typography>
+          </Grid>
+          <Grid item>
+            <Bounty bounty={props.info.sprites.bounty} />
+          </Grid>
+          <Grid item>{zipUrl}</Grid>
+          <Grid item>{spriteRecolorSheetUrl}</Grid>
+        </Grid>
         <Credits
           primary={props.info.sprites.creditPrimary}
           secondary={props.info.sprites.creditSecondary}
         />
-      </div>
+      </Box>
       {props.info.sprites.actions.length !== 0 ? (
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <Grid container spacing={2} sx={{ mt: 3 }}>
           {props.info.sprites.actions.map((k) =>
             k.__typename === "Sprite" && props.info.sprites.animDataXml ? (
-              <SpritePreview
-                key={k.action}
-                dungeon={bg.current}
-                sprite={k}
-                animDataUrl={props.info.sprites.animDataXml}
-              />
+              <Grid item>
+                <Paper elevation={2}>
+                  <SpritePreview
+                    key={k.action}
+                    dungeon={bg.current}
+                    sprite={k}
+                    animDataUrl={props.info.sprites.animDataXml}
+                  />
+                </Paper>
+              </Grid>
             ) : null
           )}
-        </div>
+        </Grid>
       ) : (
-        <p>No sprites available for now.</p>
+        <Typography variant="h3">No sprites available for now.</Typography>
       )}
-    </div>
+    </Box>
   )
 }
 

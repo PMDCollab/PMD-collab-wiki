@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Monster, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod, REQUEST_ITEMS_SIZE } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
+import { Grid, Typography } from "@mui/material"
 
 export default function PokemonCarousel(props: {
   currentText: string
@@ -42,20 +43,13 @@ export default function PokemonCarousel(props: {
     }
   }, [data, index, props.ids, fetchMore])
 
-  if (loading && monsters.length == 0) return <p>loading...</p>
-  if (error) return <p>Error</p>
+  if (loading && monsters.length == 0)
+    return <Typography>loading...</Typography>
+  if (error) return <Typography>Error</Typography>
 
   const lowerCaseText = props.currentText.toLowerCase()
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-        overflowY: "scroll",
-        overflowX: "hidden"
-      }}
-    >
+    <Grid container spacing={2}>
       {monsters
         .filter(
           (k) =>
@@ -70,19 +64,20 @@ export default function PokemonCarousel(props: {
         )
         .sort((a, b) => rankFunction(props.rankBy, a as Monster, b as Monster))
         .map((k) => (
-          <PokemonThumbnail
-            key={k.id}
-            infoKey={k.rawId}
-            info={k as Monster}
-            showIndex={props.showIndex}
-            showPortraitAuthor={props.showPortraitAuthor}
-            showSpriteAuthor={props.showSpriteAuthor}
-            showLastModification={props.showLastModification}
-            showPortraitBounty={props.showPortraitBounty}
-            showSpriteBounty={props.showSpriteBounty}
-          />
+          <Grid item key={k.id}>
+            <PokemonThumbnail
+              infoKey={k.rawId}
+              info={k as Monster}
+              showIndex={props.showIndex}
+              showPortraitAuthor={props.showPortraitAuthor}
+              showSpriteAuthor={props.showSpriteAuthor}
+              showLastModification={props.showLastModification}
+              showPortraitBounty={props.showPortraitBounty}
+              showSpriteBounty={props.showSpriteBounty}
+            />
+          </Grid>
         ))}
-    </div>
+    </Grid>
   )
 }
 

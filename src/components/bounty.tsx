@@ -1,42 +1,36 @@
 import { MonsterBounty } from "../generated/graphql"
 import { faCoins } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Grid, Typography } from "@mui/material"
 
 export default function Bounty(props: { bounty: MonsterBounty }) {
   if (props.bounty.exists || props.bounty.full || props.bounty.incomplete) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          fontSize: "0.6em"
-        }}
-      >
+      <Grid container>
         {props.bounty.exists ? (
-          <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-            <p>{props.bounty.exists}</p>
+          <Grid item sx={{ display: "flex", gap: "5px" }}>
+            <Typography>{props.bounty.exists}</Typography>
             <FontAwesomeIcon icon={faCoins} />
-            <p>exists</p>
-          </div>
+            <Typography>exists</Typography>
+          </Grid>
         ) : null}
 
         {props.bounty.full ? (
-          <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-            <p>{props.bounty.full}</p>
+          <Grid item sx={{ display: "flex", gap: "5px" }}>
+            <Typography>{props.bounty.full}</Typography>
             <FontAwesomeIcon icon={faCoins} />
-            <p>full</p>
-          </div>
+            <Typography>full</Typography>
+          </Grid>
         ) : null}
 
         {props.bounty.incomplete ? (
-          <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-            <p>{props.bounty.incomplete}</p>
+          <Grid item sx={{ display: "flex", gap: "5px" }}>
+            <Typography>{props.bounty.incomplete}</Typography>
             <FontAwesomeIcon icon={faCoins} />
-            <p>incomplete</p>
-          </div>
+            <Typography>incomplete</Typography>
+          </Grid>
         ) : null}
-      </div>
+      </Grid>
     )
   } else {
     return null
