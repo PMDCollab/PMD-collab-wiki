@@ -37,7 +37,7 @@ export function Bar() {
         <IconButton
           size="large"
           color="inherit"
-          href="https://twitter.com/PMD_Spritebot"
+          href="https://github.com/PMDCollab/SpriteCollab"
         >
           <GitHubIcon />
           <Typography variant="h6">Github</Typography>

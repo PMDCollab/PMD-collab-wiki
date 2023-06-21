@@ -89,7 +89,7 @@ export default function About() {
         <Typography>
           If you have created or want to learn how to create sprites, you can
           join the #sprite-asset-help channel of the{" "}
-          <Link href='"https://discord.gg/skytemple"'>
+          <Link href="https://discord.gg/skytemple">
             SkyTemple discord server
           </Link>
           . Talk to the friendly artists there and they'll help walk you through
