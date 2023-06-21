@@ -8,7 +8,7 @@ export default function Search(props: {
     <TextField
       sx={{ backgroundColor: "white" }}
       fullWidth
-      label="Mewtwo... Emmuffin... 151..."
+      label="Mewtwo... FunnyKecleonMeme... 151..."
       value={props.currentText}
       onChange={(e) => {
         props.setCurrentText(e.target.value)
