@@ -14,7 +14,7 @@ export default function About() {
           padding: "0 5%"
         }}
       >
-        <h1 className="nes-text is-primary">PMDCollab Sprite Project</h1>
+        <h1 className="nes-text is-primary">PMDCollab Sprite&nbsp;Project</h1>
 
         <h3 className="nes-text is-primary">What is PMDCollab ?</h3>
         <p>

@@ -82,3 +82,21 @@
 .about .nes-container {
     padding-bottom: 2em;
 }
+
+h1 {
+    color: #209cee;
+}
+
+h1, h5 {
+    margin: auto;
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 16pt;
+    }
+    h5 {
+        font-size: 8pt;
+    }
+}
