@@ -1,4 +1,3 @@
-import { Box, Grid, Link, Typography } from "@mui/material"
 import { Credit } from "../generated/graphql"
 
 export default function Credits(props: {
@@ -6,41 +5,78 @@ export default function Credits(props: {
   secondary: Credit[]
 }) {
   return (
-    <Grid container spacing={3}>
+    <div
+      style={{
+        display: "flex",
+        flexGrow: ".3",
+        justifyContent: "space-around"
+      }}
+    >
       {props.primary?.name ? (
-        <Grid item>
-          <Typography>by</Typography>
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "column",
+            justifyContent: "space-between",
+            alignItems: "baseline"
+          }}
+        >
+          <p style={{ fontSize: "0.7em" }}>by</p>
           <Author credit={props.primary} />
-        </Grid>
+        </div>
       ) : null}
 
       {props.secondary.length !== 0 ? (
-        <Grid item>
-          <Typography>Others</Typography>
-          <Box>
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "column",
+            justifyContent: "space-between",
+            alignItems: "baseline"
+          }}
+        >
+          <p style={{ fontSize: "0.7em" }}>Others</p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              gap: "0.7em"
+            }}
+          >
             {props.secondary.map((s) => (
               <Author credit={s} key={s.id} />
             ))}
-          </Box>
-        </Grid>
+          </div>
+        </div>
       ) : null}
-    </Grid>
+    </div>
   )
 }
 
 function Author(props: { credit: Credit | undefined | null }) {
   return (
-    <Box key={props.credit?.id}>
+    <div
+      key={props.credit?.id}
+      style={{
+        display: "flex",
+        flexFlow: "column",
+        justifyContent: "space-between",
+        alignItems: "baseline"
+      }}
+    >
       {props.credit?.name ? (
-        <Link
+        <a
+          className="nes-text is-primary"
+          style={{ fontSize: "0.7em", margin: "0px" }}
           href={props.credit?.contact ? props.credit?.contact : ""}
-          target="_blank"
         >
           {props.credit?.name}
-        </Link>
+        </a>
       ) : (
-        <Typography>{props.credit?.discordHandle}</Typography>
+        <p className="nes-text" style={{ fontSize: "0.7em", margin: "0px" }}>
+          {props.credit?.discordHandle}
+        </p>
       )}
-    </Box>
+    </div>
   )
 }

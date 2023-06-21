@@ -4,7 +4,6 @@ import { Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
-import { Card, Typography } from "@mui/material"
 
 export default function SpritePreview(props: {
   sprite: Sprite
@@ -36,12 +35,29 @@ export default function SpritePreview(props: {
   )
 
   return (
-    <Card>
+    <div
+      className="my-container nes-container"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        flexFlow: "column",
+        margin: "10px"
+      }}
+    >
       <div id={`action-${props.sprite.action}`} ref={container}></div>
-      <div style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-around",
+          gap: "2px"
+        }}
+      >
         <Lock locked={props.sprite.locked} />
-        <Typography align="center">{props.sprite.action}</Typography>
+        <p style={{ fontSize: "0.6em", margin: "0px" }}>
+          {props.sprite.action}
+        </p>
       </div>
-    </Card>
+    </div>
   )
 }
