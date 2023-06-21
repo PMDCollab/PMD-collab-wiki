@@ -1,14 +1,16 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTwitter } from "@fortawesome/free-brands-svg-icons"
+
 export default function Twitter() {
   return (
     <a
-      style={{ fontSize: ".8em" }}
       href="https://twitter.com/PMD_Spritebot"
       target="_blank"
-      className="my-btn nes-btn is-primary"
+      className="my-btn nes-btn twitter-button"
     >
-      <div style={{ display: "flex" }}>
-        <i className="nes-icon twitter is-small"></i>
-        <p style={{ margin: "0px", marginLeft: "5px" }}>Twitter</p>
+      <div className="navbar-button-inner">
+        <FontAwesomeIcon icon={faTwitter} />
+        <p className="navbar-text">Twitter</p>
       </div>
     </a>
   )

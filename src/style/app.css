@@ -1,3 +1,10 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .App {
   text-align: center;
   background-image: url('../../public/background.png');
@@ -17,11 +24,6 @@
     height: 80px;
     width: 80px;
     image-rendering: pixelated;
-}
-
-.my-btn {
-    margin-bottom: 10px !important;
-    margin-right: 10px !important;
 }
 
 .my-link {
@@ -57,14 +59,14 @@
     border-width:4px !important
 }
 
-.about p {
+.about .nes-container p, .about .nes-container li {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.about .nes-container p {
     max-width: 80em;
     margin-left: auto;
     margin-right: auto;
-}
-
-.about .nes-container p, .about .nes-container li {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .about ul {
@@ -72,7 +74,7 @@
 }
 
 .about h1 {
-    margin-top: .5em;
+    margin-top: .75em;
 }
 
 .about h3 {

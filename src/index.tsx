@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react"
 import ReactDOM from "react-dom/client"
-import "./style/index.css"
 import Home from "./Home"
 import { HashRouter, Routes, Route } from "react-router-dom"
 import PokemonPage from "./components/pokemon-page"

@@ -6,12 +6,12 @@ import GithubButton from "./button/github-button"
 
 export default function Buttons() {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap"}}>
+    <nav style={{ display: "flex", flexWrap: "wrap"}}>
       <HomeButton />
+      <AboutButton />
       <DiscordButton />
       <TwitterButton />
       <GithubButton />
-      <AboutButton />
-    </div>
+    </nav>
   )
 }

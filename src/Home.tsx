@@ -1,4 +1,5 @@
 import "./style/app.css"
+import "./style/navbar.css"
 import "nes.css/css/nes.min.css"
 import PokemonCarousel from "./components/pokemon-carousel"
 import Search from "./components/search"

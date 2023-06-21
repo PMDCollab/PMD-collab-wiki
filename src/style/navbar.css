@@ -1,0 +1,75 @@
+nav .nes-btn {
+    margin-bottom: .625em;
+    margin-right: .625em;
+}
+
+nav .twitter-button {
+    background-color: #1d9bf0;
+    color: white;
+}
+
+nav .twitter-button:hover {
+    background-color: #108de0;
+    color: white;
+}
+
+nav .twitter-button::after {
+    box-shadow: inset -4px -4px #0c6daf;
+}
+
+nav .twitter-button:hover::after {
+    box-shadow: inset -6px -6px #0c6daf;
+}
+
+nav .discord-button {
+    background-color: #5865F2;
+    color: white;
+}
+
+nav .discord-button:hover {
+    background-color: #4b59de;
+    color: white;
+}
+
+nav .discord-button::after {
+    box-shadow: inset -4px -4px #3b4abf;
+}
+
+nav .discord-button:hover::after {
+    box-shadow: inset -6px -6px #3b4abf;
+}
+
+.navbar-icon {
+    height: 18px;
+}
+
+.navbar-button-inner {
+    display: flex;
+    align-items: baseline;
+}
+
+.navbar-text {
+    margin: 0 0 0 .5em;
+    font-size: 80%;
+    display: inline-block;
+    
+}
+
+nav .svg-inline--fa {
+    width: 1em;
+    height: 1em;
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .navbar-text {
+        display: none;
+    }
+}
+
+@media (-webkit-min-device-pixel-ratio: 0) and (-webkit-min-device-pixel-ratio: 0), (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+    /* Fixes an issue with seams appearing in the navbar item borders. */
+    nav .nes-btn {
+        border-image-repeat: unset;
+    }
+}
