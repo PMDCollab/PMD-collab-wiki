@@ -73,7 +73,7 @@ export default function PokemonInformations(props: {
           )}
         />
       ) : (
-        <Typography variant="h5">No portraits available for now.</Typography>
+        <Typography variant="h3">No portraits available for now.</Typography>
       )}
       <Box sx={{ mt: 4 }}>
         <Grid container spacing={2}>
@@ -114,7 +114,7 @@ export default function PokemonInformations(props: {
           )}
         </Grid>
       ) : (
-        <Typography variant="h5">No sprites available for now.</Typography>
+        <Typography variant="h3">No sprites available for now.</Typography>
       )}
     </Box>
   )

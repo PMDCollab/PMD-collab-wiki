@@ -6,7 +6,7 @@ export default function Credits(props: {
   secondary: Credit[]
 }) {
   return (
-    <Grid container spacing={3} sx={{ mt: 1 }}>
+    <Grid container spacing={3}>
       {props.primary?.name ? (
         <Grid item>
           <Typography>by</Typography>
