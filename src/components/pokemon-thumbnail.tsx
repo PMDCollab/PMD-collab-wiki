@@ -23,13 +23,7 @@ export default function PokemonThumbnail(props: {
 
   if (props.showPortraitAuthor) {
     portraitAuthor = (
-      <Typography
-        align="center"
-        color="GrayText"
-        variant="subtitle2"
-        noWrap
-        sx={{ width: "40px", fontSize: ".5em" }}
-      >
+      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
         {props.info?.manual?.portraits?.creditPrimary?.name}
       </Typography>
     )
@@ -37,13 +31,7 @@ export default function PokemonThumbnail(props: {
 
   if (props.showSpriteAuthor) {
     spriteAuthor = (
-      <Typography
-        align="center"
-        color="GrayText"
-        variant="subtitle2"
-        noWrap
-        sx={{ width: "40px", fontSize: ".5em" }}
-      >
+      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
         {props.info.manual?.sprites.creditPrimary?.name}
       </Typography>
     )
@@ -51,13 +39,7 @@ export default function PokemonThumbnail(props: {
 
   if (props.showIndex) {
     index = (
-      <Typography
-        align="center"
-        color="GrayText"
-        variant="subtitle2"
-        noWrap
-        sx={{ width: "40px", fontSize: ".5em" }}
-      >
+      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
         {props.infoKey}
       </Typography>
     )
@@ -67,13 +49,7 @@ export default function PokemonThumbnail(props: {
     const portraitDate = new Date(props.info.manual?.portraits.modifiedDate)
     const spriteDate = new Date(props.info.manual?.sprites.modifiedDate)
     date = (
-      <Typography
-        align="center"
-        color="GrayText"
-        variant="subtitle2"
-        noWrap
-        sx={{ width: "40px", fontSize: ".5em" }}
-      >
+      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
         {formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}
       </Typography>
     )
@@ -91,7 +67,7 @@ export default function PokemonThumbnail(props: {
         : null
     })
     portraitBounty = (
-      <Typography color="GrayText" align="center" variant="subtitle2" noWrap>
+      <Typography color="GrayText" align="center" noWrap>
         {bounties.length > 0 ? Math.max(...bounties) : 0} gp
       </Typography>
     )
@@ -107,7 +83,7 @@ export default function PokemonThumbnail(props: {
         : null
     })
     spriteBounty = (
-      <Typography align="center" color="GrayText" variant="subtitle2" noWrap>
+      <Typography align="center" color="GrayText" noWrap>
         {bounties.length > 0 ? Math.max(...bounties) : 0} gp
       </Typography>
     )
@@ -117,7 +93,7 @@ export default function PokemonThumbnail(props: {
     image = (
       <img
         src={props.info.manual.portraits.previewEmotion?.url}
-        style={{ height: 40, imageRendering: "pixelated" }}
+        style={{ height: 80, imageRendering: "pixelated" }}
       />
     )
   } else {
@@ -128,7 +104,7 @@ export default function PokemonThumbnail(props: {
     <Link to={`/${props.infoKey}`}>
       <Paper
         sx={{
-          minWidth: 40,
+          minWidth: 80,
           maxHeight:
             index ||
             portraitAuthor ||
@@ -137,7 +113,7 @@ export default function PokemonThumbnail(props: {
             portraitBounty ||
             spriteBounty
               ? "inherit"
-              : 40
+              : 80
         }}
         elevation={2}
       >
