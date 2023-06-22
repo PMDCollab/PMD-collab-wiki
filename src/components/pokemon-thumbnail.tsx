@@ -1,9 +1,7 @@
-import { faCoins } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ReactElement } from "react"
 import { Link } from "react-router-dom"
 import { Monster } from "../generated/graphql"
-import { Grid, Paper, Typography } from "@mui/material"
+import { Paper, Typography } from "@mui/material"
 
 export default function PokemonThumbnail(props: {
   info: Monster
@@ -93,17 +91,9 @@ export default function PokemonThumbnail(props: {
         : null
     })
     portraitBounty = (
-      <Grid container>
-        <Typography
-          color="GrayText"
-          variant="subtitle2"
-          noWrap
-          sx={{ width: "40px", fontSize: ".5em" }}
-        >
-          {bounties.length > 0 ? Math.max(...bounties) : 0}
-        </Typography>
-        <FontAwesomeIcon icon={faCoins} size="sm" />
-      </Grid>
+      <Typography color="GrayText" align="center" variant="subtitle2" noWrap>
+        {bounties.length > 0 ? Math.max(...bounties) : 0} gp
+      </Typography>
     )
   }
 
@@ -117,18 +107,9 @@ export default function PokemonThumbnail(props: {
         : null
     })
     spriteBounty = (
-      <Grid container>
-        <Typography
-          align="center"
-          color="GrayText"
-          variant="subtitle2"
-          noWrap
-          sx={{ width: "40px", fontSize: ".5em" }}
-        >
-          {bounties.length > 0 ? Math.max(...bounties) : 0}
-        </Typography>
-        <FontAwesomeIcon icon={faCoins} size="sm" />
-      </Grid>
+      <Typography align="center" color="GrayText" variant="subtitle2" noWrap>
+        {bounties.length > 0 ? Math.max(...bounties) : 0} gp
+      </Typography>
     )
   }
 
