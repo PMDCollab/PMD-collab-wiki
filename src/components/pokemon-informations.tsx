@@ -25,22 +25,22 @@ export default function PokemonInformations(props: {
     : undefined
   const portraitSheetUrl = props.info.portraits.sheetUrl ? (
     <Link target="_blank" href={props.info.portraits.sheetUrl}>
-      <Typography>Download all portraits</Typography>
+      <Typography variant="h6">Download all portraits</Typography>
     </Link>
   ) : null
   const portraitRecolorSheetUrl = props.info.portraits.recolorSheetUrl ? (
     <Link target="_blank" href={props.info.portraits.recolorSheetUrl}>
-      <Typography>Download recolor portraits</Typography>
+      <Typography variant="h6">Download recolor portraits</Typography>
     </Link>
   ) : null
   const zipUrl = props.info.sprites.zipUrl ? (
     <Link target="_blank" href={props.info.sprites.zipUrl}>
-      <Typography>Download all sprites</Typography>
+      <Typography variant="h6">Download all sprites</Typography>
     </Link>
   ) : null
   const spriteRecolorSheetUrl = props.info.sprites.recolorSheetUrl ? (
     <Link target="_blank" href={props.info.sprites.recolorSheetUrl}>
-      <Typography> Download recolor sprites</Typography>
+      <Typography variant="h6"> Download recolor sprites</Typography>
     </Link>
   ) : null
   return (
@@ -52,7 +52,9 @@ export default function PokemonInformations(props: {
           </Typography>
         </Grid>
         <Grid item>
-          <Typography>{getLastModification(portraitDate)}</Typography>
+          <Typography variant="h6">
+            {getLastModification(portraitDate)}
+          </Typography>
         </Grid>
         <Grid item>
           <Bounty bounty={props.info.portraits.bounty} />
@@ -83,7 +85,9 @@ export default function PokemonInformations(props: {
             </Typography>
           </Grid>
           <Grid item>
-            <Typography>{getLastModification(spriteDate)}</Typography>
+            <Typography variant="h6">
+              {getLastModification(spriteDate)}
+            </Typography>
           </Grid>
           <Grid item>
             <Bounty bounty={props.info.sprites.bounty} />
