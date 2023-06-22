@@ -3,14 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ReactElement } from "react"
 import { Link } from "react-router-dom"
 import { Monster } from "../generated/graphql"
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography
-} from "@mui/material"
+import { Grid, Paper, Typography } from "@mui/material"
 
 export default function PokemonThumbnail(props: {
   info: Monster
@@ -32,7 +25,7 @@ export default function PokemonThumbnail(props: {
 
   if (props.showPortraitAuthor) {
     portraitAuthor = (
-      <Typography align="center" color="GrayText">
+      <Typography align="center" color="GrayText" variant="subtitle2">
         {props.info?.manual?.portraits?.creditPrimary?.name}
       </Typography>
     )
@@ -40,7 +33,7 @@ export default function PokemonThumbnail(props: {
 
   if (props.showSpriteAuthor) {
     spriteAuthor = (
-      <Typography align="center" color="GrayText">
+      <Typography align="center" color="GrayText" variant="subtitle2">
         {props.info.manual?.sprites.creditPrimary?.name}
       </Typography>
     )
@@ -48,7 +41,7 @@ export default function PokemonThumbnail(props: {
 
   if (props.showIndex) {
     index = (
-      <Typography align="center" color="GrayText">
+      <Typography align="center" color="GrayText" variant="subtitle2">
         {props.infoKey}
       </Typography>
     )
@@ -58,7 +51,7 @@ export default function PokemonThumbnail(props: {
     const portraitDate = new Date(props.info.manual?.portraits.modifiedDate)
     const spriteDate = new Date(props.info.manual?.sprites.modifiedDate)
     date = (
-      <Typography align="center" color="GrayText">
+      <Typography align="center" color="GrayText" variant="subtitle2">
         {formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}
       </Typography>
     )
@@ -77,7 +70,7 @@ export default function PokemonThumbnail(props: {
     })
     portraitBounty = (
       <Grid container>
-        <Typography color="GrayText">
+        <Typography color="GrayText" variant="subtitle2">
           {bounties.length > 0 ? Math.max(...bounties) : 0}
         </Typography>
         <FontAwesomeIcon icon={faCoins} size="sm" />
@@ -96,7 +89,7 @@ export default function PokemonThumbnail(props: {
     })
     spriteBounty = (
       <Grid container>
-        <Typography align="center" color="GrayText">
+        <Typography align="center" color="GrayText" variant="subtitle2">
           {bounties.length > 0 ? Math.max(...bounties) : 0}
         </Typography>
         <FontAwesomeIcon icon={faCoins} size="sm" />
@@ -106,33 +99,41 @@ export default function PokemonThumbnail(props: {
 
   if (props.info.manual?.portraits.previewEmotion?.url) {
     image = (
-      <CardMedia
-        image={props.info.manual.portraits.previewEmotion?.url}
-        sx={{ height: 120, imageRendering: "pixelated" }}
+      <img
+        src={props.info.manual.portraits.previewEmotion?.url}
+        style={{ height: 40, imageRendering: "pixelated" }}
       />
     )
   } else {
-    image = <Typography variant="h1">?</Typography>
+    image = <Typography variant="h4">?</Typography>
   }
 
   return (
     <Link to={`/${props.infoKey}`}>
-      <Card sx={{ maxWidth: 120, minWidth: 120 }}>
-        <CardActionArea>
-          {image}
-          <CardContent>
-            <Typography align="center" color="GrayText">
-              {props.info.name}
-            </Typography>
-            {index}
-            {portraitAuthor}
-            {spriteAuthor}
-            {date}
-            {portraitBounty}
-            {spriteBounty}
-          </CardContent>
-        </CardActionArea>
-      </Card>
+      <Paper
+        sx={{
+          maxWidth: 40,
+          minWidth: 40,
+          maxHeight:
+            index ||
+            portraitAuthor ||
+            spriteAuthor ||
+            date ||
+            portraitBounty ||
+            spriteBounty
+              ? "inherit"
+              : 40
+        }}
+        elevation={2}
+      >
+        {image}
+        {index}
+        {portraitAuthor}
+        {spriteAuthor}
+        {date}
+        {portraitBounty}
+        {spriteBounty}
+      </Paper>
     </Link>
   )
 }

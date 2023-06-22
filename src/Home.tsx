@@ -11,7 +11,9 @@ import {
   AccordionSummary,
   Box,
   Container,
-  Typography
+  Typography,
+  useMediaQuery,
+  useTheme
 } from "@mui/material"
 import { Bar } from "./components/bar"
 import { Footer } from "./components/footer"
@@ -27,12 +29,14 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
     useState<boolean>(false)
   const [showPortraitBounty, setShowPortraitBounty] = useState<boolean>(false)
   const [showSpriteBounty, setShowSpriteBounty] = useState<boolean>(false)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   return (
     <Box>
       <Bar />
       <Container maxWidth="xl">
         <Typography
-          variant="h5"
+          variant={isMobile ? "subtitle2" : "h5"}
           align="center"
           color="text.secondary"
           gutterBottom
@@ -42,7 +46,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
         </Typography>
         <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
           <Typography
-            variant="h5"
+            variant={isMobile ? "subtitle2" : "h5"}
             align="center"
             color="text.secondary"
             gutterBottom
@@ -50,37 +54,41 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
             Search for a pokemon, artist or pokedex number ...
           </Typography>
           <Search currentText={currentText} setCurrentText={setCurrentText} />
-          <Accordion sx={{ mt: 2 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography color="text.secondary">Searching options</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <DisplayParameters
-                setSpriteAuthor={setSpriteAuthor}
-                setPortraitAuthor={setPortraitAuthor}
-                setShowIndex={setShowIndex}
-                setShowLastModification={setShowLastModification}
-                setShowPortraitBounty={setShowPortraitBounty}
-                setShowSpriteBounty={setShowSpriteBounty}
-                showPortraitAuthor={showPortraitAuthor}
-                showSpriteAuthor={showSpriteAuthor}
-                showIndex={showIndex}
-                showLastModification={showLastModification}
-                showPortraitBounty={showPortraitBounty}
-                showSpriteBounty={showSpriteBounty}
-              />
-              <PokemonRanking
-                setSpriteAuthor={setSpriteAuthor}
-                setPortraitAuthor={setPortraitAuthor}
-                setShowIndex={setShowIndex}
-                setShowLastModification={setShowLastModification}
-                setShowPortraitBounty={setShowPortraitBounty}
-                setShowSpriteBounty={setShowSpriteBounty}
-                setRankBy={setRankBy}
-                rankBy={rankBy}
-              />
-            </AccordionDetails>
-          </Accordion>
+          {!isMobile ? (
+            <Accordion sx={{ mt: 2 }}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography color="text.secondary">
+                  Searching options
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <DisplayParameters
+                  setSpriteAuthor={setSpriteAuthor}
+                  setPortraitAuthor={setPortraitAuthor}
+                  setShowIndex={setShowIndex}
+                  setShowLastModification={setShowLastModification}
+                  setShowPortraitBounty={setShowPortraitBounty}
+                  setShowSpriteBounty={setShowSpriteBounty}
+                  showPortraitAuthor={showPortraitAuthor}
+                  showSpriteAuthor={showSpriteAuthor}
+                  showIndex={showIndex}
+                  showLastModification={showLastModification}
+                  showPortraitBounty={showPortraitBounty}
+                  showSpriteBounty={showSpriteBounty}
+                />
+                <PokemonRanking
+                  setSpriteAuthor={setSpriteAuthor}
+                  setPortraitAuthor={setPortraitAuthor}
+                  setShowIndex={setShowIndex}
+                  setShowLastModification={setShowLastModification}
+                  setShowPortraitBounty={setShowPortraitBounty}
+                  setShowSpriteBounty={setShowSpriteBounty}
+                  setRankBy={setRankBy}
+                  rankBy={rankBy}
+                />
+              </AccordionDetails>
+            </Accordion>
+          ) : null}
         </Container>
 
         <PokemonCarousel

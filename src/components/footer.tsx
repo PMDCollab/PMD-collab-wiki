@@ -6,13 +6,13 @@ export function Footer(props: { meta: Meta }) {
     <Box component="footer" sx={{ mt: 4 }}>
       <Grid container spacing={2}>
         <Grid item>
-          <Typography>
+          <Typography color="GrayText">
             Last update:
             {new Date(props.meta.assetsUpdateDate).toLocaleString()}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography>
+          <Typography color="GrayText">
             Last Check for updates:
             {new Date(props.meta.updateCheckedDate).toLocaleString()}
           </Typography>

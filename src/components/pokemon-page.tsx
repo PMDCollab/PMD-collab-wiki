@@ -71,7 +71,7 @@ export default function PokemonPage(props: {
         key={form.path}
         sx={{ textTransform: "none" }}
         label={
-          <Typography variant="h5" color="text.primary">
+          <Typography variant="h6" color="text.primary">
             {form.fullName}
           </Typography>
         }
@@ -91,14 +91,14 @@ export default function PokemonPage(props: {
     <Box>
       <Bar />
       <Container maxWidth="xl" sx={{ mt: 3 }}>
-        {loading ? <Typography variant="h3">loading...</Typography> : null}
-        {error ? <Typography variant="h3">error</Typography> : null}
+        {loading ? <Typography variant="h4">loading...</Typography> : null}
+        {error ? <Typography variant="h4">error</Typography> : null}
         <Grid container>
           <Grid item xs={1}>
             {prevLink}
           </Grid>
           <Grid item xs={10}>
-            <Typography align="center" variant="h4" fontWeight="bold">
+            <Typography align="center" variant="h5" fontWeight="bold">
               {props.rawId} {data?.monster[0].name}
             </Typography>
           </Grid>

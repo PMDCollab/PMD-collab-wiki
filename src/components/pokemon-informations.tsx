@@ -100,10 +100,9 @@ export default function PokemonInformations(props: {
         <Grid container spacing={2} sx={{ mt: 3 }}>
           {props.info.sprites.actions.map((k) =>
             k.__typename === "Sprite" && props.info.sprites.animDataXml ? (
-              <Grid item>
+              <Grid item key={k.action}>
                 <Paper elevation={2}>
                   <SpritePreview
-                    key={k.action}
                     dungeon={bg.current}
                     sprite={k}
                     animDataUrl={props.info.sprites.animDataXml}

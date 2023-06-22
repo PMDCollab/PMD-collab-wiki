@@ -1,4 +1,11 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material"
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from "@mui/material"
 import HomeIcon from "@mui/icons-material/Home"
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
 import TwitterIcon from "@mui/icons-material/Twitter"
@@ -7,13 +14,17 @@ import InfoIcon from "@mui/icons-material/Info"
 import { Link } from "react-router-dom"
 
 export function Bar() {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   return (
     <AppBar position="relative">
       <Toolbar>
         <Link to={"/"}>
           <IconButton size="large" color="inherit">
             <HomeIcon />
-            <Typography variant="h6">PMD Collab</Typography>
+            {!isMobile ? (
+              <Typography variant="h6">PMD Collab</Typography>
+            ) : null}
           </IconButton>
         </Link>
 
@@ -23,7 +34,7 @@ export function Bar() {
           href="https://discord.gg/skytemple"
         >
           <SportsEsportsIcon />
-          <Typography variant="h6">Discord</Typography>
+          {!isMobile ? <Typography variant="h6">Discord</Typography> : null}
         </IconButton>
 
         <IconButton
@@ -32,7 +43,7 @@ export function Bar() {
           href="https://twitter.com/PMD_Spritebot"
         >
           <TwitterIcon />
-          <Typography variant="h6">Twitter</Typography>
+          {!isMobile ? <Typography variant="h6">Twitter</Typography> : null}
         </IconButton>
         <IconButton
           size="large"
@@ -40,12 +51,12 @@ export function Bar() {
           href="https://github.com/PMDCollab/SpriteCollab"
         >
           <GitHubIcon />
-          <Typography variant="h6">Github</Typography>
+          {!isMobile ? <Typography variant="h6">Github</Typography> : null}
         </IconButton>
         <Link to={"/About"}>
           <IconButton size="large" color="inherit">
             <InfoIcon />
-            <Typography variant="h6">About</Typography>
+            {!isMobile ? <Typography variant="h6">About</Typography> : null}
           </IconButton>
         </Link>
       </Toolbar>
