@@ -23,7 +23,7 @@ export default function Search(props: {
         type="text"
         id="inline_field"
         className="nes-input"
-        placeholder="Mewtwo&hellip; Emmuffin&hellip; 151"
+        placeholder="Mew&hellip; Emmuffin&hellip; 151&hellip;"
       />
     </div>
   )
