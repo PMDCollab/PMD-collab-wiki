@@ -105,6 +105,12 @@ h1, h5 {
     margin-right: .5em;
 }
 
+.footer {
+    display: flex;
+    font-size: 8px;
+    gap: 1.25em;
+}
+
 /* Mobile styles */
 @media (max-width: 480px) {
     h1 {
@@ -112,6 +118,10 @@ h1, h5 {
     }
     h5 {
         font-size: 8pt;
+    }
+
+    .nes-container {
+        padding: 1.5rem 1rem;
     }
 
     .search {
@@ -125,6 +135,16 @@ h1, h5 {
 
     .filters {
         display: none;
+    }
+
+    .footer {
+        display: block;
+        margin-bottom: .5em !important; /* Same here. */
+    }
+
+    .footer p {
+        margin-bottom: 0;
+        font-size: 6px;
     }
 }
 

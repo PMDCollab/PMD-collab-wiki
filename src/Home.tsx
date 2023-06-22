@@ -92,13 +92,13 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
           showSpriteBounty={showSpriteBounty}
           ids={props.ids}
         />
-        <div style={{ display: "flex", fontSize: "8px", gap: "20px" }}>
+        <div className="footer">
           <p>
             Last update:{" "}
             {new Date(props.meta.assetsUpdateDate).toLocaleString()}
           </p>
           <p>
-            Last Check for updates:{" "}
+            Last check for updates:{" "}
             {new Date(props.meta.updateCheckedDate).toLocaleString()}
           </p>
           <a
