@@ -92,7 +92,7 @@ export default function About() {
         <p>
           If you have created or want to learn how to create sprites, you can
           join the #sprite-asset-help channel of the{" "}
-          <a href='"https://discord.gg/skytemple"'>SkyTemple discord server</a>.
+          <a href="https://discord.gg/skytemple">SkyTemple discord server</a>.
           Talk to the friendly artists there and they'll help walk you through
           the process of adding sprites to the repository.
         </p>
