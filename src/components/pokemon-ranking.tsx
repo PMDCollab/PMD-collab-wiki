@@ -13,10 +13,10 @@ export default function PokemonRanking(props: {
 }) {
   return (
     <div
-      className="nes-select is-inline"
+      className="nes-select is-inline sort"
       style={{ display: "flex", alignItems: "center", width: "initial" }}
     >
-      <p style={{ fontSize: "0.7em", marginBottom: "0rem" }}>Rank by</p>
+      <label style={{ fontSize: "0.7em", marginBottom: "0rem" }}>Sort by</label>
       <select
         style={{ borderWidth: "2px", height: "40px", fontSize: "0.7em" }}
         value={props.rankBy}

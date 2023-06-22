@@ -3,16 +3,15 @@ export default function Search(props: {
   setCurrentText: React.Dispatch<React.SetStateAction<string>>
 }) {
   return (
-    <div className="nes-field is-inline">
+    <div className="nes-field is-inline search">
       <label
         htmlFor="inline_field"
-        style={{ fontSize: "0.7em", textAlign: "center" }}
+        style={{ fontSize: "70%", textAlign: "center" }}
       >
-        Search for a pokemon,author,index
+        Search
       </label>
       <input
         style={{
-          padding: "5px",
           height: "40px",
           borderWidth: "2px",
           fontSize: ".7em"
@@ -24,7 +23,7 @@ export default function Search(props: {
         type="text"
         id="inline_field"
         className="nes-input"
-        placeholder="Mewtwo... Audino... 151..."
+        placeholder="Mewtwo&hellip; Emmuffin&hellip; 151"
       />
     </div>
   )

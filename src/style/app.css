@@ -93,6 +93,18 @@ h1, h5 {
     margin: auto;
 }
 
+.filters {
+    display: grid;
+    grid-template-columns: 210px 210px;
+    justify-items: left; 
+    flex-flow: column;
+    align-items: start;
+}
+
+.sort label {
+    margin-right: .5em;
+}
+
 /* Mobile styles */
 @media (max-width: 480px) {
     h1 {
@@ -101,4 +113,18 @@ h1, h5 {
     h5 {
         font-size: 8pt;
     }
+
+    .search {
+        margin: auto;
+    }
+
+    .search label {
+        /* Ugh. We really should have the NES theme imported first so our CSS takes precedence, but that's a problem for another day */
+        margin-right: 0 !important; 
+    }
+
+    .filters {
+        display: none;
+    }
 }
+

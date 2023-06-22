@@ -46,8 +46,8 @@ export interface ICreditNames {
 }
 
 export enum RankMethod {
-  POKEDEX_NUMBER = "Pokedex Number",
-  LAST_MODIFICATION = "Last Modification",
+  POKEDEX_NUMBER = "Pokédex Number",
+  LAST_MODIFICATION = "Last Change Date",
   NAME = "Name",
   PORTRAIT_AUTHOR = "Portrait Author",
   SPRITE_AUTHOR = "Sprite Author",
