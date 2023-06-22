@@ -1,10 +1,10 @@
-import { Box, Grid, Link, Typography } from "@mui/material"
+import { Container, Grid, Link, Typography } from "@mui/material"
 import { Meta } from "../generated/graphql"
 
 export function Footer(props: { meta: Meta }) {
   return (
-    <Box component="footer" sx={{ mt: 4 }}>
-      <Grid container spacing={2}>
+    <Container component="footer" sx={{ mt: 4 }}>
+      <Grid container spacing={2} justifyContent="space-around">
         <Grid item>
           <Typography color="GrayText">
             Last update:
@@ -26,6 +26,6 @@ export function Footer(props: { meta: Meta }) {
           </Link>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   )
 }
