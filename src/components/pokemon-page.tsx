@@ -52,15 +52,17 @@ export default function PokemonPage(props: {
 
   const prevLink = props.prevIndex ? (
     <Link to={`/${props.prevIndex}`}>
-      <Typography variant="h5" color="text.secondary">
-        {"<"} {props.prevIndex}
+      <Typography variant="h6" color="text.secondary">
+        {"<"}
+        {props.prevIndex}
       </Typography>
     </Link>
   ) : null
   const nextLink = props.nextIndex ? (
     <Link to={`/${props.nextIndex}`}>
-      <Typography variant="h5" color="text.secondary">
-        {props.nextIndex} {">"}
+      <Typography variant="h6" color="text.secondary">
+        {props.nextIndex}
+        {">"}
       </Typography>
     </Link>
   ) : null
@@ -94,15 +96,15 @@ export default function PokemonPage(props: {
         {loading ? <Typography variant="h4">loading...</Typography> : null}
         {error ? <Typography variant="h4">error</Typography> : null}
         <Grid container>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             {prevLink}
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={8}>
             <Typography align="center" variant="h5" fontWeight="bold">
               {props.rawId} {data?.monster[0].name}
             </Typography>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             {nextLink}
           </Grid>
         </Grid>
