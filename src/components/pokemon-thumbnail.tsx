@@ -25,7 +25,13 @@ export default function PokemonThumbnail(props: {
 
   if (props.showPortraitAuthor) {
     portraitAuthor = (
-      <Typography align="center" color="GrayText" variant="subtitle2">
+      <Typography
+        align="center"
+        color="GrayText"
+        variant="subtitle2"
+        noWrap
+        sx={{ width: "40px", fontSize: ".5em" }}
+      >
         {props.info?.manual?.portraits?.creditPrimary?.name}
       </Typography>
     )
@@ -33,7 +39,13 @@ export default function PokemonThumbnail(props: {
 
   if (props.showSpriteAuthor) {
     spriteAuthor = (
-      <Typography align="center" color="GrayText" variant="subtitle2">
+      <Typography
+        align="center"
+        color="GrayText"
+        variant="subtitle2"
+        noWrap
+        sx={{ width: "40px", fontSize: ".5em" }}
+      >
         {props.info.manual?.sprites.creditPrimary?.name}
       </Typography>
     )
@@ -41,7 +53,13 @@ export default function PokemonThumbnail(props: {
 
   if (props.showIndex) {
     index = (
-      <Typography align="center" color="GrayText" variant="subtitle2">
+      <Typography
+        align="center"
+        color="GrayText"
+        variant="subtitle2"
+        noWrap
+        sx={{ width: "40px", fontSize: ".5em" }}
+      >
         {props.infoKey}
       </Typography>
     )
@@ -51,7 +69,13 @@ export default function PokemonThumbnail(props: {
     const portraitDate = new Date(props.info.manual?.portraits.modifiedDate)
     const spriteDate = new Date(props.info.manual?.sprites.modifiedDate)
     date = (
-      <Typography align="center" color="GrayText" variant="subtitle2">
+      <Typography
+        align="center"
+        color="GrayText"
+        variant="subtitle2"
+        noWrap
+        sx={{ width: "40px", fontSize: ".5em" }}
+      >
         {formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}
       </Typography>
     )
@@ -70,7 +94,12 @@ export default function PokemonThumbnail(props: {
     })
     portraitBounty = (
       <Grid container>
-        <Typography color="GrayText" variant="subtitle2">
+        <Typography
+          color="GrayText"
+          variant="subtitle2"
+          noWrap
+          sx={{ width: "40px", fontSize: ".5em" }}
+        >
           {bounties.length > 0 ? Math.max(...bounties) : 0}
         </Typography>
         <FontAwesomeIcon icon={faCoins} size="sm" />
@@ -89,7 +118,13 @@ export default function PokemonThumbnail(props: {
     })
     spriteBounty = (
       <Grid container>
-        <Typography align="center" color="GrayText" variant="subtitle2">
+        <Typography
+          align="center"
+          color="GrayText"
+          variant="subtitle2"
+          noWrap
+          sx={{ width: "40px", fontSize: ".5em" }}
+        >
           {bounties.length > 0 ? Math.max(...bounties) : 0}
         </Typography>
         <FontAwesomeIcon icon={faCoins} size="sm" />
@@ -112,7 +147,6 @@ export default function PokemonThumbnail(props: {
     <Link to={`/${props.infoKey}`}>
       <Paper
         sx={{
-          maxWidth: 40,
           minWidth: 40,
           maxHeight:
             index ||
@@ -146,7 +180,7 @@ export function formatDate(n: number | undefined) {
       "/" +
       pad(date.getMonth() + 1) +
       "/" +
-      date.getFullYear()
+      date.getFullYear().toString().slice(2)
     )
   } else {
     return ""
