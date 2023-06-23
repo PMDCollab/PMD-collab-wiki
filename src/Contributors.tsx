@@ -2,6 +2,7 @@ import {
   Box,
   Container,
   Link,
+  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -28,8 +29,8 @@ export default function Contributors() {
     <Box>
       <Bar />
       <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
-        <Container>
-          <TableContainer>
+        <TableContainer>
+          <Table size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
                 <TableCell align="center">
@@ -38,32 +39,31 @@ export default function Contributors() {
                 <TableCell align="center">
                   <Typography variant="h5">Contact</Typography>
                 </TableCell>
-                <TableCell align="center">
-                  <Typography variant="h5">Discord Username</Typography>
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {credits?.map((credit) => (
-                <TableRow key={credit.id}>
-                  <TableCell align="center">
-                    <Typography variant="h6">{credit.name}</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    {credit.contact ? (
-                      <Link href={credit.contact}>
-                        <Typography variant="h6">{credit.contact}</Typography>
-                      </Link>
-                    ) : null}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h6">{credit.discordHandle}</Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {credits
+                ?.filter((credit) => credit.name)
+                .map((credit) => (
+                  <TableRow
+                    key={credit.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell align="center">
+                      <Typography variant="h6">{credit.name}</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      {credit.contact ? (
+                        <Link href={credit.contact}>
+                          <Typography variant="h6">{credit.contact}</Typography>
+                        </Link>
+                      ) : null}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
-          </TableContainer>
-        </Container>
+          </Table>
+        </TableContainer>
       </Container>
     </Box>
   )
