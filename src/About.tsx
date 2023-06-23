@@ -5,12 +5,12 @@ export default function About() {
   return (
     <Box>
       <Bar />
-      <Container maxWidth="xl">
-        <Typography variant="h2" gutterBottom>
+      <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
+        <Typography align="center" variant="h3" gutterBottom>
           PMDCollab Sprite Project
         </Typography>
 
-        <Typography variant="h3" gutterBottom>
+        <Typography align="center" variant="h4" gutterBottom>
           What is PMDCollab ?
         </Typography>
 
