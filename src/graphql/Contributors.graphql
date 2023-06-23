@@ -1,0 +1,8 @@
+query Contributors {
+  credit {
+    id
+    name
+    contact
+    discordHandle
+  }
+}

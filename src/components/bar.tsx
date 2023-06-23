@@ -11,6 +11,7 @@ import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
 import TwitterIcon from "@mui/icons-material/Twitter"
 import GitHubIcon from "@mui/icons-material/GitHub"
 import InfoIcon from "@mui/icons-material/Info"
+import GroupIcon from "@mui/icons-material/Group"
 import { Link } from "react-router-dom"
 
 export function Bar() {
@@ -57,6 +58,14 @@ export function Bar() {
           <IconButton size="large" color="inherit">
             <InfoIcon />
             {!isMobile ? <Typography variant="h6">About</Typography> : null}
+          </IconButton>
+        </Link>
+        <Link to={"/Contributors"}>
+          <IconButton size="large" color="inherit">
+            <GroupIcon />
+            {!isMobile ? (
+              <Typography variant="h6">Contributors</Typography>
+            ) : null}
           </IconButton>
         </Link>
       </Toolbar>

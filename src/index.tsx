@@ -11,6 +11,7 @@ import { KeysDocument, KeysQueryResult } from "./generated/graphql"
 import { ThemeProvider } from "@emotion/react"
 import { CssBaseline, createTheme } from "@mui/material"
 import "./index.css"
+import Contributors from "./Contributors"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
@@ -61,6 +62,7 @@ async function initialize() {
                   />
                 ))}
                 <Route path="/About" element={<About />} />
+                <Route path="/Contributors" element={<Contributors />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </HashRouter>

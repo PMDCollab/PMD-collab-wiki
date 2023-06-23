@@ -388,6 +388,19 @@ export type CarrouselQuery = {
   }>
 }
 
+export type ContributorsQueryVariables = Exact<{ [key: string]: never }>
+
+export type ContributorsQuery = {
+  __typename?: "Query"
+  credit: Array<{
+    __typename?: "Credit"
+    id: string
+    name?: string | null
+    contact?: string | null
+    discordHandle?: string | null
+  }>
+}
+
 export type KeysQueryVariables = Exact<{ [key: string]: never }>
 
 export type KeysQuery = {
@@ -605,6 +618,66 @@ export type CarrouselLazyQueryHookResult = ReturnType<
 export type CarrouselQueryResult = Apollo.QueryResult<
   CarrouselQuery,
   CarrouselQueryVariables
+>
+export const ContributorsDocument = gql`
+  query Contributors {
+    credit {
+      id
+      name
+      contact
+      discordHandle
+    }
+  }
+`
+
+/**
+ * __useContributorsQuery__
+ *
+ * To run a query within a React component, call `useContributorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useContributorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useContributorsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useContributorsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ContributorsQuery,
+    ContributorsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ContributorsQuery, ContributorsQueryVariables>(
+    ContributorsDocument,
+    options
+  )
+}
+export function useContributorsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ContributorsQuery,
+    ContributorsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ContributorsQuery, ContributorsQueryVariables>(
+    ContributorsDocument,
+    options
+  )
+}
+export type ContributorsQueryHookResult = ReturnType<
+  typeof useContributorsQuery
+>
+export type ContributorsLazyQueryHookResult = ReturnType<
+  typeof useContributorsLazyQuery
+>
+export type ContributorsQueryResult = Apollo.QueryResult<
+  ContributorsQuery,
+  ContributorsQueryVariables
 >
 export const KeysDocument = gql`
   query Keys {
