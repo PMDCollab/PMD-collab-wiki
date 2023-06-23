@@ -24,7 +24,9 @@ export function Bar() {
           <IconButton size="large" color="inherit">
             <HomeIcon />
             {!isMobile ? (
-              <Typography variant="h6">PMD Collab</Typography>
+              <Typography variant="h6" ml={0.5}>
+                PMD Collab
+              </Typography>
             ) : null}
           </IconButton>
         </Link>
@@ -35,7 +37,11 @@ export function Bar() {
           href="https://discord.gg/skytemple"
         >
           <SportsEsportsIcon />
-          {!isMobile ? <Typography variant="h6">Discord</Typography> : null}
+          {!isMobile ? (
+            <Typography variant="h6" ml={0.5}>
+              Discord
+            </Typography>
+          ) : null}
         </IconButton>
 
         <IconButton
@@ -44,7 +50,11 @@ export function Bar() {
           href="https://twitter.com/PMD_Spritebot"
         >
           <TwitterIcon />
-          {!isMobile ? <Typography variant="h6">Twitter</Typography> : null}
+          {!isMobile ? (
+            <Typography variant="h6" ml={0.5}>
+              Twitter
+            </Typography>
+          ) : null}
         </IconButton>
         <IconButton
           size="large"
@@ -52,19 +62,29 @@ export function Bar() {
           href="https://github.com/PMDCollab/SpriteCollab"
         >
           <GitHubIcon />
-          {!isMobile ? <Typography variant="h6">Github</Typography> : null}
+          {!isMobile ? (
+            <Typography variant="h6" ml={0.5}>
+              Github
+            </Typography>
+          ) : null}
         </IconButton>
         <Link to={"/About"}>
           <IconButton size="large" color="inherit">
             <InfoIcon />
-            {!isMobile ? <Typography variant="h6">About</Typography> : null}
+            {!isMobile ? (
+              <Typography variant="h6" ml={0.5}>
+                About
+              </Typography>
+            ) : null}
           </IconButton>
         </Link>
         <Link to={"/Contributors"}>
           <IconButton size="large" color="inherit">
             <GroupIcon />
             {!isMobile ? (
-              <Typography variant="h6">Contributors</Typography>
+              <Typography variant="h6" ml={0.5}>
+                Contributors
+              </Typography>
             ) : null}
           </IconButton>
         </Link>
