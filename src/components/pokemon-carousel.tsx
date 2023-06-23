@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import { useEffect, useState } from "react"
-import { Monster, useCarrouselQuery } from "../generated/graphql"
+import { Monster, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod, REQUEST_ITEMS_SIZE } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Grid, Typography } from "@mui/material"
@@ -14,6 +14,8 @@ export default function PokemonCarousel(props: {
   showLastModification: boolean
   showPortraitBounty: boolean
   showSpriteBounty: boolean
+  showOnlyFullyFeaturedSprites: boolean
+  showOnlyFullyFeaturedPortraits: boolean
   ids: number[]
 }) {
   const [index, setIndex] = useState<number>(0)
@@ -61,6 +63,16 @@ export default function PokemonCarousel(props: {
               ?.toLowerCase()
               .includes(lowerCaseText) ||
             k?.id.toString().includes(lowerCaseText)
+        )
+        .filter((k) =>
+          props.showOnlyFullyFeaturedPortraits
+            ? k.manual?.portraits.phase === Phase.Full
+            : true
+        )
+        .filter((k) =>
+          props.showOnlyFullyFeaturedSprites
+            ? k.manual?.sprites.phase === Phase.Full
+            : true
         )
         .sort((a, b) => rankFunction(props.rankBy, a as Monster, b as Monster))
         .map((k) => (

@@ -1,42 +1,44 @@
-fragment myBounty on MonsterBounty{
-    incomplete
-    exists
-    full
+fragment myBounty on MonsterBounty {
+  incomplete
+  exists
+  full
 }
 
 query Carrousel($ids: [Int!]!) {
-    monster(filter: $ids){
-        id
-        name
-        rawId
-        forms{
-            portraits{
-                bounty{
-                    ...myBounty
-                }
-            }
-            sprites{
-                bounty{
-                    ...myBounty
-                }
-            }
+  monster(filter: $ids) {
+    id
+    name
+    rawId
+    forms {
+      portraits {
+        bounty {
+          ...myBounty
         }
-        manual(path:"/"){
-            portraits{
-                creditPrimary{
-                    name
-                }
-                modifiedDate
-                previewEmotion{
-                    url
-                }
-            }
-            sprites{
-                creditPrimary{
-                    name
-                }
-                modifiedDate
-            }
+      }
+      sprites {
+        bounty {
+          ...myBounty
         }
+      }
     }
+    manual(path: "/") {
+      portraits {
+        phase
+        creditPrimary {
+          name
+        }
+        modifiedDate
+        previewEmotion {
+          url
+        }
+      }
+      sprites {
+        phase
+        creditPrimary {
+          name
+        }
+        modifiedDate
+      }
+    }
+  }
 }

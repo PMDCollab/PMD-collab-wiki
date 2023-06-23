@@ -8,12 +8,16 @@ export default function DisplayParameters(props: {
   setShowLastModification: Dispatch<SetStateAction<boolean>>
   setShowPortraitBounty: Dispatch<SetStateAction<boolean>>
   setShowSpriteBounty: Dispatch<SetStateAction<boolean>>
+  setShowOnlyFullyFeaturedSprites: Dispatch<SetStateAction<boolean>>
+  setShowOnlyFullyFeaturedPortraits: Dispatch<SetStateAction<boolean>>
   showPortraitAuthor: boolean
   showSpriteAuthor: boolean
   showIndex: boolean
   showLastModification: boolean
   showPortraitBounty: boolean
   showSpriteBounty: boolean
+  showOnlyFullyFeaturedSprites: boolean
+  showOnlyFullyFeaturedPortraits: boolean
 }) {
   return (
     <Grid container spacing={2}>
@@ -84,6 +88,36 @@ export default function DisplayParameters(props: {
               checked={props.showSpriteBounty}
               onChange={(e) => {
                 props.setShowSpriteBounty(e.target.checked)
+              }}
+            />
+          }
+        />
+        <FormControlLabel
+          label={
+            <Typography color="text.secondary">
+              Fully-featured portraits
+            </Typography>
+          }
+          control={
+            <Checkbox
+              checked={props.showOnlyFullyFeaturedPortraits}
+              onChange={(e) => {
+                props.setShowOnlyFullyFeaturedPortraits(e.target.checked)
+              }}
+            />
+          }
+        />
+        <FormControlLabel
+          label={
+            <Typography color="text.secondary">
+              Fully-featured sprites
+            </Typography>
+          }
+          control={
+            <Checkbox
+              checked={props.showOnlyFullyFeaturedSprites}
+              onChange={(e) => {
+                props.setShowOnlyFullyFeaturedSprites(e.target.checked)
               }}
             />
           }

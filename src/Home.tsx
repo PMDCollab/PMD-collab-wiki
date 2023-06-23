@@ -29,6 +29,10 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
     useState<boolean>(false)
   const [showPortraitBounty, setShowPortraitBounty] = useState<boolean>(false)
   const [showSpriteBounty, setShowSpriteBounty] = useState<boolean>(false)
+  const [showOnlyFullyFeaturedSprites, setShowOnlyFullyFeaturedSprites] =
+    useState<boolean>(false)
+  const [showOnlyFullyFeaturedPortraits, setShowOnlyFullyFeaturedPortraits] =
+    useState<boolean>(false)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   return (
@@ -75,6 +79,16 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
                   showLastModification={showLastModification}
                   showPortraitBounty={showPortraitBounty}
                   showSpriteBounty={showSpriteBounty}
+                  showOnlyFullyFeaturedSprites={showOnlyFullyFeaturedSprites}
+                  showOnlyFullyFeaturedPortraits={
+                    showOnlyFullyFeaturedPortraits
+                  }
+                  setShowOnlyFullyFeaturedSprites={
+                    setShowOnlyFullyFeaturedSprites
+                  }
+                  setShowOnlyFullyFeaturedPortraits={
+                    setShowOnlyFullyFeaturedPortraits
+                  }
                 />
                 <PokemonRanking
                   setSpriteAuthor={setSpriteAuthor}
@@ -100,6 +114,8 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
           showLastModification={showLastModification}
           showPortraitBounty={showPortraitBounty}
           showSpriteBounty={showSpriteBounty}
+          showOnlyFullyFeaturedSprites={showOnlyFullyFeaturedSprites}
+          showOnlyFullyFeaturedPortraits={showOnlyFullyFeaturedPortraits}
           ids={props.ids}
         />
         <Footer meta={props.meta} />
