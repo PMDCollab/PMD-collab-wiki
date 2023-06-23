@@ -360,6 +360,8 @@ export type CarrouselQuery = {
           exists?: number | null
           full?: number | null
         }
+        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
+        creditSecondary: Array<{ __typename?: "Credit"; name?: string | null }>
       }
       sprites: {
         __typename?: "MonsterFormSprites"
@@ -369,6 +371,8 @@ export type CarrouselQuery = {
           exists?: number | null
           full?: number | null
         }
+        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
+        creditSecondary: Array<{ __typename?: "Credit"; name?: string | null }>
       }
     }>
     manual?: {
@@ -377,14 +381,12 @@ export type CarrouselQuery = {
         __typename?: "MonsterFormPortraits"
         phase: Phase
         modifiedDate?: any | null
-        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
         previewEmotion?: { __typename?: "Portrait"; url: string } | null
       }
       sprites: {
         __typename?: "MonsterFormSprites"
         phase: Phase
         modifiedDate?: any | null
-        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
       }
     } | null
   }>
@@ -547,19 +549,28 @@ export const CarrouselDocument = gql`
           bounty {
             ...myBounty
           }
+          creditPrimary {
+            name
+          }
+          creditSecondary {
+            name
+          }
         }
         sprites {
           bounty {
             ...myBounty
+          }
+          creditPrimary {
+            name
+          }
+          creditSecondary {
+            name
           }
         }
       }
       manual(path: "/") {
         portraits {
           phase
-          creditPrimary {
-            name
-          }
           modifiedDate
           previewEmotion {
             url
@@ -567,9 +578,6 @@ export const CarrouselDocument = gql`
         }
         sprites {
           phase
-          creditPrimary {
-            name
-          }
           modifiedDate
         }
       }

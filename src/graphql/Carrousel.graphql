@@ -14,19 +14,28 @@ query Carrousel($ids: [Int!]!) {
         bounty {
           ...myBounty
         }
+        creditPrimary {
+          name
+        }
+        creditSecondary {
+          name
+        }
       }
       sprites {
         bounty {
           ...myBounty
+        }
+        creditPrimary {
+          name
+        }
+        creditSecondary {
+          name
         }
       }
     }
     manual(path: "/") {
       portraits {
         phase
-        creditPrimary {
-          name
-        }
         modifiedDate
         previewEmotion {
           url
@@ -34,9 +43,6 @@ query Carrousel($ids: [Int!]!) {
       }
       sprites {
         phase
-        creditPrimary {
-          name
-        }
         modifiedDate
       }
     }
