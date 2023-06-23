@@ -59,9 +59,33 @@ export default function PokemonCarousel(props: {
             k?.manual?.portraits?.creditPrimary?.name
               ?.toLowerCase()
               .includes(lowerCaseText) ||
-            k?.manual?.portraits?.creditPrimary?.name
+            k?.manual?.portraits?.creditSecondary?.find((c) =>
+              c.name?.toLowerCase().includes(lowerCaseText)
+            ) ||
+            k?.manual?.sprites?.creditPrimary?.name
               ?.toLowerCase()
               .includes(lowerCaseText) ||
+            k?.manual?.sprites?.creditSecondary?.find((c) =>
+              c.name?.toLowerCase().includes(lowerCaseText)
+            ) ||
+            k?.forms.find(
+              (f) =>
+                f.portraits.creditPrimary?.name
+                  ?.toLowerCase()
+                  .includes(lowerCaseText) ||
+                f.portraits.creditSecondary?.find((c) =>
+                  c.name?.toLowerCase().includes(lowerCaseText)
+                )
+            ) ||
+            k?.forms.find(
+              (f) =>
+                f.sprites.creditPrimary?.name
+                  ?.toLowerCase()
+                  .includes(lowerCaseText) ||
+                f.sprites.creditSecondary?.find((c) =>
+                  c.name?.toLowerCase().includes(lowerCaseText)
+                )
+            ) ||
             k?.id.toString().includes(lowerCaseText)
         )
         .filter((k) =>
