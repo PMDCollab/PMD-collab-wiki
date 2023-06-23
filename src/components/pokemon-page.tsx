@@ -60,7 +60,7 @@ export default function PokemonPage(props: {
   ) : null
   const nextLink = props.nextIndex ? (
     <Link to={`/${props.nextIndex}`}>
-      <Typography variant="h6" color="text.secondary">
+      <Typography variant="h6" color="text.secondary" align="right">
         {props.nextIndex}
         {">"}
       </Typography>
@@ -92,10 +92,13 @@ export default function PokemonPage(props: {
   return (
     <Box>
       <Bar />
-      <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
+      <Container
+        maxWidth="xl"
+        sx={{ backgroundColor: "rgba(255,255,255,.9)", pt: 2 }}
+      >
         {loading ? <Typography variant="h4">loading...</Typography> : null}
         {error ? <Typography variant="h4">error</Typography> : null}
-        <Grid container>
+        <Grid container justifyContent="space-between">
           <Grid item xs={2}>
             {prevLink}
           </Grid>
