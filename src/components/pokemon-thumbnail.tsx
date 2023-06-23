@@ -104,20 +104,19 @@ export default function PokemonThumbnail(props: {
     <Link to={`/${props.infoKey}`}>
       <Paper
         sx={{
-          minWidth: 80,
-          maxHeight:
-            index ||
-            portraitAuthor ||
-            spriteAuthor ||
-            date ||
-            portraitBounty ||
-            spriteBounty
-              ? "inherit"
-              : 80
+          minWidth: 80
         }}
         elevation={2}
       >
         {image}
+        <Typography
+          align="center"
+          color="GrayText"
+          noWrap
+          sx={{ width: "80px" }}
+        >
+          {props.info.name}
+        </Typography>
         {index}
         {portraitAuthor}
         {spriteAuthor}

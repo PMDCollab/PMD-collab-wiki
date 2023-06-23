@@ -34,7 +34,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
   return (
     <Box>
       <Bar />
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
         <Typography
           variant={isMobile ? "subtitle2" : "h5"}
           align="center"

@@ -92,7 +92,7 @@ export default function PokemonPage(props: {
   return (
     <Box>
       <Bar />
-      <Container maxWidth="xl" sx={{ mt: 3 }}>
+      <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
         {loading ? <Typography variant="h4">loading...</Typography> : null}
         {error ? <Typography variant="h4">error</Typography> : null}
         <Grid container>
