@@ -36,6 +36,9 @@ query Carrousel($ids: [Int!]!) {
     manual(path: "/") {
       portraits {
         phase
+        creditPrimary {
+          name
+        }
         modifiedDate
         previewEmotion {
           url
@@ -43,6 +46,9 @@ query Carrousel($ids: [Int!]!) {
       }
       sprites {
         phase
+        creditPrimary {
+          name
+        }
         modifiedDate
       }
     }

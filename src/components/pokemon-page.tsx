@@ -90,7 +90,7 @@ export default function PokemonPage(props: {
       <Bar />
       <Container
         maxWidth="xl"
-        sx={{ backgroundColor: "rgba(255,255,255,.9)", pt: 2 }}
+        sx={{ backgroundColor: "rgba(255,255,255,.9)", pt: 2, pb: 2 }}
       >
         {loading ? <Typography variant="h4">loading...</Typography> : null}
         {error ? <Typography variant="h4">error</Typography> : null}

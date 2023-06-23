@@ -23,7 +23,7 @@ export default function DisplayParameters(props: {
     <Grid container spacing={2}>
       <Grid item>
         <FormControlLabel
-          label={<Typography color="text.secondary">index</Typography>}
+          label={<Typography color="text.secondary">Index</Typography>}
           control={
             <Checkbox
               checked={props.showIndex}

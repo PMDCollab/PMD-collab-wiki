@@ -381,12 +381,14 @@ export type CarrouselQuery = {
         __typename?: "MonsterFormPortraits"
         phase: Phase
         modifiedDate?: any | null
+        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
         previewEmotion?: { __typename?: "Portrait"; url: string } | null
       }
       sprites: {
         __typename?: "MonsterFormSprites"
         phase: Phase
         modifiedDate?: any | null
+        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
       }
     } | null
   }>
@@ -571,6 +573,9 @@ export const CarrouselDocument = gql`
       manual(path: "/") {
         portraits {
           phase
+          creditPrimary {
+            name
+          }
           modifiedDate
           previewEmotion {
             url
@@ -578,6 +583,9 @@ export const CarrouselDocument = gql`
         }
         sprites {
           phase
+          creditPrimary {
+            name
+          }
           modifiedDate
         }
       }
