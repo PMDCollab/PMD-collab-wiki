@@ -31,19 +31,15 @@ export default function PokemonPage(props: {
     const { children, value, index, ...other } = props
 
     return (
-      <div
+      <Box
         role="tabpanel"
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
         {...other}
       >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
+        {value === index && <Box sx={{ pt: 1 }}>{children}</Box>}
+      </Box>
     )
   }
 
@@ -112,7 +108,13 @@ export default function PokemonPage(props: {
           </Grid>
         </Grid>
         <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
-          <Tabs value={value} onChange={handleChange}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            scrollButtons="auto"
+            variant="scrollable"
+            allowScrollButtonsMobile
+          >
             {tablist}
           </Tabs>
         </Box>

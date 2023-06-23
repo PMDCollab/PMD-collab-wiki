@@ -44,8 +44,8 @@ export default function PokemonInformations(props: {
     </Link>
   ) : null
   return (
-    <Box>
-      <Grid container spacing={2}>
+    <Box sx={{ mt: 4 }}>
+      <Grid container spacing={2} alignItems="center">
         <Grid item>
           <Typography fontWeight="bold" variant="h5">
             Portraits
@@ -76,7 +76,7 @@ export default function PokemonInformations(props: {
         <Typography variant="h5">No portraits available for now.</Typography>
       )}
       <Box sx={{ mt: 4 }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item>
             <Typography fontWeight="bold" variant="h5">
               Sprites
