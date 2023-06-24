@@ -77,10 +77,10 @@ export default class GameScene extends Phaser.Scene {
     })
 
     this.add
-      .image(100, 102, "small-ba")
+      .image(100, 100, "small-ba")
       .setScale(this.scaleFactor, this.scaleFactor)
     this.add
-      .sprite(100, 110, `${this.action}-${AnimationType.SHADOW}`)
+      .sprite(100, 105, `${this.action}-${AnimationType.SHADOW}`)
       .setScale(this.scaleFactor, this.scaleFactor)
       .setTintFill(0xffffff)
       .play(AnimationType.SHADOW)
