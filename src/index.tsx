@@ -28,6 +28,10 @@ async function initialize() {
     query: KeysDocument
   })) as KeysQueryResult
   if (result.data) {
+    const assetsCommit = localStorage.getItem("assetsCommit")
+    if (assetsCommit !== result.data.meta.assetsCommit) {
+      localStorage.setItem("assetsCommit", result.data.meta.assetsCommit)
+    }
     const sortedMonsters = result.data?.monster
       .slice()
       .sort((a, b) => a.id - b.id)
@@ -71,6 +75,10 @@ async function initialize() {
       </React.StrictMode>
     )
   }
+}
+
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register("sw.js")
 }
 
 initialize()
