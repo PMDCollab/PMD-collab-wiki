@@ -27,7 +27,6 @@ export default function Contributors() {
     }
   }, [data])
 
-  console.log(credits)
   return (
     <Box>
       <Bar />
