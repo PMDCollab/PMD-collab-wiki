@@ -17,12 +17,12 @@ import { useEffect, useState } from "react"
 export default function Contributors() {
   const [credits, setCredits] = useState<Credit[]>()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { loading, error, data } = useContributorsQuery()
+  const { loading, error, data } = useContributorsQuery({
+    errorPolicy: "ignore"
+  })
 
   useEffect(() => {
-    if (!error) {
-      setCredits(data?.credit)
-    }
+    setCredits(data?.credit)
   }, [data])
 
   return (
@@ -39,18 +39,27 @@ export default function Contributors() {
                 <TableCell align="center">
                   <Typography variant="h5">Contact</Typography>
                 </TableCell>
+                <TableCell align="center">
+                  <Typography variant="h5">Guild points</Typography>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {credits
-                ?.filter((credit) => credit.name)
+                ?.filter(
+                  (credit) =>
+                    (credit.name || credit.discordHandle) &&
+                    !credit.discordHandle?.includes("Deleted User")
+                )
                 .map((credit) => (
                   <TableRow
                     key={credit.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="center">
-                      <Typography variant="h6">{credit.name}</Typography>
+                      <Typography variant="h6">
+                        {credit.name ? credit.name : credit.discordHandle}
+                      </Typography>
                     </TableCell>
                     <TableCell align="center">
                       {credit.contact ? (
@@ -58,6 +67,11 @@ export default function Contributors() {
                           <Typography variant="h6">{credit.contact}</Typography>
                         </Link>
                       ) : null}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="h6">
+                        {credit.reputation ? credit.reputation : "???"}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 ))}

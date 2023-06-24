@@ -7,6 +7,7 @@ export default class GameScene extends Phaser.Scene {
   action = ""
   animUrl = ""
   shadowsUrl = ""
+  scaleFactor = 2
 
   constructor() {
     super({ key: "gameScene" })
@@ -21,6 +22,14 @@ export default class GameScene extends Phaser.Scene {
     this.shadowsUrl = g.sprite.shadowsUrl
     this.action = g.sprite.action
     this.dungeon = g.dungeon
+    this.scaleFactor =
+      Math.max(
+        ...g.animationData.Anims.Anim.map((anim) =>
+          anim.FrameHeight ? anim.FrameHeight : 0
+        )
+      ) > 120
+        ? 1
+        : 2
   }
 
   preload() {
@@ -67,17 +76,17 @@ export default class GameScene extends Phaser.Scene {
       })
     })
 
-    const scaleFactor =
-      this.metadata?.FrameHeight && this.metadata.FrameHeight < 100 ? 2 : 1
-    this.add.image(100, 100, "small-ba").setScale(scaleFactor, scaleFactor)
+    this.add
+      .image(100, 100, "small-ba")
+      .setScale(this.scaleFactor, this.scaleFactor)
     this.add
       .sprite(100, 110, `${this.action}-${AnimationType.SHADOW}`)
-      .setScale(scaleFactor, scaleFactor)
+      .setScale(this.scaleFactor, this.scaleFactor)
       .setTintFill(0xffffff)
       .play(AnimationType.SHADOW)
     this.add
       .sprite(100, 105, `${this.action}-${AnimationType.ANIM}`)
-      .setScale(scaleFactor, scaleFactor)
+      .setScale(this.scaleFactor, this.scaleFactor)
       .play(AnimationType.ANIM)
   }
 }
