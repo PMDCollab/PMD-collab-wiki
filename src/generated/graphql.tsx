@@ -83,6 +83,8 @@ export type Credit = {
   id: Scalars["String"]
   /** The human-readable name of the author. Guaranteed to be an ASCII string. */
   name?: Maybe<Scalars["String"]>
+  /** This may return some sort of point value for reputation for this user, if applicable and the source to get these points from is returning them properly. The value may be cached/stale for a while. */
+  reputation?: Maybe<Scalars["Int"]>
 }
 
 export type Meta = {
@@ -404,6 +406,7 @@ export type ContributorsQuery = {
     name?: string | null
     contact?: string | null
     discordHandle?: string | null
+    reputation?: number | null
   }>
 }
 
@@ -646,6 +649,7 @@ export const ContributorsDocument = gql`
       name
       contact
       discordHandle
+      reputation
     }
   }
 `
