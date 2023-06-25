@@ -1,9 +1,54 @@
 /* eslint-disable no-case-declarations */
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Monster, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod, REQUEST_ITEMS_SIZE } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Grid, Typography } from "@mui/material"
+
+function filterMonster(
+  monsters: Monster[],
+  currentText: string,
+  showOnlyFullyFeaturedPortraits: boolean,
+  showOnlyFullyFeaturedSprites: boolean,
+  rankBy: RankMethod
+) {
+  const lowerCaseText = currentText.toLowerCase()
+  return monsters
+    .filter(
+      (k) =>
+        k?.name?.toLowerCase().includes(lowerCaseText) ||
+        k?.forms.find(
+          (f) =>
+            f.portraits.creditPrimary?.name
+              ?.toLowerCase()
+              .includes(lowerCaseText) ||
+            f.portraits.creditSecondary?.find((c) =>
+              c.name?.toLowerCase().includes(lowerCaseText)
+            )
+        ) ||
+        k?.forms.find(
+          (f) =>
+            f.sprites.creditPrimary?.name
+              ?.toLowerCase()
+              .includes(lowerCaseText) ||
+            f.sprites.creditSecondary?.find((c) =>
+              c.name?.toLowerCase().includes(lowerCaseText)
+            )
+        ) ||
+        k?.id.toString().includes(lowerCaseText)
+    )
+    .filter((k) =>
+      showOnlyFullyFeaturedPortraits
+        ? k.manual?.portraits.phase === Phase.Full
+        : true
+    )
+    .filter((k) =>
+      showOnlyFullyFeaturedSprites
+        ? k.manual?.sprites.phase === Phase.Full
+        : true
+    )
+    .sort((a, b) => rankFunction(rankBy, a as Monster, b as Monster))
+}
 
 export default function PokemonCarousel(props: {
   currentText: string
@@ -20,6 +65,23 @@ export default function PokemonCarousel(props: {
 }) {
   const [index, setIndex] = useState<number>(0)
   const [monsters, setMonsters] = useState<Monster[]>([])
+  const visibleMonsters = useMemo(
+    () =>
+      filterMonster(
+        monsters,
+        props.currentText,
+        props.showOnlyFullyFeaturedPortraits,
+        props.showOnlyFullyFeaturedSprites,
+        props.rankBy
+      ),
+    [
+      monsters,
+      props.currentText,
+      props.showOnlyFullyFeaturedPortraits,
+      props.showOnlyFullyFeaturedSprites,
+      props.rankBy
+    ]
+  )
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { loading, error, data, refetch, fetchMore } = useCarrouselQuery({
@@ -49,58 +111,22 @@ export default function PokemonCarousel(props: {
     return <Typography>loading...</Typography>
   if (error) return <Typography>Error</Typography>
 
-  const lowerCaseText = props.currentText.toLowerCase()
   return (
     <Grid container spacing={2}>
-      {monsters
-        .filter(
-          (k) =>
-            k?.name?.toLowerCase().includes(lowerCaseText) ||
-            k?.forms.find(
-              (f) =>
-                f.portraits.creditPrimary?.name
-                  ?.toLowerCase()
-                  .includes(lowerCaseText) ||
-                f.portraits.creditSecondary?.find((c) =>
-                  c.name?.toLowerCase().includes(lowerCaseText)
-                )
-            ) ||
-            k?.forms.find(
-              (f) =>
-                f.sprites.creditPrimary?.name
-                  ?.toLowerCase()
-                  .includes(lowerCaseText) ||
-                f.sprites.creditSecondary?.find((c) =>
-                  c.name?.toLowerCase().includes(lowerCaseText)
-                )
-            ) ||
-            k?.id.toString().includes(lowerCaseText)
-        )
-        .filter((k) =>
-          props.showOnlyFullyFeaturedPortraits
-            ? k.manual?.portraits.phase === Phase.Full
-            : true
-        )
-        .filter((k) =>
-          props.showOnlyFullyFeaturedSprites
-            ? k.manual?.sprites.phase === Phase.Full
-            : true
-        )
-        .sort((a, b) => rankFunction(props.rankBy, a as Monster, b as Monster))
-        .map((k) => (
-          <Grid item key={k.id}>
-            <PokemonThumbnail
-              infoKey={k.rawId}
-              info={k as Monster}
-              showIndex={props.showIndex}
-              showPortraitAuthor={props.showPortraitAuthor}
-              showSpriteAuthor={props.showSpriteAuthor}
-              showLastModification={props.showLastModification}
-              showPortraitBounty={props.showPortraitBounty}
-              showSpriteBounty={props.showSpriteBounty}
-            />
-          </Grid>
-        ))}
+      {visibleMonsters.map((k) => (
+        <Grid item key={k.id}>
+          <PokemonThumbnail
+            infoKey={k.rawId}
+            info={k as Monster}
+            showIndex={props.showIndex}
+            showPortraitAuthor={props.showPortraitAuthor}
+            showSpriteAuthor={props.showSpriteAuthor}
+            showLastModification={props.showLastModification}
+            showPortraitBounty={props.showPortraitBounty}
+            showSpriteBounty={props.showSpriteBounty}
+          />
+        </Grid>
+      ))}
     </Grid>
   )
 }
