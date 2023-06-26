@@ -4,7 +4,7 @@ import { Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
-import { Card, Typography } from "@mui/material"
+import { Card, Grid, Typography } from "@mui/material"
 
 export default function SpritePreview(props: {
   sprite: Sprite
@@ -38,10 +38,10 @@ export default function SpritePreview(props: {
   return (
     <Card>
       <div id={`action-${props.sprite.action}`} ref={container}></div>
-      <div style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
+      <Grid container justifyContent="center" alignItems="start">
         <Lock locked={props.sprite.locked} />
         <Typography align="center">{props.sprite.action}</Typography>
-      </div>
+      </Grid>
     </Card>
   )
 }

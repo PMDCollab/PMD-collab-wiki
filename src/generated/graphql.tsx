@@ -343,6 +343,13 @@ export type MyBountyFragment = {
 
 export type CarrouselQueryVariables = Exact<{
   ids: Array<Scalars["Int"]> | Scalars["Int"]
+  withPortraitBounty: Scalars["Boolean"]
+  withSpriteBounty: Scalars["Boolean"]
+  withModifiedDate: Scalars["Boolean"]
+  withFullyFeaturedPortrait: Scalars["Boolean"]
+  withFullyFeaturedSprite: Scalars["Boolean"]
+  withCredits: Scalars["Boolean"]
+  withForms: Scalars["Boolean"]
 }>
 
 export type CarrouselQuery = {
@@ -352,45 +359,43 @@ export type CarrouselQuery = {
     id: number
     name: string
     rawId: string
-    forms: Array<{
+    forms?: Array<{
       __typename?: "MonsterForm"
       portraits: {
         __typename?: "MonsterFormPortraits"
-        bounty: {
+        bounty?: {
           __typename?: "MonsterBounty"
           incomplete?: number | null
           exists?: number | null
           full?: number | null
         }
         creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
-        creditSecondary: Array<{ __typename?: "Credit"; name?: string | null }>
+        creditSecondary?: Array<{ __typename?: "Credit"; name?: string | null }>
       }
       sprites: {
         __typename?: "MonsterFormSprites"
-        bounty: {
+        bounty?: {
           __typename?: "MonsterBounty"
           incomplete?: number | null
           exists?: number | null
           full?: number | null
         }
         creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
-        creditSecondary: Array<{ __typename?: "Credit"; name?: string | null }>
+        creditSecondary?: Array<{ __typename?: "Credit"; name?: string | null }>
       }
     }>
     manual?: {
       __typename?: "MonsterForm"
       portraits: {
         __typename?: "MonsterFormPortraits"
-        phase: Phase
+        phase?: Phase
         modifiedDate?: any | null
-        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
         previewEmotion?: { __typename?: "Portrait"; url: string } | null
       }
       sprites: {
         __typename?: "MonsterFormSprites"
-        phase: Phase
+        phase?: Phase
         modifiedDate?: any | null
-        creditPrimary?: { __typename?: "Credit"; name?: string | null } | null
       }
     } | null
   }>
@@ -544,52 +549,55 @@ export const MyCreditFragmentDoc = gql`
   }
 `
 export const CarrouselDocument = gql`
-  query Carrousel($ids: [Int!]!) {
+  query Carrousel(
+    $ids: [Int!]!
+    $withPortraitBounty: Boolean!
+    $withSpriteBounty: Boolean!
+    $withModifiedDate: Boolean!
+    $withFullyFeaturedPortrait: Boolean!
+    $withFullyFeaturedSprite: Boolean!
+    $withCredits: Boolean!
+    $withForms: Boolean!
+  ) {
     monster(filter: $ids) {
       id
       name
       rawId
-      forms {
+      forms @include(if: $withForms) {
         portraits {
-          bounty {
+          bounty @include(if: $withPortraitBounty) {
             ...myBounty
           }
-          creditPrimary {
+          creditPrimary @include(if: $withCredits) {
             name
           }
-          creditSecondary {
+          creditSecondary @include(if: $withCredits) {
             name
           }
         }
         sprites {
-          bounty {
+          bounty @include(if: $withSpriteBounty) {
             ...myBounty
           }
-          creditPrimary {
+          creditPrimary @include(if: $withCredits) {
             name
           }
-          creditSecondary {
+          creditSecondary @include(if: $withCredits) {
             name
           }
         }
       }
       manual(path: "/") {
         portraits {
-          phase
-          creditPrimary {
-            name
-          }
-          modifiedDate
+          phase @include(if: $withFullyFeaturedPortrait)
+          modifiedDate @include(if: $withModifiedDate)
           previewEmotion {
             url
           }
         }
         sprites {
-          phase
-          creditPrimary {
-            name
-          }
-          modifiedDate
+          phase @include(if: $withFullyFeaturedSprite)
+          modifiedDate @include(if: $withModifiedDate)
         }
       }
     }
@@ -610,6 +618,13 @@ export const CarrouselDocument = gql`
  * const { data, loading, error } = useCarrouselQuery({
  *   variables: {
  *      ids: // value for 'ids'
+ *      withPortraitBounty: // value for 'withPortraitBounty'
+ *      withSpriteBounty: // value for 'withSpriteBounty'
+ *      withModifiedDate: // value for 'withModifiedDate'
+ *      withFullyFeaturedPortrait: // value for 'withFullyFeaturedPortrait'
+ *      withFullyFeaturedSprite: // value for 'withFullyFeaturedSprite'
+ *      withCredits: // value for 'withCredits'
+ *      withForms: // value for 'withForms'
  *   },
  * });
  */

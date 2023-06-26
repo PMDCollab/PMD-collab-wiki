@@ -1,22 +1,18 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons"
+import LockIcon from "@mui/icons-material/Lock"
+import { Tooltip } from "@mui/material"
 
 export default function Lock(props: { locked: boolean }) {
   if (props.locked) {
     return (
-      <FontAwesomeIcon
-        icon={faLock}
-        color="#e76e55"
-        title="This is locked and requires special permissions to be updated"
-      />
+      <Tooltip title="This is locked and requires special permissions to be updated">
+        <LockIcon color="error" />
+      </Tooltip>
     )
   } else {
     return (
-      <FontAwesomeIcon
-        icon={faLockOpen}
-        color="#92cc41"
-        title="This is unlocked, update do not require special permissions"
-      />
+      <Tooltip title="This is unlocked, update do not require special permissions">
+        <LockIcon color="success" />
+      </Tooltip>
     )
   }
 }

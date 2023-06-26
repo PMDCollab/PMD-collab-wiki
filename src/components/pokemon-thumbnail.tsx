@@ -24,7 +24,7 @@ export default function PokemonThumbnail(props: {
   if (props.showPortraitAuthor) {
     portraitAuthor = (
       <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-        {props.info?.manual?.portraits?.creditPrimary?.name}
+        {props.info?.forms[0]?.portraits?.creditPrimary?.name}
       </Typography>
     )
   }
@@ -32,7 +32,7 @@ export default function PokemonThumbnail(props: {
   if (props.showSpriteAuthor) {
     spriteAuthor = (
       <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-        {props.info.manual?.sprites.creditPrimary?.name}
+        {props.info.forms[0]?.sprites.creditPrimary?.name}
       </Typography>
     )
   }
@@ -97,7 +97,11 @@ export default function PokemonThumbnail(props: {
       />
     )
   } else {
-    image = <Typography variant="h4">?</Typography>
+    image = (
+      <Typography variant="h4" align="center" sx={{ height: 80 }}>
+        ?
+      </Typography>
+    )
   }
 
   return (
