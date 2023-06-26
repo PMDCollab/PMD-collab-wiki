@@ -1,6 +1,5 @@
 import { MonsterBounty } from "../generated/graphql"
-import { faCoins } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 import { Grid, Typography } from "@mui/material"
 
 export default function Bounty(props: { bounty: MonsterBounty }) {
@@ -10,7 +9,7 @@ export default function Bounty(props: { bounty: MonsterBounty }) {
         {props.bounty.exists ? (
           <Grid item sx={{ display: "flex", gap: "5px" }}>
             <Typography>{props.bounty.exists}</Typography>
-            <FontAwesomeIcon icon={faCoins} />
+            <Typography>Guild points</Typography>
             <Typography>exists</Typography>
           </Grid>
         ) : null}
@@ -18,7 +17,7 @@ export default function Bounty(props: { bounty: MonsterBounty }) {
         {props.bounty.full ? (
           <Grid item sx={{ display: "flex", gap: "5px" }}>
             <Typography>{props.bounty.full}</Typography>
-            <FontAwesomeIcon icon={faCoins} />
+            <Typography>Guild points</Typography>
             <Typography>full</Typography>
           </Grid>
         ) : null}
@@ -26,7 +25,7 @@ export default function Bounty(props: { bounty: MonsterBounty }) {
         {props.bounty.incomplete ? (
           <Grid item sx={{ display: "flex", gap: "5px" }}>
             <Typography>{props.bounty.incomplete}</Typography>
-            <FontAwesomeIcon icon={faCoins} />
+            <Typography>Guild points</Typography>
             <Typography>incomplete</Typography>
           </Grid>
         ) : null}

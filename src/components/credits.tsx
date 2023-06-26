@@ -18,8 +18,8 @@ export default function Credits(props: {
         <Grid item>
           <Typography>Others</Typography>
           <Box>
-            {props.secondary.map((s) => (
-              <Author credit={s} key={s.id} />
+            {props.secondary.map((s, i) => (
+              <Author credit={s} key={i} />
             ))}
           </Box>
         </Grid>

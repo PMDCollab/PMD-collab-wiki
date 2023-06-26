@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 import { Monster, Phase, useCarrouselQuery } from "../generated/graphql"
-import { RankMethod, REQUEST_ITEMS_SIZE } from "../types/enum"
+import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Grid, Typography } from "@mui/material"
 
@@ -63,52 +63,51 @@ export default function PokemonCarousel(props: {
   showOnlyFullyFeaturedPortraits: boolean
   ids: number[]
 }) {
-  const [index, setIndex] = useState<number>(0)
-  const [monsters, setMonsters] = useState<Monster[]>([])
-  const visibleMonsters = useMemo(
-    () =>
-      filterMonster(
-        monsters,
-        props.currentText,
-        props.showOnlyFullyFeaturedPortraits,
-        props.showOnlyFullyFeaturedSprites,
-        props.rankBy
-      ),
-    [
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { loading, error, data, refetch, fetchMore } = useCarrouselQuery({
+    variables: {
+      ids: props.ids,
+      withPortraitBounty: props.showPortraitBounty,
+      withSpriteBounty: props.showSpriteBounty,
+      withModifiedDate: props.showLastModification,
+      withFullyFeaturedPortrait: props.showOnlyFullyFeaturedPortraits,
+      withFullyFeaturedSprite: props.showOnlyFullyFeaturedSprites,
+      withCredits:
+        props.showPortraitAuthor ||
+        props.showSpriteAuthor ||
+        props.currentText !== "",
+      withForms:
+        props.showPortraitAuthor ||
+        props.showSpriteAuthor ||
+        props.showPortraitBounty ||
+        props.showSpriteBounty ||
+        props.currentText !== ""
+    }
+  })
+  const visibleMonsters = useMemo(() => {
+    const monsters = (data?.monster ? data.monster : []) as Monster[]
+    return filterMonster(
       monsters,
       props.currentText,
       props.showOnlyFullyFeaturedPortraits,
       props.showOnlyFullyFeaturedSprites,
       props.rankBy
-    ]
-  )
+    )
+  }, [
+    data,
+    props.currentText,
+    props.showOnlyFullyFeaturedPortraits,
+    props.showOnlyFullyFeaturedSprites,
+    props.rankBy
+  ])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { loading, error, data, refetch, fetchMore } = useCarrouselQuery({
-    variables: {
-      ids: props.ids.slice(index, index + REQUEST_ITEMS_SIZE)
-    }
-  })
-
-  useEffect(() => {
-    if (data && data.monster.length > 0) {
-      const ms = [...monsters]
-      ;(data?.monster as Monster[]).forEach((m) => ms.push(m))
-      setMonsters(ms)
-    }
-
-    if (data && data.monster && index <= props.ids.length) {
-      setIndex(index + REQUEST_ITEMS_SIZE)
-      fetchMore({
-        variables: {
-          ids: props.ids.slice(index, index + REQUEST_ITEMS_SIZE)
-        }
-      })
-    }
-  }, [data, index, props.ids, fetchMore])
-
-  if (loading && monsters.length == 0)
-    return <Typography>loading...</Typography>
+  if (loading) {
+    return (
+      <Typography variant="h5" align="center">
+        Loading...
+      </Typography>
+    )
+  }
   if (error) return <Typography>Error</Typography>
 
   return (

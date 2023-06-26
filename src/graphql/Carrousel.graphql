@@ -4,52 +4,55 @@ fragment myBounty on MonsterBounty {
   full
 }
 
-query Carrousel($ids: [Int!]!) {
+query Carrousel(
+  $ids: [Int!]!
+  $withPortraitBounty: Boolean!
+  $withSpriteBounty: Boolean!
+  $withModifiedDate: Boolean!
+  $withFullyFeaturedPortrait: Boolean!
+  $withFullyFeaturedSprite: Boolean!
+  $withCredits: Boolean!
+  $withForms: Boolean!
+) {
   monster(filter: $ids) {
     id
     name
     rawId
-    forms {
+    forms @include(if: $withForms) {
       portraits {
-        bounty {
+        bounty @include(if: $withPortraitBounty) {
           ...myBounty
         }
-        creditPrimary {
+        creditPrimary @include(if: $withCredits) {
           name
         }
-        creditSecondary {
+        creditSecondary @include(if: $withCredits) {
           name
         }
       }
       sprites {
-        bounty {
+        bounty @include(if: $withSpriteBounty) {
           ...myBounty
         }
-        creditPrimary {
+        creditPrimary @include(if: $withCredits) {
           name
         }
-        creditSecondary {
+        creditSecondary @include(if: $withCredits) {
           name
         }
       }
     }
     manual(path: "/") {
       portraits {
-        phase
-        creditPrimary {
-          name
-        }
-        modifiedDate
+        phase @include(if: $withFullyFeaturedPortrait)
+        modifiedDate @include(if: $withModifiedDate)
         previewEmotion {
           url
         }
       }
       sprites {
-        phase
-        creditPrimary {
-          name
-        }
-        modifiedDate
+        phase @include(if: $withFullyFeaturedSprite)
+        modifiedDate @include(if: $withModifiedDate)
       }
     }
   }
