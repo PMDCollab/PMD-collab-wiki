@@ -25,7 +25,7 @@ export function Bar() {
             <HomeIcon />
             {!isMobile ? (
               <Typography variant="h6" ml={0.5}>
-                PMD Collab
+                SpriteCollab
               </Typography>
             ) : null}
           </IconButton>

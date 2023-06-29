@@ -21,8 +21,8 @@ import EditIcon from "@mui/icons-material/Edit"
 import ShuffleIcon from "@mui/icons-material/Shuffle"
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset"
 import CheckIcon from "@mui/icons-material/Check"
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
-import StorageIcon from "@mui/icons-material/Storage"
+import XIcon from "@mui/icons-material/Close"
+import MovieIcon from "@mui/icons-material/Movie"
 
 export default function About() {
   return (
@@ -33,127 +33,164 @@ export default function About() {
         sx={{ backgroundColor: "rgba(255,255,255,.9)", p: 4 }}
       >
         <Typography variant="h4" gutterBottom>
-          Everything about Pokemon Mystery Dungeon Collaborative Project
+          About PMDCollab SpriteCollab
         </Typography>
+
+        <Typography variant="h5" gutterBottom>
+          Terms of Use
+        </Typography>
+        <Container>
+          <Grid container spacing={2} justifyContent="space-around">
+            <Grid>
+              <Card>
+                <CardContent>
+                  <Typography align="center" variant="h5">
+                    You may
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <List>
+                    <ListItem>
+                      <ListItemIcon>
+                        <CheckIcon color="success" />
+                      </ListItemIcon>
+                      <Typography>
+                        Use these sprites in a ROMhack, fangame, sprite
+                        comic, etc.
+                      </Typography>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <CheckIcon color="success" />
+                      </ListItemIcon>
+                      <Typography>
+                        Use these sprites as profile pictures, Discord
+                        emotes, etc.
+                      </Typography>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <CheckIcon color="success" />
+                      </ListItemIcon>
+                      <Typography>
+                        Make edits or recolors of these sprites.
+                      </Typography>
+                    </ListItem>
+                  </List>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid>
+              <Card>
+                <CardContent>
+                  <Typography align="center" variant="h5">
+                    Do not
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <List>
+                    <ListItem>
+                      <ListItemIcon>
+                        <XIcon color="error" />
+                      </ListItemIcon>
+                      <Typography>
+                        Sell the things you make with these sprites.
+                      </Typography>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <XIcon color="error" />
+                      </ListItemIcon>
+                      <Typography>
+                        Use these sprites without giving credit.
+                      </Typography>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <XIcon color="error" />
+                      </ListItemIcon>
+                      <Typography>
+                        Claim that you created sprites that you did not
+                        make.
+                      </Typography>
+                    </ListItem>
+                  </List>
+                </CardActions>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
         <Typography gutterBottom>
-          Below you'll find answers to the questions we get asked the most.
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              Legalese version
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                You are free to use, copy, redistribute, or modify sprites and
+                portraits from this repository for your own projects and
+                contributions. When using portraits or sprites from this
+                repository, you must credit the contributors for each portrait and
+                sprite you use. This information can be found on the page for each
+                sprite.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Typography>
+
+        <Typography variant="h5" gutterBottom>
+          FAQ
         </Typography>
 
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            What is PMD Collab ?
+            What is PMDCollab?
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
               PMDCollab is a collaborative project providing tools and resources
               to help fans of Pokémon Mystery Dungeon create their own ROMhacks,
-              fangames, sprite comics, and more. This project (SpriteCollab)
+              fangames, sprite comics, and more. This project, SpriteCollab,
               aims to be a central resource for PMD-styled portrait art and
               top-down dungeon sprites for Pokémon of all generations.
             </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            What can I use these sprites for? (Terms of Use)
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              <Grid container spacing={2} justifyContent="space-around">
-                <Grid>
-                  <Card>
-                    <CardContent>
-                      <Typography align="center" variant="h5">
-                        You may
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <List>
-                        <ListItem>
-                          <ListItemIcon>
-                            <CheckIcon color="success" />
-                          </ListItemIcon>
-                          <Typography>
-                            Use these sprites in a ROMhack, fangame, sprite
-                            comic, etc.
-                          </Typography>
-                        </ListItem>
-                        <ListItem>
-                          <ListItemIcon>
-                            <CheckIcon color="success" />
-                          </ListItemIcon>
-                          <Typography>
-                            Use these sprites as profile pictures, Discord
-                            emotes, etc.
-                          </Typography>
-                        </ListItem>
-                        <ListItem>
-                          <ListItemIcon>
-                            <CheckIcon color="success" />
-                          </ListItemIcon>
-                          <Typography>
-                            Make edits or recolors of these sprites.
-                          </Typography>
-                        </ListItem>
-                      </List>
-                    </CardActions>
-                  </Card>
-                </Grid>
-                <Grid>
-                  <Card>
-                    <CardContent>
-                      <Typography align="center" variant="h5">
-                        Do not
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <List>
-                        <ListItem>
-                          <ListItemIcon>
-                            <ErrorOutlineIcon color="error" />
-                          </ListItemIcon>
-                          <Typography>
-                            Sell the things you make with these sprites.
-                          </Typography>
-                        </ListItem>
-                        <ListItem>
-                          <ListItemIcon>
-                            <ErrorOutlineIcon color="error" />
-                          </ListItemIcon>
-                          <Typography>
-                            Use these sprites without giving credit.
-                          </Typography>
-                        </ListItem>
-                        <ListItem>
-                          <ListItemIcon>
-                            <ErrorOutlineIcon color="error" />
-                          </ListItemIcon>
-                          <Typography>
-                            Claim that you created sprites that you did not
-                            make.
-                          </Typography>
-                        </ListItem>
-                      </List>
-                    </CardActions>
-                  </Card>
-                </Grid>
+            <Grid
+              container
+              spacing={2}
+              justifyContent="space-around"
+              sx={{ pt: 4 }}
+            >
+              <Grid>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" gutterBottom align="center">
+                      Portraits
+                    </Typography>
+                    <Typography align="center">
+                      <img
+                        src="https://spriteserver.pmdcollab.org/assets/portrait_recolor-0025-0000-0001.png"
+                        style={{ maxWidth: "30vw" }}
+                      />
+                    </Typography>
+                  </CardContent>
+                </Card>
               </Grid>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            Legal version
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              You are free to use, copy, redistribute, or modify sprites and
-              portraits from this repository for your own projects and
-              contributions. When using portraits or sprites from this
-              repository, you must credit the contributors for each portrait and
-              sprite you use. This information can be found on the page for each
-              sprite.
-            </Typography>
+              <Grid>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" gutterBottom align="center">
+                      Sprites
+                    </Typography>
+                    <Typography align="center">
+                      <img
+                        src="https://spriteserver.pmdcollab.org/assets/sprite_recolor-0025-0000-0001.png"
+                        style={{ maxWidth: "30vw" }}
+                      />
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
           </AccordionDetails>
         </Accordion>
         <Accordion>
@@ -171,15 +208,11 @@ export default function About() {
         </Accordion>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            How can I help?
+            I can make sprites! How can I help?
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              There's a{" "}
-              <Link href="https://docs.google.com/presentation/d/1cuDMUz4fI1pAoS7Pp_VzlKmbx0u0C34SfJ3F6Gczt6Q/edit?usp=sharing">
-                How to Make PMD Sprites
-              </Link>{" "}
-              guide. If you have created or want to learn how to create sprites,
+              If you have created or want to learn how to create sprites,
               you can join the #sprite-asset-help channel of the{" "}
               <Link href="https://discord.gg/skytemple">
                 SkyTemple discord server
@@ -193,6 +226,13 @@ export default function About() {
               the repository, you can commission someone to make them for you as
               well.
             </Typography>
+            <Typography>
+              If you're just interested in making sprites that fit the general style, you may find this {" "}
+              <Link href="https://docs.google.com/presentation/d/1cuDMUz4fI1pAoS7Pp_VzlKmbx0u0C34SfJ3F6Gczt6Q/edit?usp=sharing">
+                guidebook on how to make PMD-style sprites
+              </Link>{" "}
+              by veteran spriter Emmuffin useful.
+            </Typography>
           </AccordionDetails>
         </Accordion>
         <Accordion>
@@ -200,23 +240,9 @@ export default function About() {
             What other cool stuff do you guys do?
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>Here's some of our favorites !</Typography>
+            <Typography>Here's some of our favorites!</Typography>
 
             <List>
-              <ListItem>
-                <ListItemIcon>
-                  <StorageIcon />
-                </ListItemIcon>
-                <ListItemText>
-                  <Link href="https://spriteserver.pmdcollab.org/">
-                    SpriteServer
-                  </Link>
-                  , a GraphQL server that distributes all data gathered in the{" "}
-                  <Link href="https://github.com/PMDCollab/SpriteCollab">
-                    SpriteCollab github repository
-                  </Link>
-                </ListItemText>
-              </ListItem>
               <ListItem>
                 <ListItemIcon>
                   <EditIcon />
@@ -240,11 +266,23 @@ export default function About() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
+                  <EditIcon />
                   <VideogameAssetIcon />
                 </ListItemIcon>
                 <ListItemText>
                   <Link href="https://github.com/audinowho/PMDODump">PMDO</Link>
                   , a Pokémon Mystery Dungeon fangame and fangame engine
+                </ListItemText>
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <MovieIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Link href="https://www.youtube.com/@mysterymail300">
+                    Mystery Mail
+                  </Link>
+                  , a recurring event where participants make a section of an Explorers of Sky cutscene before passing it off to the next participant.
                 </ListItemText>
               </ListItem>
               <ListItem>
@@ -263,113 +301,25 @@ export default function About() {
                   <VideogameAssetIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  <Link href="https://pokemon-auto-chess.com">
-                    Pokemon Auto Chess
+                  <Link href="https://www.pmuniverse.net/">
+                    PMU
                   </Link>
-                  , an Auto Chess web based fan game
+                  , a Pokémon Mystery Dungeon MMO
+                </ListItemText>
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <VideogameAssetIcon />
+                </ListItemIcon>
+                {/* I couldn't find a website or discord server or really anything to link for them. :/ If you find one feel free to add it */}
+                <ListItemText>
+                  <Link href="https://discord.gg/QhfKcSdxWd">
+                    PMR
+                  </Link>
+                  , a Pokémon Mystery Dungeon action RPG
                 </ListItemText>
               </ListItem>
             </List>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            How is pokemon data structured ?
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              There are 2 types of assets for each pokemons:
-            </Typography>
-            <Grid
-              container
-              spacing={2}
-              justifyContent="space-around"
-              sx={{ pt: 4 }}
-            >
-              <Grid>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h5" gutterBottom align="center">
-                      Portraits
-                    </Typography>
-                    <Typography align="center">
-                      <img
-                        src="https://spriteserver.pmdcollab.org/assets/portrait_recolor-0025-0000-0001.png"
-                        style={{ maxWidth: "30vw" }}
-                      />
-                    </Typography>
-
-                    <List>
-                      <ListItem>
-                        <ListItemIcon>
-                          <CheckIcon color="success" />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Typography>Portraits are 40x40 images</Typography>
-                        </ListItemText>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemIcon>
-                          <CheckIcon color="success" />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Typography>
-                            Each portrait contains 16 colors or less
-                          </Typography>
-                        </ListItemText>
-                      </ListItem>
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h5" gutterBottom align="center">
-                      Sprites
-                    </Typography>
-                    <Typography align="center">
-                      <img
-                        src="https://spriteserver.pmdcollab.org/assets/sprite_recolor-0025-0000-0001.png"
-                        style={{ maxWidth: "30vw" }}
-                      />
-                    </Typography>
-                    <List>
-                      <ListItem>
-                        <ListItemIcon>
-                          <CheckIcon color="success" />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Typography>8 directions always included</Typography>
-                        </ListItemText>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemIcon>
-                          <CheckIcon color="success" />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Typography>
-                            "Dungeon" animations always available. It includes
-                            Walk, Attack, Sleep, Hurt, Idle, Swing, Double, Hop
-                            Charge and Rotate
-                          </Typography>
-                        </ListItemText>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemIcon>
-                          <ErrorOutlineIcon color="error" />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Typography>
-                            No strict frame size (width/height) limitations
-                          </Typography>
-                        </ListItemText>
-                      </ListItem>
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
           </AccordionDetails>
         </Accordion>
       </Container>
