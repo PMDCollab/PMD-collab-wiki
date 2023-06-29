@@ -237,10 +237,10 @@ export default function About() {
         </Accordion>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            What other cool stuff do you guys do?
+            What other cool stuff does PMDCollab do?
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>Here's some of our favorites!</Typography>
+            <Typography>Here are some links to our other projects:</Typography>
 
             <List>
               <ListItem>
@@ -266,7 +266,6 @@ export default function About() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
-                  <EditIcon />
                   <VideogameAssetIcon />
                 </ListItemIcon>
                 <ListItemText>
