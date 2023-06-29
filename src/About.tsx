@@ -175,7 +175,7 @@ export default function About() {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              Theres a{" "}
+              There's a{" "}
               <Link href="https://docs.google.com/presentation/d/1cuDMUz4fI1pAoS7Pp_VzlKmbx0u0C34SfJ3F6Gczt6Q/edit?usp=sharing">
                 How to Make PMD Sprites
               </Link>{" "}
