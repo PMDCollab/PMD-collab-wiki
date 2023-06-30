@@ -314,28 +314,6 @@ export default function About() {
                   Pokémon Mystery Dungeon action RPG
                 </ListItemText>
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  <VideogameAssetIcon />
-                </ListItemIcon>
-                <ListItemText>
-                  <Link href="https://pokemon-auto-chess.com/">
-                    Pokemon Auto Chess
-                  </Link>
-                  , a pokemon auto chess web based fan game
-                </ListItemText>
-              </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  <VideogameAssetIcon />
-                </ListItemIcon>
-                <ListItemText>
-                  <Link href="https://keldaan-ag.github.io/pokemon-mystery-dungeon-tilesets/#/">
-                    Mystery dungeon tilesets
-                  </Link>
-                  , a tileset viewer
-                </ListItemText>
-              </ListItem>
             </List>
           </AccordionDetails>
         </Accordion>
