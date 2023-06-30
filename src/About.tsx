@@ -39,7 +39,7 @@ export default function About() {
         <Typography variant="h5" gutterBottom>
           Terms of Use
         </Typography>
-        <Container>
+        <Container sx={{ mb: 2 }}>
           <Grid container spacing={2} justifyContent="space-around">
             <Grid>
               <Card>
@@ -55,8 +55,8 @@ export default function About() {
                         <CheckIcon color="success" />
                       </ListItemIcon>
                       <Typography>
-                        Use these sprites in a ROMhack, fangame, sprite
-                        comic, etc.
+                        Use these sprites in a ROMhack, fangame, sprite comic,
+                        etc.
                       </Typography>
                     </ListItem>
                     <ListItem>
@@ -64,8 +64,8 @@ export default function About() {
                         <CheckIcon color="success" />
                       </ListItemIcon>
                       <Typography>
-                        Use these sprites as profile pictures, Discord
-                        emotes, etc.
+                        Use these sprites as profile pictures, Discord emotes,
+                        etc.
                       </Typography>
                     </ListItem>
                     <ListItem>
@@ -110,8 +110,7 @@ export default function About() {
                         <XIcon color="error" />
                       </ListItemIcon>
                       <Typography>
-                        Claim that you created sprites that you did not
-                        make.
+                        Claim that you created sprites that you did not make.
                       </Typography>
                     </ListItem>
                   </List>
@@ -120,25 +119,23 @@ export default function About() {
             </Grid>
           </Grid>
         </Container>
-        <Typography gutterBottom>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              Legalese version
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                You are free to use, copy, redistribute, or modify sprites and
-                portraits from this repository for your own projects and
-                contributions. When using portraits or sprites from this
-                repository, you must credit the contributors for each portrait and
-                sprite you use. This information can be found on the page for each
-                sprite.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        </Typography>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            Legalese version
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              You are free to use, copy, redistribute, or modify sprites and
+              portraits from this repository for your own projects and
+              contributions. When using portraits or sprites from this
+              repository, you must credit the contributors for each portrait and
+              sprite you use. This information can be found on the page for each
+              sprite.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
 
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
           FAQ
         </Typography>
 
@@ -212,8 +209,8 @@ export default function About() {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              If you have created or want to learn how to create sprites,
-              you can join the #sprite-asset-help channel of the{" "}
+              If you have created or want to learn how to create sprites, you
+              can join the #sprite-asset-help channel of the{" "}
               <Link href="https://discord.gg/skytemple">
                 SkyTemple discord server
               </Link>
@@ -227,7 +224,8 @@ export default function About() {
               well.
             </Typography>
             <Typography>
-              If you're just interested in making sprites that fit the general style, you may find this {" "}
+              If you're just interested in making sprites that fit the general
+              style, you may find this{" "}
               <Link href="https://docs.google.com/presentation/d/1cuDMUz4fI1pAoS7Pp_VzlKmbx0u0C34SfJ3F6Gczt6Q/edit?usp=sharing">
                 guidebook on how to make PMD-style sprites
               </Link>{" "}
@@ -281,7 +279,9 @@ export default function About() {
                   <Link href="https://www.youtube.com/@mysterymail300">
                     Mystery Mail
                   </Link>
-                  , a recurring event where participants make a section of an Explorers of Sky cutscene before passing it off to the next participant.
+                  , a recurring event where participants make a section of an
+                  Explorers of Sky cutscene before passing it off to the next
+                  participant.
                 </ListItemText>
               </ListItem>
               <ListItem>
@@ -300,10 +300,8 @@ export default function About() {
                   <VideogameAssetIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  <Link href="https://www.pmuniverse.net/">
-                    PMU
-                  </Link>
-                  , a Pokémon Mystery Dungeon MMO
+                  <Link href="https://www.pmuniverse.net/">PMU</Link>, a Pokémon
+                  Mystery Dungeon MMO
                 </ListItemText>
               </ListItem>
               <ListItem>
@@ -312,10 +310,30 @@ export default function About() {
                 </ListItemIcon>
                 {/* I couldn't find a website or discord server or really anything to link for them. :/ If you find one feel free to add it */}
                 <ListItemText>
-                  <Link href="https://discord.gg/QhfKcSdxWd">
-                    PMR
+                  <Link href="https://discord.gg/QhfKcSdxWd">PMR</Link>, a
+                  Pokémon Mystery Dungeon action RPG
+                </ListItemText>
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <VideogameAssetIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Link href="https://pokemon-auto-chess.com/">
+                    Pokemon Auto Chess
                   </Link>
-                  , a Pokémon Mystery Dungeon action RPG
+                  , a pokemon auto chess web based fan game
+                </ListItemText>
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <VideogameAssetIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Link href="https://keldaan-ag.github.io/pokemon-mystery-dungeon-tilesets/#/">
+                    Mystery dungeon tilesets
+                  </Link>
+                  , a tileset viewer
                 </ListItemText>
               </ListItem>
             </List>
