@@ -1,5 +1,7 @@
 import { Grid, Paper, Typography } from "@mui/material"
 import { Portrait } from "../generated/graphql"
+import Lock from "./lock"
+
 export default function Emotions(props: { emotions: Portrait[] }) {
   const emotionsCopy = [...props.emotions]
   return (
@@ -14,7 +16,22 @@ export default function Emotions(props: { emotions: Portrait[] }) {
                   src={k.url}
                   style={{ height: "80px", imageRendering: "pixelated" }}
                 />
-                <Typography align="center">{k.emotion}</Typography>
+                <Grid
+                  container
+                  justifyContent="center"
+                  alignItems="start"
+                  sx={{ maxWidth: "80px" }}
+                >
+                  <Lock locked={k.locked} />
+                  <Typography
+                    align="center"
+                    color="grayText"
+                    noWrap
+                    sx={{ width: "60px" }}
+                  >
+                    {k.emotion}
+                  </Typography>
+                </Grid>
               </Paper>
             </Grid>
           )

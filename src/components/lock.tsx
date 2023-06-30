@@ -5,13 +5,13 @@ export default function Lock(props: { locked: boolean }) {
   if (props.locked) {
     return (
       <Tooltip title="This is locked and requires special permissions to be updated">
-        <LockIcon color="error" />
+        <LockIcon color="error" fontSize="small" />
       </Tooltip>
     )
   } else {
     return (
       <Tooltip title="This is unlocked, update do not require special permissions">
-        <LockIcon color="success" />
+        <LockIcon color="success" fontSize="small" />
       </Tooltip>
     )
   }
