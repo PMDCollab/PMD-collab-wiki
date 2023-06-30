@@ -40,7 +40,9 @@ export default function SpritePreview(props: {
       <div id={`action-${props.sprite.action}`} ref={container}></div>
       <Grid container justifyContent="center" alignItems="start">
         <Lock locked={props.sprite.locked} />
-        <Typography align="center">{props.sprite.action}</Typography>
+        <Typography align="center" color="GrayText">
+          {props.sprite.action}
+        </Typography>
       </Grid>
     </Card>
   )
