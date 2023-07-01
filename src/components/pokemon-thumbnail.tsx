@@ -2,6 +2,7 @@ import { ReactElement } from "react"
 import { Link } from "react-router-dom"
 import { Monster } from "../generated/graphql"
 import { Paper, Typography } from "@mui/material"
+import { formatDate } from '../util'
 
 export default function PokemonThumbnail(props: {
   info: Monster
@@ -13,96 +14,59 @@ export default function PokemonThumbnail(props: {
   showPortraitBounty: boolean
   showSpriteBounty: boolean
 }) {
-  let image: ReactElement | null = null
-  let date: ReactElement | null = null
-  let index: ReactElement | null = null
-  let portraitAuthor: ReactElement | null = null
-  let spriteAuthor: ReactElement | null = null
-  let portraitBounty: ReactElement | null = null
-  let spriteBounty: ReactElement | null = null
-
-  if (props.showPortraitAuthor) {
-    portraitAuthor = (
-      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-        {props.info?.forms[0]?.portraits?.creditPrimary?.name}
-      </Typography>
-    )
-  }
-
-  if (props.showSpriteAuthor) {
-    spriteAuthor = (
-      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-        {props.info.forms[0]?.sprites.creditPrimary?.name}
-      </Typography>
-    )
-  }
-
-  if (props.showIndex) {
-    index = (
-      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-        {props.infoKey}
-      </Typography>
-    )
-  }
-
-  if (props.showLastModification) {
-    const portraitDate = new Date(props.info.manual?.portraits.modifiedDate)
-    const spriteDate = new Date(props.info.manual?.sprites.modifiedDate)
-    date = (
-      <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-        {formatDate(Math.max(portraitDate.getTime(), spriteDate.getTime()))}
-      </Typography>
-    )
-  }
-
-  if (props.showPortraitBounty) {
-    const bounties = new Array<number>()
-    props.info.forms.forEach((f) => {
-      f.portraits.bounty.exists
-        ? bounties.push(f.portraits.bounty.exists)
-        : null
-      f.portraits.bounty.full ? bounties.push(f.portraits.bounty.full) : null
-      f.portraits.bounty.incomplete
-        ? bounties.push(f.portraits.bounty.incomplete)
-        : null
-    })
-    portraitBounty = (
-      <Typography color="GrayText" align="center" noWrap>
-        {bounties.length > 0 ? Math.max(...bounties) : 0} gp
-      </Typography>
-    )
-  }
-
-  if (props.showSpriteBounty) {
-    const bounties = new Array<number>()
-    props.info.forms.forEach((f) => {
-      f.sprites.bounty.exists ? bounties.push(f.sprites.bounty.exists) : null
-      f.sprites.bounty.full ? bounties.push(f.sprites.bounty.full) : null
-      f.sprites.bounty.incomplete
-        ? bounties.push(f.sprites.bounty.incomplete)
-        : null
-    })
-    spriteBounty = (
-      <Typography align="center" color="GrayText" noWrap>
-        {bounties.length > 0 ? Math.max(...bounties) : 0} gp
-      </Typography>
-    )
-  }
-
-  if (props.info.manual?.portraits.previewEmotion?.url) {
-    image = (
-      <img
-        src={props.info.manual.portraits.previewEmotion?.url}
-        style={{ height: 80, imageRendering: "pixelated" }}
-      />
-    )
-  } else {
-    image = (
-      <Typography variant="h4" align="center" sx={{ height: 80 }}>
-        ?
-      </Typography>
-    )
-  }
+  const image = props.info.manual?.portraits.previewEmotion?.url ? (
+    <img
+      src={props.info.manual.portraits.previewEmotion?.url}
+      style={{ height: 80, imageRendering: "pixelated" }}
+    />
+  ) : (
+    <Typography variant="h4" align="center" sx={{ height: 80 }}>
+      ?
+    </Typography>
+  )
+  const date = props.showLastModification && (
+    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+      {formatDate(Math.max(
+        new Date(props.info.manual?.portraits.modifiedDate).getTime(),
+        new Date(props.info.manual?.sprites.modifiedDate).getTime()
+      ))}
+    </Typography>
+  )
+  const index = props.showIndex && (
+    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+      {props.infoKey}
+    </Typography>
+  )
+  const portraitAuthor = props.showPortraitAuthor && (
+    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+      {props.info?.forms[0]?.portraits?.creditPrimary?.name}
+    </Typography>
+  )
+  const spriteAuthor = props.showSpriteAuthor && (
+    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+      {props.info.forms[0]?.sprites.creditPrimary?.name}
+    </Typography>
+  )
+  const portraitBounty = props.showPortraitBounty && (
+    <Typography color="GrayText" align="center" noWrap>
+      {props.info.forms.reduce((a, b) => Math.max(
+        a,
+        b.portraits.bounty.exists ?? 0,
+        b.portraits.bounty.incomplete ?? 0,
+        b.portraits.bounty.full ?? 0
+      ), 0)} gp
+    </Typography>
+  )
+  const spriteBounty = props.showSpriteBounty && (
+    <Typography color="GrayText" align="center" noWrap>
+      {props.info.forms.reduce((a, b) => Math.max(
+        a,
+        b.sprites.bounty.exists ?? 0,
+        b.sprites.bounty.incomplete ?? 0,
+        b.sprites.bounty.full ?? 0
+      ), 0)} gp
+    </Typography>
+  )
 
   return (
     <Link to={`/${props.infoKey}`}>
@@ -130,26 +94,4 @@ export default function PokemonThumbnail(props: {
       </Paper>
     </Link>
   )
-}
-
-export function formatDate(n: number | undefined) {
-  if (n) {
-    const date = new Date(n)
-    return (
-      pad(date.getDate()) +
-      "/" +
-      pad(date.getMonth() + 1) +
-      "/" +
-      date.getFullYear().toString().slice(2)
-    )
-  } else {
-    return ""
-  }
-}
-
-export function pad(number: number) {
-  if (number < 10) {
-    return "0" + number
-  }
-  return number
 }

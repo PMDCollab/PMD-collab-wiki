@@ -58,7 +58,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
             Search for a pokemon, artist or pokedex number ...
           </Typography>
           <Search currentText={currentText} setCurrentText={setCurrentText} />
-          {!isMobile ? (
+          {!isMobile && (
             <Accordion sx={{ mt: 2 }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography color="text.secondary">
@@ -102,7 +102,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
                 />
               </AccordionDetails>
             </Accordion>
-          ) : null}
+          )}
         </Container>
 
         <PokemonCarousel

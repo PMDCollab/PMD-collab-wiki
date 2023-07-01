@@ -23,7 +23,7 @@ export default function Contributors() {
 
   useEffect(() => {
     if (data?.credit) {
-      setCredits(data?.credit)
+      setCredits(data.credit)
     }
   }, [data])
 
@@ -59,8 +59,8 @@ export default function Contributors() {
                       !credit.discordHandle?.includes("Deleted User")
                   )
                   .sort((a, b) => {
-                    const reputationA = a.reputation ? a.reputation : 0
-                    const reputationB = b.reputation ? b.reputation : 0
+                    const reputationA = a.reputation ?? 0
+                    const reputationB = b.reputation ?? 0
                     return reputationB - reputationA
                   })
                   .map((credit) => (
@@ -70,7 +70,7 @@ export default function Contributors() {
                     >
                       <TableCell align="center">
                         <Typography variant="h6">
-                          {credit.name ? credit.name : credit.discordHandle}
+                          {credit.name ?? credit.discordHandle}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
@@ -80,13 +80,13 @@ export default function Contributors() {
                               {credit.contact}
                             </Typography>
                           </Link>
-                        ) : credit.contact ? (
+                        ) : credit.contact && (
                           <Typography variant="h6">{credit.contact}</Typography>
-                        ) : null}
+                        )}
                       </TableCell>
                       <TableCell align="center">
                         <Typography variant="h6">
-                          {credit.reputation ? credit.reputation : "???"}
+                          {credit.reputation ?? "???"}
                         </Typography>
                       </TableCell>
                     </TableRow>

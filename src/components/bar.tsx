@@ -23,11 +23,11 @@ export function Bar() {
         <Link to={"/"}>
           <IconButton size="large" color="inherit">
             <HomeIcon />
-            {!isMobile ? (
+            {!isMobile && (
               <Typography variant="h6" ml={0.5}>
                 SpriteCollab
               </Typography>
-            ) : null}
+            )}
           </IconButton>
         </Link>
 
@@ -37,11 +37,11 @@ export function Bar() {
           href="https://discord.gg/skytemple"
         >
           <SportsEsportsIcon />
-          {!isMobile ? (
+          {!isMobile && (
             <Typography variant="h6" ml={0.5}>
               Discord
             </Typography>
-          ) : null}
+          )}
         </IconButton>
 
         <IconButton
@@ -50,11 +50,11 @@ export function Bar() {
           href="https://twitter.com/PMD_Spritebot"
         >
           <TwitterIcon />
-          {!isMobile ? (
+          {!isMobile && (
             <Typography variant="h6" ml={0.5}>
               Twitter
             </Typography>
-          ) : null}
+          )}
         </IconButton>
         <IconButton
           size="large"
@@ -62,30 +62,30 @@ export function Bar() {
           href="https://github.com/PMDCollab/SpriteCollab"
         >
           <GitHubIcon />
-          {!isMobile ? (
+          {!isMobile && (
             <Typography variant="h6" ml={0.5}>
               Github
             </Typography>
-          ) : null}
+          )}
         </IconButton>
         <Link to={"/About"}>
           <IconButton size="large" color="inherit">
             <InfoIcon />
-            {!isMobile ? (
+            {!isMobile && (
               <Typography variant="h6" ml={0.5}>
                 About
               </Typography>
-            ) : null}
+            )}
           </IconButton>
         </Link>
         <Link to={"/Contributors"}>
           <IconButton size="large" color="inherit">
             <GroupIcon />
-            {!isMobile ? (
+            {!isMobile && (
               <Typography variant="h6" ml={0.5}>
                 Contributors
               </Typography>
-            ) : null}
+            )}
           </IconButton>
         </Link>
       </Toolbar>

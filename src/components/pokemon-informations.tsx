@@ -1,12 +1,12 @@
 import Credits from "./credits"
 import Emotions from "./emotions"
-import { formatDate } from "./pokemon-thumbnail"
 import SpritePreview from "./sprite-preview"
 import { Dungeon } from "../types/enum"
 import { useRef } from "react"
 import { MonsterForm } from "../generated/graphql"
 import Bounty from "./bounty"
 import { Box, Grid, Link, Paper, Typography } from "@mui/material"
+import { getLastModification } from '../util'
 
 export default function PokemonInformations(props: {
   info: MonsterForm
@@ -17,32 +17,30 @@ export default function PokemonInformations(props: {
       Math.floor(Math.random() * Object.keys(Dungeon).length)
     ] as Dungeon
   )
-  const portraitDate = props.info.portraits.modifiedDate
-    ? new Date(props.info.portraits.modifiedDate)
-    : undefined
-  const spriteDate = props.info.sprites.modifiedDate
-    ? new Date(props.info.sprites.modifiedDate)
-    : undefined
-  const portraitSheetUrl = props.info.portraits.sheetUrl ? (
+  const portraitDate = props.info.portraits.modifiedDate &&
+    new Date(props.info.portraits.modifiedDate)
+  const spriteDate = props.info.sprites.modifiedDate &&
+    new Date(props.info.sprites.modifiedDate)
+  const portraitSheetUrl = props.info.portraits.sheetUrl && (
     <Link target="_blank" href={props.info.portraits.sheetUrl}>
       <Typography>Download all portraits</Typography>
     </Link>
-  ) : null
-  const portraitRecolorSheetUrl = props.info.portraits.recolorSheetUrl ? (
+  )
+  const portraitRecolorSheetUrl = props.info.portraits.recolorSheetUrl && (
     <Link target="_blank" href={props.info.portraits.recolorSheetUrl}>
       <Typography>Download recolor portraits</Typography>
     </Link>
-  ) : null
-  const zipUrl = props.info.sprites.zipUrl ? (
+  )
+  const zipUrl = props.info.sprites.zipUrl && (
     <Link target="_blank" href={props.info.sprites.zipUrl}>
       <Typography>Download all sprites</Typography>
     </Link>
-  ) : null
-  const spriteRecolorSheetUrl = props.info.sprites.recolorSheetUrl ? (
+  )
+  const spriteRecolorSheetUrl = props.info.sprites.recolorSheetUrl && (
     <Link target="_blank" href={props.info.sprites.recolorSheetUrl}>
       <Typography> Download recolor sprites</Typography>
     </Link>
-  ) : null
+  )
   return (
     <Box sx={{ mt: 4 }}>
       <Grid container spacing={2} alignItems="center">
@@ -64,12 +62,10 @@ export default function PokemonInformations(props: {
         primary={props.info.portraits.creditPrimary}
         secondary={props.info.portraits.creditSecondary}
       />
-      {props.info.portraits.emotions.length !== 0 ? (
+      {props.info.portraits.emotions.length ? (
         <Emotions
           emotions={props.info.portraits.emotions.concat(
-            props.info.portraits.emotionsFlipped
-              ? props.info.portraits.emotionsFlipped
-              : []
+            props.info.portraits.emotionsFlipped ?? []
           )}
         />
       ) : (
@@ -96,10 +92,10 @@ export default function PokemonInformations(props: {
           secondary={props.info.sprites.creditSecondary}
         />
       </Box>
-      {props.info.sprites.actions.length !== 0 ? (
+      {props.info.sprites.actions.length ? (
         <Grid container spacing={2} sx={{ mt: 3 }}>
           {props.info.sprites.actions.map((k) =>
-            k.__typename === "Sprite" && props.info.sprites.animDataXml ? (
+            k.__typename === "Sprite" && props.info.sprites.animDataXml && (
               <Grid item key={k.action}>
                 <Paper elevation={2}>
                   <SpritePreview
@@ -109,7 +105,7 @@ export default function PokemonInformations(props: {
                   />
                 </Paper>
               </Grid>
-            ) : null
+            )
           )}
         </Grid>
       ) : (
@@ -117,11 +113,4 @@ export default function PokemonInformations(props: {
       )}
     </Box>
   )
-}
-
-function getLastModification(t: Date | undefined) {
-  if (t) {
-    return "Modified at " + formatDate(t.getTime())
-  }
-  return ""
 }

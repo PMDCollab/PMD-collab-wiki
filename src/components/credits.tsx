@@ -7,14 +7,14 @@ export default function Credits(props: {
 }) {
   return (
     <Grid container spacing={3} sx={{ mt: 1 }}>
-      {props.primary?.name ? (
+      {props.primary?.name && (
         <Grid item>
           <Typography>by</Typography>
           <Author credit={props.primary} />
         </Grid>
-      ) : null}
+      )}
 
-      {props.secondary.length !== 0 ? (
+      {props.secondary.length && (
         <Grid item>
           <Typography>Others</Typography>
           <Box>
@@ -23,7 +23,7 @@ export default function Credits(props: {
             ))}
           </Box>
         </Grid>
-      ) : null}
+      )}
     </Grid>
   )
 }
