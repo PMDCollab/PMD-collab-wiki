@@ -43,31 +43,21 @@ function filterMonster(
   const lowerCaseText = currentText.toLowerCase()
   return monsters
     .filter(
-      (k) =>
-        k?.name?.toLowerCase().includes(lowerCaseText) ||
-        k?.forms.find(
-          (f) =>
-            f.portraits.creditPrimary?.name
-              ?.toLowerCase()
-              .includes(lowerCaseText) ||
-            f.portraits.creditSecondary?.find((c) =>
-              c.name?.toLowerCase().includes(lowerCaseText)
-            )
+      ({ name, forms, id }) =>
+        name?.toLowerCase().includes(lowerCaseText) ||
+        forms.some(({ portraits: { creditPrimary, creditSecondary } }) =>
+          creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+          creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
         ) ||
-        k?.forms.find(
-          (f) =>
-            f.sprites.creditPrimary?.name
-              ?.toLowerCase()
-              .includes(lowerCaseText) ||
-            f.sprites.creditSecondary?.find((c) =>
-              c.name?.toLowerCase().includes(lowerCaseText)
-            )
+        forms.some(({ sprites: { creditPrimary, creditSecondary } }) =>
+          creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+          creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
         ) ||
-        k?.id.toString().includes(lowerCaseText)
+        id.toString().includes(lowerCaseText)
     )
-    .filter((k) =>
-      (!showOnlyFullyFeaturedPortraits || k.manual?.portraits.phase === Phase.Full) &&
-      (!showOnlyFullyFeaturedSprites || k.manual?.sprites.phase === Phase.Full)
+    .filter(({ manual }) =>
+      (!showOnlyFullyFeaturedPortraits || manual?.portraits.phase === Phase.Full) &&
+      (!showOnlyFullyFeaturedSprites || manual?.sprites.phase === Phase.Full)
     )
     .sort((a, b) => rankMethodToRankFunction[rankBy]?.(a as Monster, b as Monster) ?? 0)
 }
