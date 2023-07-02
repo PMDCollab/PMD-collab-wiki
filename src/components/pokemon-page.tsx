@@ -43,47 +43,43 @@ export default function PokemonPage(props: {
     )
   }
 
-  const tablist = new Array<ReactElement>()
-  const tabPanelList = new Array<ReactElement>()
-
-  const prevLink = props.prevIndex ? (
+  const prevLink = props.prevIndex && (
     <Link to={`/${props.prevIndex}`}>
       <Typography variant="h6" color="text.secondary">
         {"<"}
         {props.prevIndex}
       </Typography>
     </Link>
-  ) : null
-  const nextLink = props.nextIndex ? (
+  )
+  const nextLink = props.nextIndex && (
     <Link to={`/${props.nextIndex}`}>
       <Typography variant="h6" color="text.secondary" align="right">
         {props.nextIndex}
         {">"}
       </Typography>
     </Link>
-  ) : null
+  )
 
-  data?.monster[0]?.forms.forEach((form, i) => {
-    tablist.push(
-      <Tab
-        key={form.path}
-        sx={{ textTransform: "none" }}
-        label={
-          <Typography variant="h6" color="text.primary">
-            {form.fullName}
-          </Typography>
-        }
+  const formList = data?.monster[0]?.forms;
+  const tablist = formList?.map(form => (
+    <Tab
+      key={form.path}
+      sx={{ textTransform: "none" }}
+      label={
+        <Typography variant="h6" color="text.primary">
+          {form.fullName}
+        </Typography>
+      }
+    />
+  ))
+  const tabPanelList = formList?.map((form, i) =>
+    <TabPanel key={`${form.path}`} value={value} index={i}>
+      <PokemonInformations
+        info={form as MonsterForm}
+        infoKey={props.infoKey}
       />
-    )
-    tabPanelList.push(
-      <TabPanel key={`${form.path}`} value={value} index={i}>
-        <PokemonInformations
-          info={form as MonsterForm}
-          infoKey={props.infoKey}
-        />
-      </TabPanel>
-    )
-  })
+    </TabPanel>
+  )
 
   return (
     <Box>
@@ -92,8 +88,8 @@ export default function PokemonPage(props: {
         maxWidth="xl"
         sx={{ backgroundColor: "rgba(255,255,255,.9)", pt: 2, pb: 2 }}
       >
-        {loading ? <Typography variant="h4">loading...</Typography> : null}
-        {error ? <Typography variant="h4">error</Typography> : null}
+        {loading && <Typography variant="h4">loading...</Typography>}
+        {error && <Typography variant="h4">error</Typography>}
         <Grid container justifyContent="space-between">
           <Grid item xs={2}>
             {prevLink}

@@ -1,7 +1,7 @@
-import Phaser from "phaser"
+import { Scene } from "phaser"
 import { AnimationType, Dungeon, IAnim } from "../../types/enum"
 import { MyGame } from "./game-container"
-export default class GameScene extends Phaser.Scene {
+export default class GameScene extends Scene {
   metadata: IAnim | undefined
   dungeon: Dungeon | undefined
   action = ""
@@ -14,13 +14,13 @@ export default class GameScene extends Phaser.Scene {
   }
 
   init() {
-    const { animationData, sprite, dungeon } = this.game as MyGame;
+    const { animationData, sprite: { animUrl, shadowsUrl, action }, dungeon } = this.game as MyGame;
     this.metadata = animationData.Anims.Anim.find(
-      ({ Name }) => Name === sprite.action
+      ({ Name }) => Name === action
     );
-    this.animUrl = sprite.animUrl;
-    this.shadowsUrl = sprite.shadowsUrl;
-    this.action = sprite.action;
+    this.animUrl = animUrl;
+    this.shadowsUrl = shadowsUrl;
+    this.action = action;
     this.dungeon = dungeon;
     this.scaleFactor =
       Math.max(...animationData.Anims.Anim.map(({ FrameHeight }) => FrameHeight ?? 0))
@@ -28,7 +28,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    const { FrameWidth, FrameHeight } = this.metadata as IAnim
+    const { FrameWidth: frameWidth, FrameHeight: frameHeight } = this.metadata as IAnim
     this.load.image(
       "small-ba",
       `${process.env.PUBLIC_URL}/maps/${this.dungeon}.png`
@@ -36,12 +36,12 @@ export default class GameScene extends Phaser.Scene {
     this.load.spritesheet(
       `${this.action}-${AnimationType.ANIM}`,
       this.animUrl,
-      { frameWidth: FrameWidth, frameHeight: FrameHeight }
+      { frameWidth, frameHeight }
     )
     this.load.spritesheet(
       `${this.action}-${AnimationType.SHADOW}`,
       this.shadowsUrl,
-      { frameWidth: FrameWidth, frameHeight: FrameHeight }
+      { frameWidth, frameHeight }
     )
   }
 
@@ -51,10 +51,8 @@ export default class GameScene extends Phaser.Scene {
         `${this.action}-${animationType}`,
         { start: 0, end: -1 }
       )
-      const { Durations } = this.metadata as IAnim
-      const durationArray = Array.isArray(Durations.Duration)
-        ? Durations.Duration
-        : [Durations.Duration]
+      const { Durations: { Duration } } = this.metadata as IAnim
+      const durationArray = Array.isArray(Duration) ? Duration : [Duration]
       for (let i = 0; i < frameArray.length; i++) {
         frameArray[i]["duration"] =
           durationArray[i % durationArray.length] * 20

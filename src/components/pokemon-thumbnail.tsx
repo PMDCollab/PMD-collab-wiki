@@ -2,7 +2,7 @@ import { ReactElement } from "react"
 import { Link } from "react-router-dom"
 import { Monster } from "../generated/graphql"
 import { Paper, Typography } from "@mui/material"
-import { formatDate } from '../util'
+import { formatDate, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
 
 export default function PokemonThumbnail(props: {
   info: Monster
@@ -39,32 +39,22 @@ export default function PokemonThumbnail(props: {
   )
   const portraitAuthor = props.showPortraitAuthor && (
     <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {props.info?.forms[0]?.portraits?.creditPrimary?.name}
+      {props.info.manual?.portraits.creditPrimary?.name}
     </Typography>
   )
   const spriteAuthor = props.showSpriteAuthor && (
     <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {props.info.forms[0]?.sprites.creditPrimary?.name}
+      {props.info.manual?.sprites.creditPrimary?.name}
     </Typography>
   )
   const portraitBounty = props.showPortraitBounty && (
     <Typography color="GrayText" align="center" noWrap>
-      {props.info.forms.reduce((a, b) => Math.max(
-        a,
-        b.portraits.bounty.exists ?? 0,
-        b.portraits.bounty.incomplete ?? 0,
-        b.portraits.bounty.full ?? 0
-      ), 0)} gp
+      {getMonsterMaxPortraitBounty(props.info)} gp
     </Typography>
   )
   const spriteBounty = props.showSpriteBounty && (
     <Typography color="GrayText" align="center" noWrap>
-      {props.info.forms.reduce((a, b) => Math.max(
-        a,
-        b.sprites.bounty.exists ?? 0,
-        b.sprites.bounty.incomplete ?? 0,
-        b.sprites.bounty.full ?? 0
-      ), 0)} gp
+      {getMonsterMaxSpriteBounty(props.info)} gp
     </Typography>
   )
 
