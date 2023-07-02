@@ -45,7 +45,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
           color="text.secondary"
           gutterBottom
         >
-          Free to use with credit for ROMhacks, fangames, etc. Don't use for
+          Free to use <strong>WITH CREDIT</strong> for ROMhacks, fangames, etc. Don't use for
           commercial projects.
         </Typography>
         <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>

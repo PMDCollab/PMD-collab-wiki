@@ -1,4 +1,3 @@
-import { ReactElement } from "react"
 import { Link } from "react-router-dom"
 import { Monster } from "../generated/graphql"
 import { Paper, Typography } from "@mui/material"

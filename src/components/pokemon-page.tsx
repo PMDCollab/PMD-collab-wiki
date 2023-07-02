@@ -1,5 +1,5 @@
 import PokemonInformations from "./pokemon-informations"
-import { ReactElement, useState, SyntheticEvent } from "react"
+import { useState, SyntheticEvent } from "react"
 import { Link } from "react-router-dom"
 import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 import { Bar } from "./bar"

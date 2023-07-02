@@ -3,3 +3,7 @@
   src: url("../public/Wonder_Mail.ttf");
   size-adjust: 150%;
 }
+
+strong {
+  color: red;
+}
