@@ -3,7 +3,7 @@ import { MonsterBounty } from "../generated/graphql"
 import { Grid, Typography } from "@mui/material"
 
 export default function Bounty(props: { bounty: MonsterBounty }) {
-  const { bounty: { exists, full, incomplete } } = props;
+  const { exists, full, incomplete } = props.bounty;
   if (!exists && !full && !incomplete) return null;
   return (
     <Grid container>
