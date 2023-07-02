@@ -124,11 +124,11 @@ export default function PokemonCarousel(props: {
 
   return (
     <Grid container spacing={2} justifyContent={"center"}>
-      {visibleMonsters.map((k) => (
-        <Grid item key={k.id}>
+      {visibleMonsters.map(sprite => (
+        <Grid item key={sprite.id}>
           <PokemonThumbnail
-            infoKey={k.rawId}
-            info={k as Monster}
+            infoKey={sprite.rawId}
+            info={sprite as Monster}
             showIndex={props.showIndex}
             showPortraitAuthor={props.showPortraitAuthor}
             showSpriteAuthor={props.showSpriteAuthor}

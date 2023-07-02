@@ -13,9 +13,10 @@ export default function PokemonThumbnail(props: {
   showPortraitBounty: boolean
   showSpriteBounty: boolean
 }) {
-  const image = props.info.manual?.portraits.previewEmotion?.url ? (
+  const { manual, name } = props.info;
+  const image = manual?.portraits.previewEmotion?.url ? (
     <img
-      src={props.info.manual.portraits.previewEmotion?.url}
+      src={manual.portraits.previewEmotion?.url}
       style={{ height: 80, imageRendering: "pixelated" }}
     />
   ) : (
@@ -26,8 +27,8 @@ export default function PokemonThumbnail(props: {
   const date = props.showLastModification && (
     <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
       {formatDate(Math.max(
-        new Date(props.info.manual?.portraits.modifiedDate).getTime(),
-        new Date(props.info.manual?.sprites.modifiedDate).getTime()
+        new Date(manual?.portraits.modifiedDate).getTime(),
+        new Date(manual?.sprites.modifiedDate).getTime()
       ))}
     </Typography>
   )
@@ -38,12 +39,12 @@ export default function PokemonThumbnail(props: {
   )
   const portraitAuthor = props.showPortraitAuthor && (
     <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {props.info.manual?.portraits.creditPrimary?.name}
+      {manual?.portraits.creditPrimary?.name}
     </Typography>
   )
   const spriteAuthor = props.showSpriteAuthor && (
     <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {props.info.manual?.sprites.creditPrimary?.name}
+      {manual?.sprites.creditPrimary?.name}
     </Typography>
   )
   const portraitBounty = props.showPortraitBounty && (
@@ -72,7 +73,7 @@ export default function PokemonThumbnail(props: {
           noWrap
           sx={{ width: "80px" }}
         >
-          {props.info.name}
+          {name}
         </Typography>
         {index}
         {portraitAuthor}
