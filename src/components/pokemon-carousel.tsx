@@ -4,6 +4,34 @@ import { Monster, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Grid, Typography } from "@mui/material"
+import { getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
+
+const rankMethodToRankFunction: Record<RankMethod, (a: Monster, b: Monster) => number> = {
+  [RankMethod.POKEDEX_NUMBER]: (a, b) => a.id - b.id,
+  [RankMethod.LAST_MODIFICATION]: (a, b) => {
+    const dap = new Date(a.manual?.portraits.modifiedDate);
+    const dbp = new Date(b.manual?.portraits.modifiedDate);
+    const das = new Date(a.manual?.sprites.modifiedDate);
+    const dbs = new Date(b.manual?.sprites.modifiedDate);
+    return Math.max(dbp.getTime(), dbs.getTime()) -
+      Math.max(dap.getTime(), das.getTime());
+  },
+  [RankMethod.NAME]: (a, b) => a.name?.localeCompare(b.name),
+  [RankMethod.PORTRAIT_AUTHOR]: (a, b) => {
+    const aName = a.manual?.portraits.creditPrimary?.name;
+    const bName = b.manual?.portraits.creditPrimary?.name;
+    return aName && bName ? aName.localeCompare(bName) : aName ? -1 : 1;
+  },
+  [RankMethod.SPRITE_AUTHOR]: (a, b) => {
+    const aName = a.manual?.sprites.creditPrimary?.name;
+    const bName = b.manual?.sprites.creditPrimary?.name;
+    return aName && bName ? aName.localeCompare(bName) : aName ? -1 : 1;
+  },
+  [RankMethod.PORTRAIT_BOUNTY]: (a, b) =>
+    getMonsterMaxPortraitBounty(b) - getMonsterMaxPortraitBounty(a),
+  [RankMethod.SPRITE_BOUNTY]: (a, b) =>
+    getMonsterMaxSpriteBounty(b) - getMonsterMaxSpriteBounty(a),
+}
 
 function filterMonster(
   monsters: Monster[],
@@ -15,39 +43,23 @@ function filterMonster(
   const lowerCaseText = currentText.toLowerCase()
   return monsters
     .filter(
-      (k) =>
-        k?.name?.toLowerCase().includes(lowerCaseText) ||
-        k?.forms.find(
-          (f) =>
-            f.portraits.creditPrimary?.name
-              ?.toLowerCase()
-              .includes(lowerCaseText) ||
-            f.portraits.creditSecondary?.find((c) =>
-              c.name?.toLowerCase().includes(lowerCaseText)
-            )
+      ({ name, forms, id }) =>
+        name?.toLowerCase().includes(lowerCaseText) ||
+        forms.some(({ portraits: { creditPrimary, creditSecondary } }) =>
+          creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+          creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
         ) ||
-        k?.forms.find(
-          (f) =>
-            f.sprites.creditPrimary?.name
-              ?.toLowerCase()
-              .includes(lowerCaseText) ||
-            f.sprites.creditSecondary?.find((c) =>
-              c.name?.toLowerCase().includes(lowerCaseText)
-            )
+        forms.some(({ sprites: { creditPrimary, creditSecondary } }) =>
+          creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+          creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
         ) ||
-        k?.id.toString().includes(lowerCaseText)
+        id.toString().includes(lowerCaseText)
     )
-    .filter((k) =>
-      showOnlyFullyFeaturedPortraits
-        ? k.manual?.portraits.phase === Phase.Full
-        : true
+    .filter(({ manual }) =>
+      (!showOnlyFullyFeaturedPortraits || manual?.portraits.phase === Phase.Full) &&
+      (!showOnlyFullyFeaturedSprites || manual?.sprites.phase === Phase.Full)
     )
-    .filter((k) =>
-      showOnlyFullyFeaturedSprites
-        ? k.manual?.sprites.phase === Phase.Full
-        : true
-    )
-    .sort((a, b) => rankFunction(rankBy, a as Monster, b as Monster))
+    .sort((a, b) => rankMethodToRankFunction[rankBy]?.(a as Monster, b as Monster) ?? 0)
 }
 
 export default function PokemonCarousel(props: {
@@ -85,7 +97,7 @@ export default function PokemonCarousel(props: {
     }
   })
   const visibleMonsters = useMemo(() => {
-    const monsters = (data?.monster ? data.monster : []) as Monster[]
+    const monsters = (data?.monster ?? []) as Monster[]
     return filterMonster(
       monsters,
       props.currentText,
@@ -111,12 +123,12 @@ export default function PokemonCarousel(props: {
   if (error) return <Typography>Error</Typography>
 
   return (
-    <Grid container spacing={2}>
-      {visibleMonsters.map((k) => (
-        <Grid item key={k.id}>
+    <Grid container spacing={2} justifyContent={"center"}>
+      {visibleMonsters.map(sprite => (
+        <Grid item key={sprite.id}>
           <PokemonThumbnail
-            infoKey={k.rawId}
-            info={k as Monster}
+            infoKey={sprite.rawId}
+            info={sprite as Monster}
             showIndex={props.showIndex}
             showPortraitAuthor={props.showPortraitAuthor}
             showSpriteAuthor={props.showSpriteAuthor}
@@ -128,93 +140,4 @@ export default function PokemonCarousel(props: {
       ))}
     </Grid>
   )
-}
-
-function rankFunction(rankBy: RankMethod, a: Monster, b: Monster): number {
-  let result: number | undefined = 0
-  const aBounties = new Array<number>()
-  const bBounties = new Array<number>()
-  switch (rankBy) {
-    case RankMethod.POKEDEX_NUMBER:
-      result = a.id - b.id
-      break
-
-    case RankMethod.LAST_MODIFICATION:
-      const dap = new Date(a.manual?.portraits.modifiedDate)
-      const dbp = new Date(b.manual?.portraits.modifiedDate)
-      const das = new Date(a.manual?.sprites.modifiedDate)
-      const dbs = new Date(b.manual?.sprites.modifiedDate)
-      result =
-        Math.max(dbp.getTime(), dbs.getTime()) -
-        Math.max(dap.getTime(), das.getTime())
-      break
-
-    case RankMethod.NAME:
-      result = a.name?.localeCompare(b.name)
-      break
-
-    case RankMethod.PORTRAIT_AUTHOR:
-      result = a.manual?.portraits?.creditPrimary?.name?.localeCompare(
-        b.manual?.portraits?.creditPrimary?.name
-          ? b.manual?.portraits?.creditPrimary?.name
-          : ""
-      )
-      break
-
-    case RankMethod.SPRITE_AUTHOR:
-      result = a.manual?.sprites?.creditPrimary?.name?.localeCompare(
-        b.manual?.sprites?.creditPrimary?.name
-          ? b.manual?.sprites?.creditPrimary?.name
-          : ""
-      )
-      break
-
-    case RankMethod.PORTRAIT_BOUNTY:
-      a.forms.forEach((f) => {
-        f.portraits.bounty.exists
-          ? aBounties.push(f.portraits.bounty.exists)
-          : null
-        f.portraits.bounty.full ? aBounties.push(f.portraits.bounty.full) : null
-        f.portraits.bounty.incomplete
-          ? aBounties.push(f.portraits.bounty.incomplete)
-          : null
-      })
-
-      b.forms.forEach((f) => {
-        f.portraits.bounty.exists
-          ? bBounties.push(f.portraits.bounty.exists)
-          : null
-        f.portraits.bounty.full ? bBounties.push(f.portraits.bounty.full) : null
-        f.portraits.bounty.incomplete
-          ? bBounties.push(f.portraits.bounty.incomplete)
-          : null
-      })
-      result = Math.max(...bBounties) - Math.max(...aBounties)
-      break
-
-    case RankMethod.SPRITE_BOUNTY:
-      a.forms.forEach((f) => {
-        f.sprites.bounty.exists ? aBounties.push(f.sprites.bounty.exists) : null
-        f.sprites.bounty.full ? aBounties.push(f.sprites.bounty.full) : null
-        f.sprites.bounty.incomplete
-          ? aBounties.push(f.sprites.bounty.incomplete)
-          : null
-      })
-
-      b.forms.forEach((f) => {
-        f.sprites.bounty.exists ? bBounties.push(f.sprites.bounty.exists) : null
-        f.sprites.bounty.full ? bBounties.push(f.sprites.bounty.full) : null
-        f.sprites.bounty.incomplete
-          ? bBounties.push(f.sprites.bounty.incomplete)
-          : null
-      })
-      result = Math.max(...bBounties) - Math.max(...aBounties)
-      break
-
-    default:
-      result = 0
-      break
-  }
-  const r = result ? result : 0
-  return r
 }

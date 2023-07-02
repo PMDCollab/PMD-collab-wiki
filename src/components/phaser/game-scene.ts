@@ -1,7 +1,7 @@
-import Phaser from "phaser"
+import { Scene } from "phaser"
 import { AnimationType, Dungeon, IAnim } from "../../types/enum"
 import { MyGame } from "./game-container"
-export default class GameScene extends Phaser.Scene {
+export default class GameScene extends Scene {
   metadata: IAnim | undefined
   dungeon: Dungeon | undefined
   action = ""
@@ -14,26 +14,21 @@ export default class GameScene extends Phaser.Scene {
   }
 
   init() {
-    const g = this.game as MyGame
-    this.metadata = g.animationData.Anims.Anim.find(
-      (m) => m.Name === g.sprite.action
-    )
-    this.animUrl = g.sprite.animUrl
-    this.shadowsUrl = g.sprite.shadowsUrl
-    this.action = g.sprite.action
-    this.dungeon = g.dungeon
+    const { animationData, sprite: { animUrl, shadowsUrl, action }, dungeon } = this.game as MyGame;
+    this.metadata = animationData.Anims.Anim.find(
+      ({ Name }) => Name === action
+    );
+    this.animUrl = animUrl;
+    this.shadowsUrl = shadowsUrl;
+    this.action = action;
+    this.dungeon = dungeon;
     this.scaleFactor =
-      Math.max(
-        ...g.animationData.Anims.Anim.map((anim) =>
-          anim.FrameHeight ? anim.FrameHeight : 0
-        )
-      ) > 120
-        ? 1
-        : 2
+      Math.max(...animationData.Anims.Anim.map(({ FrameHeight }) => FrameHeight ?? 0))
+        > 120 ? 1 : 2;
   }
 
   preload() {
-    const m = this.metadata as IAnim
+    const { FrameWidth: frameWidth, FrameHeight: frameHeight } = this.metadata as IAnim
     this.load.image(
       "small-ba",
       `${process.env.PUBLIC_URL}/maps/${this.dungeon}.png`
@@ -41,40 +36,33 @@ export default class GameScene extends Phaser.Scene {
     this.load.spritesheet(
       `${this.action}-${AnimationType.ANIM}`,
       this.animUrl,
-      { frameWidth: m.FrameWidth, frameHeight: m.FrameHeight }
+      { frameWidth, frameHeight }
     )
     this.load.spritesheet(
       `${this.action}-${AnimationType.SHADOW}`,
       this.shadowsUrl,
-      { frameWidth: m.FrameWidth, frameHeight: m.FrameHeight }
+      { frameWidth, frameHeight }
     )
   }
 
   create() {
-    const animations = [AnimationType.ANIM, AnimationType.SHADOW]
-    animations.forEach((animationType) => {
+    for (const animationType of [AnimationType.ANIM, AnimationType.SHADOW]) {
       const frameArray = this.anims.generateFrameNumbers(
         `${this.action}-${animationType}`,
         { start: 0, end: -1 }
       )
-      const m = this.metadata as IAnim
-      const durationArray = Array.isArray(m.Durations.Duration)
-        ? m.Durations.Duration
-        : [m.Durations.Duration]
+      const { Durations: { Duration } } = this.metadata as IAnim
+      const durationArray = Array.isArray(Duration) ? Duration : [Duration]
       for (let i = 0; i < frameArray.length; i++) {
-        if (durationArray[i]) {
-          frameArray[i]["duration"] = durationArray[i] * 20
-        } else {
-          frameArray[i]["duration"] =
-            durationArray[i % durationArray.length] * 20
-        }
+        frameArray[i]["duration"] =
+          durationArray[i % durationArray.length] * 20
       }
       this.anims.create({
-        key: `${animationType}`,
+        key: animationType.toString(),
         frames: frameArray,
         repeat: -1
       })
-    })
+    }
 
     this.add
       .image(100, 100, "small-ba")

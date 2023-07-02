@@ -12,6 +12,15 @@ export default function PokemonRanking(props: {
   setRankBy: Dispatch<SetStateAction<RankMethod>>
   rankBy: RankMethod
 }) {
+  const methodToSetCheckbox: Partial<
+    Record<RankMethod, Dispatch<SetStateAction<boolean>>>> = {
+    [RankMethod.LAST_MODIFICATION]: props.setShowLastModification,
+    [RankMethod.POKEDEX_NUMBER]: props.setShowIndex,
+    [RankMethod.PORTRAIT_AUTHOR]: props.setPortraitAuthor,
+    [RankMethod.SPRITE_AUTHOR]: props.setSpriteAuthor,
+    [RankMethod.PORTRAIT_BOUNTY]: props.setShowPortraitBounty,
+    [RankMethod.SPRITE_BOUNTY]: props.setShowSpriteBounty
+  }
   return (
     <FormControl sx={{ mt: 2 }} fullWidth>
       <InputLabel id="rank-by-label">Rank by</InputLabel>
@@ -22,18 +31,7 @@ export default function PokemonRanking(props: {
         value={props.rankBy}
         onChange={(e) => {
           const rankMethod = e.target.value as RankMethod
-          const methodToSetCheckbox: Partial<
-            Record<RankMethod, Dispatch<SetStateAction<boolean>>>
-          > = {
-            [RankMethod.LAST_MODIFICATION]: props.setShowLastModification,
-            [RankMethod.POKEDEX_NUMBER]: props.setShowIndex,
-            [RankMethod.PORTRAIT_AUTHOR]: props.setPortraitAuthor,
-            [RankMethod.SPRITE_AUTHOR]: props.setSpriteAuthor,
-            [RankMethod.PORTRAIT_BOUNTY]: props.setShowPortraitBounty,
-            [RankMethod.SPRITE_BOUNTY]: props.setShowSpriteBounty
-          }
           methodToSetCheckbox[rankMethod]?.(true)
-
           props.setRankBy(rankMethod)
         }}
       >

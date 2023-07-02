@@ -45,7 +45,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
           color="text.secondary"
           gutterBottom
         >
-          Free to use with credit for ROMhacks, fangames, etc. Don't use for
+          Free to use <strong>WITH CREDIT</strong> for ROMhacks, fangames, etc. Don't use for
           commercial projects.
         </Typography>
         <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
@@ -58,7 +58,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
             Search for a pokemon, artist or pokedex number ...
           </Typography>
           <Search currentText={currentText} setCurrentText={setCurrentText} />
-          {!isMobile ? (
+          {!isMobile && (
             <Accordion sx={{ mt: 2 }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography color="text.secondary">
@@ -102,7 +102,7 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
                 />
               </AccordionDetails>
             </Accordion>
-          ) : null}
+          )}
         </Container>
 
         <PokemonCarousel
