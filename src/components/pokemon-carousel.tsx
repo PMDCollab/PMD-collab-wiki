@@ -133,7 +133,7 @@ export default function PokemonCarousel(props: {
   if (error) return <Typography>Error</Typography>
 
   return (
-    <Grid container spacing={2} justifyContent={"center"} justifyItems={"flex-start"}>
+    <Grid container spacing={2} justifyContent={"center"}>
       {visibleMonsters.map((k) => (
         <Grid item key={k.id}>
           <PokemonThumbnail
