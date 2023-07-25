@@ -3,70 +3,37 @@ import { Monster } from "../generated/graphql"
 import { Paper, Typography } from "@mui/material"
 import { formatDate, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
 
-export default function PokemonThumbnail(props: {
+interface Props {
   info: Monster
   infoKey: string
-  showIndex: boolean
-  showSpriteAuthor: boolean
-  showPortraitAuthor: boolean
-  showLastModification: boolean
-  showPortraitBounty: boolean
-  showSpriteBounty: boolean
-}) {
-  const { manual, name } = props.info;
-  const image = manual?.portraits.previewEmotion?.url ? (
-    <img
-      src={manual.portraits.previewEmotion?.url}
-      style={{ height: 80, imageRendering: "pixelated" }}
-    />
-  ) : (
-    <Typography variant="h4" align="center" sx={{ height: 80 }}>
-      ?
-    </Typography>
-  )
-  const date = props.showLastModification && (
-    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {formatDate(Math.max(
-        new Date(manual?.portraits.modifiedDate).getTime(),
-        new Date(manual?.sprites.modifiedDate).getTime()
-      ))}
-    </Typography>
-  )
-  const index = props.showIndex && (
-    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {props.infoKey}
-    </Typography>
-  )
-  const portraitAuthor = props.showPortraitAuthor && (
-    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {manual?.portraits.creditPrimary?.name}
-    </Typography>
-  )
-  const spriteAuthor = props.showSpriteAuthor && (
-    <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-      {manual?.sprites.creditPrimary?.name}
-    </Typography>
-  )
-  const portraitBounty = props.showPortraitBounty && (
-    <Typography color="GrayText" align="center" noWrap>
-      {getMonsterMaxPortraitBounty(props.info)} gp
-    </Typography>
-  )
-  const spriteBounty = props.showSpriteBounty && (
-    <Typography color="GrayText" align="center" noWrap>
-      {getMonsterMaxSpriteBounty(props.info)} gp
-    </Typography>
-  )
+  doesShowParameters: Record<string, boolean>
+}
 
+export default function PokemonThumbnail({
+  info, info: { manual, name },
+  infoKey, doesShowParameters: {
+    index, spriteAuthor, portraitAuthor, lastModification,
+    portraitBounty, spriteBounty
+  }
+}: Props) {
   return (
-    <Link to={`/${props.infoKey}`}>
+    <Link to={`/${infoKey}`}>
       <Paper
         sx={{
           minWidth: 80
         }}
         elevation={2}
       >
-        {image}
+        {manual?.portraits.previewEmotion?.url ? (
+          <img
+            src={manual.portraits.previewEmotion?.url}
+            style={{ height: 80, imageRendering: "pixelated" }}
+          />
+        ) : (
+          <Typography variant="h4" align="center" sx={{ height: 80 }}>
+            ?
+          </Typography>
+        )}
         <Typography
           align="center"
           color="GrayText"
@@ -75,12 +42,37 @@ export default function PokemonThumbnail(props: {
         >
           {name}
         </Typography>
-        {index}
-        {portraitAuthor}
-        {spriteAuthor}
-        {date}
-        {portraitBounty}
-        {spriteBounty}
+        {index && <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+          {infoKey}
+        </Typography>}
+        {portraitAuthor && (
+          <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+            {manual?.portraits.creditPrimary?.name}
+          </Typography>
+        )}
+        {spriteAuthor && (
+          <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+            {manual?.sprites.creditPrimary?.name}
+          </Typography>
+        )}
+        {lastModification && (
+          <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+            {formatDate(Math.max(
+              new Date(manual?.portraits.modifiedDate).getTime(),
+              new Date(manual?.sprites.modifiedDate).getTime()
+            ))}
+          </Typography>
+        )}
+        {portraitBounty && (
+          <Typography color="GrayText" align="center" noWrap>
+            {getMonsterMaxPortraitBounty(info)} gp
+          </Typography>
+        )}
+        {spriteBounty && (
+          <Typography color="GrayText" align="center" noWrap>
+            {getMonsterMaxSpriteBounty(info)} gp
+          </Typography>
+        )}
       </Paper>
     </Link>
   )
