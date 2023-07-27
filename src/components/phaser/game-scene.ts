@@ -14,16 +14,17 @@ export default class GameScene extends Scene {
   }
 
   init() {
-    const { animationData, sprite: { animUrl, shadowsUrl, action }, dungeon } = this.game as MyGame;
-    this.metadata = animationData.Anims.Anim.find(
-      ({ Name }) => Name === action
-    );
+    const {
+      animationData: { Anims: { Anim } },
+      sprite: { animUrl, shadowsUrl, action }, dungeon
+    } = this.game as MyGame;
+    this.metadata = Anim.find(({ Name }) => Name === action);
     this.animUrl = animUrl;
     this.shadowsUrl = shadowsUrl;
     this.action = action;
     this.dungeon = dungeon;
     this.scaleFactor =
-      Math.max(...animationData.Anims.Anim.map(({ FrameHeight }) => FrameHeight ?? 0))
+      Math.max(...Anim.map(({ FrameHeight }) => FrameHeight ?? 0))
         > 120 ? 1 : 2;
   }
 
@@ -47,19 +48,18 @@ export default class GameScene extends Scene {
 
   create() {
     for (const animationType of [AnimationType.ANIM, AnimationType.SHADOW]) {
-      const frameArray = this.anims.generateFrameNumbers(
+      const frames = this.anims.generateFrameNumbers(
         `${this.action}-${animationType}`,
         { start: 0, end: -1 }
       )
       const { Durations: { Duration } } = this.metadata as IAnim
       const durationArray = Array.isArray(Duration) ? Duration : [Duration]
-      for (let i = 0; i < frameArray.length; i++) {
-        frameArray[i]["duration"] =
-          durationArray[i % durationArray.length] * 20
+      for (let i = 0; i < frames.length; i++) {
+        frames[i]["duration"] = durationArray[i % durationArray.length] * 20
       }
       this.anims.create({
         key: animationType.toString(),
-        frames: frameArray,
+        frames,
         repeat: -1
       })
     }

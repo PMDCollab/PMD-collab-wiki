@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material"
 
-export default function Search(props: {
+export default function Search({currentText, setCurrentText}: {
   currentText: string
   setCurrentText: React.Dispatch<React.SetStateAction<string>>
 }) {
@@ -9,9 +9,9 @@ export default function Search(props: {
       sx={{ backgroundColor: "white" }}
       fullWidth
       label="Mewtwo... Emmuffin... 151..."
-      value={props.currentText}
+      value={currentText}
       onChange={(e) => {
-        props.setCurrentText(e.target.value)
+        setCurrentText(e.target.value)
       }}
     />
   )

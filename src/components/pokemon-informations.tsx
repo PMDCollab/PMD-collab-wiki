@@ -8,16 +8,16 @@ import Bounty from "./bounty"
 import { Box, Grid, Link, Paper, Typography } from "@mui/material"
 import { getLastModification } from '../util'
 
-export default function PokemonInformations(props: {
+interface Props {
   info: MonsterForm
   infoKey: number
-}) {
+}
+export default function PokemonInformations({ info: { sprites, portraits } }: Props) {
   const bg = useRef<Dungeon>(
     Object.keys(Dungeon)[
     Math.floor(Math.random() * Object.keys(Dungeon).length)
     ] as Dungeon
   )
-  const { portraits, sprites } = props.info;
   const portraitDate = portraits.modifiedDate &&
     new Date(portraits.modifiedDate)
   const spriteDate = sprites.modifiedDate &&

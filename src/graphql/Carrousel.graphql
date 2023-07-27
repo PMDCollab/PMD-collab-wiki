@@ -46,6 +46,9 @@ query Carrousel(
       portraits {
         phase @include(if: $withFullyFeaturedPortrait)
         modifiedDate @include(if: $withModifiedDate)
+        creditPrimary {
+          name
+        }
         previewEmotion {
           url
         }
@@ -53,6 +56,9 @@ query Carrousel(
       sprites {
         phase @include(if: $withFullyFeaturedSprite)
         modifiedDate @include(if: $withModifiedDate)
+        creditPrimary {
+          name
+        }
       }
     }
   }

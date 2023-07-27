@@ -6,7 +6,7 @@ import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
 import { Card, Grid, Typography } from "@mui/material"
 
-export default function SpritePreview(props: {
+export default function SpritePreview({ sprite, dungeon, animDataUrl }: {
   sprite: Sprite
   dungeon: Dungeon
   animDataUrl: string
@@ -16,14 +16,14 @@ export default function SpritePreview(props: {
   const container = useCallback(
     (node: HTMLDivElement) => {
       async function initialize() {
-        const xmlData = await (await fetch(props.animDataUrl)).text()
+        const xmlData = await (await fetch(animDataUrl)).text()
         const parser = new XMLParser()
         const data = parser.parse(xmlData) as IPMDCollab
         new GameContainer(
           node as HTMLDivElement,
-          props.sprite,
+          sprite,
           data.AnimData,
-          props.dungeon
+          dungeon
         )
       }
 
@@ -32,16 +32,16 @@ export default function SpritePreview(props: {
         initialize()
       }
     },
-    [initialized, props.animDataUrl, props.sprite, props.dungeon]
+    [initialized, animDataUrl, sprite, dungeon]
   )
 
   return (
     <Card>
-      <div id={`action-${props.sprite.action}`} ref={container}></div>
+      <div id={`action-${sprite.action}`} ref={container}></div>
       <Grid container justifyContent="center" alignItems="start">
-        <Lock locked={props.sprite.locked} />
+        <Lock locked={sprite.locked} />
         <Typography align="center" color="GrayText">
-          {props.sprite.action}
+          {sprite.action}
         </Typography>
       </Grid>
     </Card>

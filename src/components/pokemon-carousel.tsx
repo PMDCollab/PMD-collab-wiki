@@ -5,39 +5,43 @@ import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Grid, Typography } from "@mui/material"
 import { getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
+import { ShowParameters } from '../Home'
 
-const rankMethodToRankFunction: Record<RankMethod, (a: Monster, b: Monster) => number> = {
-  [RankMethod.POKEDEX_NUMBER]: (a, b) => a.id - b.id,
-  [RankMethod.LAST_MODIFICATION]: (a, b) => {
-    const dap = new Date(a.manual?.portraits.modifiedDate);
-    const dbp = new Date(b.manual?.portraits.modifiedDate);
-    const das = new Date(a.manual?.sprites.modifiedDate);
-    const dbs = new Date(b.manual?.sprites.modifiedDate);
-    return Math.max(dbp.getTime(), dbs.getTime()) -
-      Math.max(dap.getTime(), das.getTime());
-  },
-  [RankMethod.NAME]: (a, b) => a.name?.localeCompare(b.name),
-  [RankMethod.PORTRAIT_AUTHOR]: (a, b) => {
-    const aName = a.manual?.portraits.creditPrimary?.name;
-    const bName = b.manual?.portraits.creditPrimary?.name;
-    return aName && bName ? aName.localeCompare(bName) : aName ? -1 : 1;
-  },
-  [RankMethod.SPRITE_AUTHOR]: (a, b) => {
-    const aName = a.manual?.sprites.creditPrimary?.name;
-    const bName = b.manual?.sprites.creditPrimary?.name;
-    return aName && bName ? aName.localeCompare(bName) : aName ? -1 : 1;
-  },
-  [RankMethod.PORTRAIT_BOUNTY]: (a, b) =>
-    getMonsterMaxPortraitBounty(b) - getMonsterMaxPortraitBounty(a),
-  [RankMethod.SPRITE_BOUNTY]: (a, b) =>
-    getMonsterMaxSpriteBounty(b) - getMonsterMaxSpriteBounty(a),
+function rankMonsters(rankBy: RankMethod, a: Monster, b: Monster) {
+  switch (rankBy) {
+    case RankMethod.POKEDEX_NUMBER:
+      return a.id - b.id;
+    case RankMethod.LAST_MODIFICATION:
+      const dap = new Date(a.manual?.portraits.modifiedDate);
+      const dbp = new Date(b.manual?.portraits.modifiedDate);
+      const das = new Date(a.manual?.sprites.modifiedDate);
+      const dbs = new Date(b.manual?.sprites.modifiedDate);
+      return Math.max(dbp.getTime(), dbs.getTime()) -
+        Math.max(dap.getTime(), das.getTime());
+    case RankMethod.NAME:
+      return a.name?.localeCompare(b.name);
+    case RankMethod.PORTRAIT_AUTHOR:
+      const aName = a.manual?.portraits.creditPrimary?.name;
+      const bName = b.manual?.portraits.creditPrimary?.name;
+      if (!aName || !bName) return aName ? -1 : 1;
+      return aName.localeCompare(bName)
+    case RankMethod.SPRITE_AUTHOR:
+      const aNameSprite = a.manual?.sprites.creditPrimary?.name;
+      const bNameSprite = b.manual?.sprites.creditPrimary?.name;
+      if (!aNameSprite || !bNameSprite) return aNameSprite ? -1 : 1;
+      return aNameSprite.localeCompare(bNameSprite);
+    case RankMethod.PORTRAIT_BOUNTY:
+      return getMonsterMaxPortraitBounty(b) - getMonsterMaxPortraitBounty(a);
+    case RankMethod.SPRITE_BOUNTY:
+      return getMonsterMaxSpriteBounty(b) - getMonsterMaxSpriteBounty(a);
+  }
 }
 
 function filterMonster(
   monsters: Monster[],
   currentText: string,
-  showOnlyFullyFeaturedPortraits: boolean,
-  showOnlyFullyFeaturedSprites: boolean,
+  fullyFeaturedPortraits: boolean,
+  fullyFeaturedSprites: boolean,
   rankBy: RankMethod
 ) {
   const lowerCaseText = currentText.toLowerCase()
@@ -56,61 +60,60 @@ function filterMonster(
         id.toString().includes(lowerCaseText)
     )
     .filter(({ manual }) =>
-      (!showOnlyFullyFeaturedPortraits || manual?.portraits.phase === Phase.Full) &&
-      (!showOnlyFullyFeaturedSprites || manual?.sprites.phase === Phase.Full)
+      (!fullyFeaturedPortraits || manual?.portraits.phase === Phase.Full) &&
+      (!fullyFeaturedSprites || manual?.sprites.phase === Phase.Full)
     )
-    .sort((a, b) => rankMethodToRankFunction[rankBy]?.(a as Monster, b as Monster) ?? 0)
+    .sort((a, b) => rankMonsters(rankBy, a as Monster, b as Monster) ?? 0)
 }
 
-export default function PokemonCarousel(props: {
+interface Props {
   currentText: string
   rankBy: RankMethod
-  showIndex: boolean
-  showPortraitAuthor: boolean
-  showSpriteAuthor: boolean
-  showLastModification: boolean
-  showPortraitBounty: boolean
-  showSpriteBounty: boolean
-  showOnlyFullyFeaturedSprites: boolean
-  showOnlyFullyFeaturedPortraits: boolean
   ids: number[]
-}) {
+  showParameters: ShowParameters
+}
+export default function PokemonCarousel({ currentText, rankBy, ids, showParameters }: Props) {
+  const doesShowParameters = Object.fromEntries(Object.entries(showParameters).map(param => [param[0], param[1].state[0]]));
+  const {
+    portraitAuthor, spriteAuthor, portraitBounty, spriteBounty,
+    lastModification, fullyFeaturedPortraits, fullyFeaturedSprites
+  } = doesShowParameters;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { loading, error, data, refetch, fetchMore } = useCarrouselQuery({
     variables: {
-      ids: props.ids,
-      withPortraitBounty: props.showPortraitBounty,
-      withSpriteBounty: props.showSpriteBounty,
-      withModifiedDate: props.showLastModification,
-      withFullyFeaturedPortrait: props.showOnlyFullyFeaturedPortraits,
-      withFullyFeaturedSprite: props.showOnlyFullyFeaturedSprites,
+      ids,
+      withPortraitBounty: portraitBounty,
+      withSpriteBounty: spriteBounty,
+      withModifiedDate: lastModification,
+      withFullyFeaturedPortrait: fullyFeaturedPortraits,
+      withFullyFeaturedSprite: fullyFeaturedSprites,
       withCredits:
-        props.showPortraitAuthor ||
-        props.showSpriteAuthor ||
-        props.currentText !== "",
+        portraitAuthor ||
+        spriteAuthor ||
+        currentText !== "",
       withForms:
-        props.showPortraitAuthor ||
-        props.showSpriteAuthor ||
-        props.showPortraitBounty ||
-        props.showSpriteBounty ||
-        props.currentText !== ""
+        portraitAuthor ||
+        spriteAuthor ||
+        portraitBounty ||
+        spriteBounty ||
+        currentText !== ""
     }
   })
   const visibleMonsters = useMemo(() => {
-    const monsters = (data?.monster ?? []) as Monster[]
+    const monsters = (data?.monster ?? []) as Monster[];
     return filterMonster(
       monsters,
-      props.currentText,
-      props.showOnlyFullyFeaturedPortraits,
-      props.showOnlyFullyFeaturedSprites,
-      props.rankBy
+      currentText,
+      fullyFeaturedPortraits,
+      fullyFeaturedSprites,
+      rankBy
     )
   }, [
     data,
-    props.currentText,
-    props.showOnlyFullyFeaturedPortraits,
-    props.showOnlyFullyFeaturedSprites,
-    props.rankBy
+    currentText,
+    fullyFeaturedPortraits,
+    fullyFeaturedSprites,
+    rankBy
   ])
 
   if (loading) {
@@ -129,12 +132,7 @@ export default function PokemonCarousel(props: {
           <PokemonThumbnail
             infoKey={sprite.rawId}
             info={sprite as Monster}
-            showIndex={props.showIndex}
-            showPortraitAuthor={props.showPortraitAuthor}
-            showSpriteAuthor={props.showSpriteAuthor}
-            showLastModification={props.showLastModification}
-            showPortraitBounty={props.showPortraitBounty}
-            showSpriteBounty={props.showSpriteBounty}
+            doesShowParameters={doesShowParameters}
           />
         </Grid>
       ))}

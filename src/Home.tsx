@@ -1,6 +1,6 @@
 import PokemonCarousel from "./components/pokemon-carousel"
 import Search from "./components/search"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { RankMethod } from "./types/enum"
 import DisplayParameters from "./components/display-parameters"
 import PokemonRanking from "./components/pokemon-ranking"
@@ -19,22 +19,27 @@ import { Bar } from "./components/bar"
 import { Footer } from "./components/footer"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 
-export default function Home(props: { ids: number[]; meta: Meta }) {
+export type ShowParameters = Record<string, {
+  state: [boolean, Dispatch<SetStateAction<boolean>>],
+  rankMethod?: RankMethod,
+  name: string
+}>
+export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const [currentText, setCurrentText] = useState("")
   const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER)
-  const [showPortraitAuthor, setPortraitAuthor] = useState<boolean>(false)
-  const [showSpriteAuthor, setSpriteAuthor] = useState<boolean>(false)
-  const [showIndex, setShowIndex] = useState<boolean>(false)
-  const [showLastModification, setShowLastModification] =
-    useState<boolean>(false)
-  const [showPortraitBounty, setShowPortraitBounty] = useState<boolean>(false)
-  const [showSpriteBounty, setShowSpriteBounty] = useState<boolean>(false)
-  const [showOnlyFullyFeaturedSprites, setShowOnlyFullyFeaturedSprites] =
-    useState<boolean>(false)
-  const [showOnlyFullyFeaturedPortraits, setShowOnlyFullyFeaturedPortraits] =
-    useState<boolean>(false)
+  const showParameters: ShowParameters = {
+    index: { state: useState<boolean>(false), rankMethod: RankMethod.POKEDEX_NUMBER, name: "Index" },
+    portraitAuthor: { state: useState<boolean>(false), rankMethod: RankMethod.PORTRAIT_AUTHOR, name: "Portrait Author" },
+    spriteAuthor: { state: useState<boolean>(false), rankMethod: RankMethod.SPRITE_AUTHOR, name: "Sprite Author" },
+    lastModification: { state: useState<boolean>(false), rankMethod: RankMethod.LAST_MODIFICATION, name: "Last Change" },
+    portraitBounty: { state: useState<boolean>(false), rankMethod: RankMethod.PORTRAIT_BOUNTY, name: "Portrait Bounty" },
+    spriteBounty: { state: useState<boolean>(false), rankMethod: RankMethod.SPRITE_BOUNTY, name: "Sprite Bounty" },
+    fullyFeaturedSprites: { state: useState<boolean>(false), name: "Fully-Featured Portraits" },
+    fullyFeaturedPortraits: { state: useState<boolean>(false), name: "Fully-Featured Sprites" },
+  }
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
   return (
     <Box>
       <Bar />
@@ -66,37 +71,9 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <DisplayParameters
-                  setSpriteAuthor={setSpriteAuthor}
-                  setPortraitAuthor={setPortraitAuthor}
-                  setShowIndex={setShowIndex}
-                  setShowLastModification={setShowLastModification}
-                  setShowPortraitBounty={setShowPortraitBounty}
-                  setShowSpriteBounty={setShowSpriteBounty}
-                  showPortraitAuthor={showPortraitAuthor}
-                  showSpriteAuthor={showSpriteAuthor}
-                  showIndex={showIndex}
-                  showLastModification={showLastModification}
-                  showPortraitBounty={showPortraitBounty}
-                  showSpriteBounty={showSpriteBounty}
-                  showOnlyFullyFeaturedSprites={showOnlyFullyFeaturedSprites}
-                  showOnlyFullyFeaturedPortraits={
-                    showOnlyFullyFeaturedPortraits
-                  }
-                  setShowOnlyFullyFeaturedSprites={
-                    setShowOnlyFullyFeaturedSprites
-                  }
-                  setShowOnlyFullyFeaturedPortraits={
-                    setShowOnlyFullyFeaturedPortraits
-                  }
-                />
+                <DisplayParameters showParameters={showParameters} />
                 <PokemonRanking
-                  setSpriteAuthor={setSpriteAuthor}
-                  setPortraitAuthor={setPortraitAuthor}
-                  setShowIndex={setShowIndex}
-                  setShowLastModification={setShowLastModification}
-                  setShowPortraitBounty={setShowPortraitBounty}
-                  setShowSpriteBounty={setShowSpriteBounty}
+                  showParameters={showParameters}
                   setRankBy={setRankBy}
                   rankBy={rankBy}
                 />
@@ -108,17 +85,10 @@ export default function Home(props: { ids: number[]; meta: Meta }) {
         <PokemonCarousel
           currentText={currentText}
           rankBy={rankBy}
-          showPortraitAuthor={showPortraitAuthor}
-          showSpriteAuthor={showSpriteAuthor}
-          showIndex={showIndex}
-          showLastModification={showLastModification}
-          showPortraitBounty={showPortraitBounty}
-          showSpriteBounty={showSpriteBounty}
-          showOnlyFullyFeaturedSprites={showOnlyFullyFeaturedSprites}
-          showOnlyFullyFeaturedPortraits={showOnlyFullyFeaturedPortraits}
-          ids={props.ids}
+          showParameters={showParameters}
+          ids={ids}
         />
-        <Footer meta={props.meta} />
+        <Footer meta={meta} />
       </Container>
     </Box>
   )

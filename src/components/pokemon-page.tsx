@@ -5,56 +5,55 @@ import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 import { Bar } from "./bar"
 import { Box, Container, Grid, Tab, Tabs, Typography } from "@mui/material"
 
-export default function PokemonPage(props: {
+interface TabPanelProps {
+  children?: React.ReactNode
+  index: number
+  value: number
+}
+
+function TabPanel({ children, index, value, ...other }: TabPanelProps) {
+  return (
+    <Box
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ pt: 1 }}>{children}</Box>}
+    </Box>
+  )
+}
+
+interface Props {
   infoKey: number
   prevIndex: string | undefined
   nextIndex: string | undefined
   rawId: string
-}) {
-  const { loading, error, data } = usePokemonQuery({
-    variables: { id: props.infoKey }
-  })
+}
 
+export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Props) {
   const [value, setValue] = useState(0)
 
+  const { loading, error, data } = usePokemonQuery({
+    variables: { id: infoKey }
+  })
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(parseInt(newValue))
   }
 
-  interface TabPanelProps {
-    children?: React.ReactNode
-    index: number
-    value: number
-  }
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props
-
-    return (
-      <Box
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box sx={{ pt: 1 }}>{children}</Box>}
-      </Box>
-    )
-  }
-
-  const prevLink = props.prevIndex && (
-    <Link to={`/${props.prevIndex}`}>
+  const prevLink = prevIndex && (
+    <Link to={`/${prevIndex}`}>
       <Typography variant="h6" color="text.secondary">
         {"<"}
-        {props.prevIndex}
+        {prevIndex}
       </Typography>
     </Link>
   )
-  const nextLink = props.nextIndex && (
-    <Link to={`/${props.nextIndex}`}>
+  const nextLink = nextIndex && (
+    <Link to={`/${nextIndex}`}>
       <Typography variant="h6" color="text.secondary" align="right">
-        {props.nextIndex}
+        {nextIndex}
         {">"}
       </Typography>
     </Link>
@@ -76,7 +75,7 @@ export default function PokemonPage(props: {
     <TabPanel key={`${form.path}`} value={value} index={i}>
       <PokemonInformations
         info={form as MonsterForm}
-        infoKey={props.infoKey}
+        infoKey={infoKey}
       />
     </TabPanel>
   )
@@ -96,7 +95,7 @@ export default function PokemonPage(props: {
           </Grid>
           <Grid item xs={8}>
             <Typography align="center" variant="h5" fontWeight="bold">
-              {props.rawId} {data?.monster[0].name}
+              {rawId} {data?.monster[0].name}
             </Typography>
           </Grid>
           <Grid item xs={2}>
