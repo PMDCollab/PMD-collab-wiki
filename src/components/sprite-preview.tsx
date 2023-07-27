@@ -6,7 +6,11 @@ import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
 import { Card, Typography } from "@mui/material"
 
-export default function SpritePreview(props: {
+export default function SpritePreview({
+  sprite,
+  dungeon,
+  animDataUrl
+}: {
   sprite: Sprite
   dungeon: Dungeon
   animDataUrl: string
@@ -23,14 +27,14 @@ export default function SpritePreview(props: {
   const container = useCallback(
     (node: HTMLDivElement) => {
       async function initialize() {
-        const xmlData = await (await fetch(props.animDataUrl)).text()
+        const xmlData = await (await fetch(animDataUrl)).text()
         const parser = new XMLParser()
         const data = parser.parse(xmlData) as IPMDCollab
         gameContainer.current = new GameContainer(
           node as HTMLDivElement,
-          props.sprite,
+          sprite,
           data.AnimData,
-          props.dungeon
+          dungeon
         )
       }
 
@@ -39,15 +43,15 @@ export default function SpritePreview(props: {
         initialize()
       }
     },
-    [initialized, props.animDataUrl, props.sprite, props.dungeon]
+    [initialized, animDataUrl, sprite, dungeon]
   )
 
   return (
     <Card>
-      <div id={`action-${props.sprite.action}`} ref={container}></div>
+      <div id={`action-${sprite.action}`} ref={container}></div>
       <div style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
-        <Lock locked={props.sprite.locked} />
-        <Typography align="center">{props.sprite.action}</Typography>
+        <Lock locked={sprite.locked} />
+        <Typography align="center">{sprite.action}</Typography>
       </div>
     </Card>
   )
