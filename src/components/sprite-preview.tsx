@@ -1,29 +1,36 @@
 import { XMLParser } from "fast-xml-parser"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
-import { Card, Grid, Typography } from "@mui/material"
+import { Card, Typography } from "@mui/material"
 
-export default function SpritePreview({ sprite, dungeon, animDataUrl }: {
+export default function SpritePreview(props: {
   sprite: Sprite
   dungeon: Dungeon
   animDataUrl: string
 }) {
   const [initialized, setInitialized] = useState<boolean>(false)
+  const gameContainer = useRef<GameContainer>()
+
+  useEffect(() => {
+    return () => {
+      gameContainer.current?.game.destroy(true)
+    }
+  }, [])
 
   const container = useCallback(
     (node: HTMLDivElement) => {
       async function initialize() {
-        const xmlData = await (await fetch(animDataUrl)).text()
+        const xmlData = await (await fetch(props.animDataUrl)).text()
         const parser = new XMLParser()
         const data = parser.parse(xmlData) as IPMDCollab
-        new GameContainer(
+        gameContainer.current = new GameContainer(
           node as HTMLDivElement,
-          sprite,
+          props.sprite,
           data.AnimData,
-          dungeon
+          props.dungeon
         )
       }
 
@@ -32,18 +39,16 @@ export default function SpritePreview({ sprite, dungeon, animDataUrl }: {
         initialize()
       }
     },
-    [initialized, animDataUrl, sprite, dungeon]
+    [initialized, props.animDataUrl, props.sprite, props.dungeon]
   )
 
   return (
     <Card>
-      <div id={`action-${sprite.action}`} ref={container}></div>
-      <Grid container justifyContent="center" alignItems="start">
-        <Lock locked={sprite.locked} />
-        <Typography align="center" color="GrayText">
-          {sprite.action}
-        </Typography>
-      </Grid>
+      <div id={`action-${props.sprite.action}`} ref={container}></div>
+      <div style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
+        <Lock locked={props.sprite.locked} />
+        <Typography align="center">{props.sprite.action}</Typography>
+      </div>
     </Card>
   )
 }
