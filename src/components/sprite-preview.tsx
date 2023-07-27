@@ -49,10 +49,10 @@ export default function SpritePreview({
   return (
     <Card>
       <div id={`action-${sprite.action}`} ref={container}></div>
-      <div style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
+      <Grid container justifyContent="center" alignItems="start">
         <Lock locked={sprite.locked} />
         <Typography align="center">{sprite.action}</Typography>
-      </div>
+      </Grid>
     </Card>
   )
 }
