@@ -4,7 +4,7 @@ import { Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
-import { Card, Typography } from "@mui/material"
+import { Card, Grid, Typography } from "@mui/material"
 
 export default function SpritePreview({
   sprite,
