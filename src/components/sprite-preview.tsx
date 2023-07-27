@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
@@ -12,6 +12,13 @@ export default function SpritePreview(props: {
   animDataUrl: string
 }) {
   const [initialized, setInitialized] = useState<boolean>(false)
+  const gameContainer = useRef<GameContainer>()
+
+  useEffect(() => {
+    return () => {
+      gameContainer.current?.game.destroy(true)
+    }
+  }, [])
 
   const container = useCallback(
     (node: HTMLDivElement) => {
@@ -19,7 +26,7 @@ export default function SpritePreview(props: {
         const xmlData = await (await fetch(props.animDataUrl)).text()
         const parser = new XMLParser()
         const data = parser.parse(xmlData) as IPMDCollab
-        new GameContainer(
+        gameContainer.current = new GameContainer(
           node as HTMLDivElement,
           props.sprite,
           data.AnimData,
