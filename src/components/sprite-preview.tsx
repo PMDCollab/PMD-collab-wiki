@@ -1,17 +1,28 @@
 import { XMLParser } from "fast-xml-parser"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
-import { Card, Grid, Typography } from "@mui/material"
+import { Card, Typography } from "@mui/material"
 
-export default function SpritePreview({ sprite, dungeon, animDataUrl }: {
+export default function SpritePreview({
+  sprite,
+  dungeon,
+  animDataUrl
+}: {
   sprite: Sprite
   dungeon: Dungeon
   animDataUrl: string
 }) {
   const [initialized, setInitialized] = useState<boolean>(false)
+  const gameContainer = useRef<GameContainer>()
+
+  useEffect(() => {
+    return () => {
+      gameContainer.current?.game.destroy(true)
+    }
+  }, [])
 
   const container = useCallback(
     (node: HTMLDivElement) => {
@@ -19,7 +30,7 @@ export default function SpritePreview({ sprite, dungeon, animDataUrl }: {
         const xmlData = await (await fetch(animDataUrl)).text()
         const parser = new XMLParser()
         const data = parser.parse(xmlData) as IPMDCollab
-        new GameContainer(
+        gameContainer.current = new GameContainer(
           node as HTMLDivElement,
           sprite,
           data.AnimData,
@@ -40,9 +51,7 @@ export default function SpritePreview({ sprite, dungeon, animDataUrl }: {
       <div id={`action-${sprite.action}`} ref={container}></div>
       <Grid container justifyContent="center" alignItems="start">
         <Lock locked={sprite.locked} />
-        <Typography align="center" color="GrayText">
-          {sprite.action}
-        </Typography>
+        <Typography align="center">{sprite.action}</Typography>
       </Grid>
     </Card>
   )
