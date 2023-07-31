@@ -5,7 +5,7 @@ const pad = (number: number) => number < 10 ? `0${number}` : number.toString();
 export function formatDate(n: number | undefined) {
     if (!n) return n;
     const date = new Date(n);
-    return `${pad(date.getDate())}/${pad(date.getMonth())}/${date.getFullYear().toString().slice(2)}`;
+    return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear().toString().slice(2)}`;
 }
 
 export function getLastModification(t: Date | undefined) {
