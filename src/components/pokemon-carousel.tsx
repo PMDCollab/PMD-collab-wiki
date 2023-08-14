@@ -19,7 +19,7 @@ function rankMonsters(rankBy: RankMethod, a: Monster, b: Monster) {
       return Math.max(dbp.getTime(), dbs.getTime()) -
         Math.max(dap.getTime(), das.getTime());
     case RankMethod.NAME:
-      return a.name?.localeCompare(b.name);
+      return a.name.localeCompare(b.name);
     case RankMethod.PORTRAIT_AUTHOR:
       const aName = a.manual?.portraits.creditPrimary?.name;
       const bName = b.manual?.portraits.creditPrimary?.name;
@@ -63,7 +63,7 @@ function filterMonster(
       (!fullyFeaturedPortraits || manual?.portraits.phase === Phase.Full) &&
       (!fullyFeaturedSprites || manual?.sprites.phase === Phase.Full)
     )
-    .sort((a, b) => rankMonsters(rankBy, a as Monster, b as Monster) ?? 0)
+    .sort((a, b) => rankMonsters(rankBy, a, b) ?? 0)
 }
 
 interface Props {
@@ -131,7 +131,7 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
         <Grid item key={sprite.id}>
           <PokemonThumbnail
             infoKey={sprite.rawId}
-            info={sprite as Monster}
+            info={sprite}
             doesShowParameters={doesShowParameters}
           />
         </Grid>
