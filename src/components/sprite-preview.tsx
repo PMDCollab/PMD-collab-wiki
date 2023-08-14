@@ -31,7 +31,7 @@ export default function SpritePreview({
         const parser = new XMLParser()
         const data = parser.parse(xmlData) as IPMDCollab
         gameContainer.current = new GameContainer(
-          node as HTMLDivElement,
+          node,
           sprite,
           data.AnimData,
           dungeon
