@@ -24,6 +24,7 @@ export type ShowParameters = Record<string, {
   rankMethod?: RankMethod,
   name: string
 }>
+
 export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const [currentText, setCurrentText] = useState("")
   const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER)
@@ -34,8 +35,8 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
     lastModification: { state: useState<boolean>(false), rankMethod: RankMethod.LAST_MODIFICATION, name: "Last Change" },
     portraitBounty: { state: useState<boolean>(false), rankMethod: RankMethod.PORTRAIT_BOUNTY, name: "Portrait Bounty" },
     spriteBounty: { state: useState<boolean>(false), rankMethod: RankMethod.SPRITE_BOUNTY, name: "Sprite Bounty" },
-    fullyFeaturedSprites: { state: useState<boolean>(false), name: "Fully-Featured Portraits" },
-    fullyFeaturedPortraits: { state: useState<boolean>(false), name: "Fully-Featured Sprites" },
+    fullyFeaturedPortraits: { state: useState<boolean>(false), name: "Fully-Featured Portraits" },
+    fullyFeaturedSprites: { state: useState<boolean>(false), name: "Fully-Featured Sprites" },
   }
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
