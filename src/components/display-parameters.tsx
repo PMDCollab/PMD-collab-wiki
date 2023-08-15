@@ -46,7 +46,7 @@ export default function DisplayParameters({
       </Grid>
       {[Object.values(showParameters), filterParameters].map((params, i) =>
         <Grid item key={i + 1}>
-          <Typography sx={{ fontWeight: "bold" }}>{i ? "Toggles" : "Filters"}</Typography>
+          <Typography sx={{ fontWeight: "bold" }}>{!i ? "Toggles" : "Filters"}</Typography>
           {params.map(({ state: [state, setState], name }) => (
             <FormControlLabel
               label={<Typography color="text.secondary">{name}</Typography>}
