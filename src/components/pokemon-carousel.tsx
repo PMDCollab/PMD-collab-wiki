@@ -58,8 +58,8 @@ function filterMonsterForms(
       portraits.creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText)) ||
       sprites.creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
       sprites.creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText)) ||
-      id.toString().includes(lowerCaseText)
-      : ({ monster: { name, forms, id } }) =>
+      id.toString().includes(lowerCaseText) :
+      ({ monster: { name, forms, id } }) =>
         name.toLowerCase().includes(lowerCaseText) ||
         forms.some(({ portraits: { creditPrimary, creditSecondary } }) =>
           creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
@@ -77,7 +77,7 @@ function filterMonsterForms(
     } : ({ monster: { forms } }) => {
       const activeFilters = filterParameters.filter(({ state: [active] }) => active);
       return !activeFilters.length ||
-        forms.some(form => activeFilters.some(({ value: { type, phase } }) => phase == form[type].phase))
+        activeFilters.some(({ value: { type, phase } }) => forms.some(form => phase == form[type].phase))
     })
     .sort((a, b) => rankMonsters(rankBy, a, b, splitForms) ?? 0)
 }
@@ -95,6 +95,7 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
   const { portraitAuthor, spriteAuthor, portraitBounty, spriteBounty, lastModification } = doesShowParameters;
   const withPortraitPhases = filterParameters.some(x => x.state[0] && x.value.type == 'portraits');
   const withSpritePhases = filterParameters.some(x => x.state[0] && x.value.type == 'sprites');
+  const withCredits = portraitAuthor || spriteAuthor || currentText !== "" || splitForms;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { loading, error, data, refetch, fetchMore } = useCarrouselQuery({
     variables: {
@@ -105,29 +106,21 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
       withPortraitPhases,
       withSpritePhases,
       withSplitForms: splitForms,
-      withCredits:
-        portraitAuthor ||
-        spriteAuthor ||
-        currentText !== "" ||
+      withCredits: withCredits ||
         rankBy == RankMethod.PORTRAIT_AUTHOR ||
         rankBy == RankMethod.SPRITE_AUTHOR ||
         splitForms,
       withForms:
-        portraitAuthor ||
-        spriteAuthor ||
-        portraitBounty ||
-        spriteBounty ||
-        currentText !== "" ||
+        withCredits ||
         withPortraitPhases ||
-        withSpritePhases ||
-        splitForms
+        withSpritePhases
     }
   })
   const visibleMonsters = useMemo(() => {
     const monsters = (data?.monster.flatMap(monster =>
       splitForms ?
         monster.forms?.map(form => ({ ...form, monster })) ?? [] :
-        ({ ...monster.manual!, monster })
+        monster.manual ? ({ ...monster.manual, monster }) : {}
     ) ?? []) as MonsterFormWithRef[];
     return filterMonsterForms(
       monsters,
