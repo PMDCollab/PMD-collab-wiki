@@ -351,7 +351,7 @@ export type CarrouselQueryVariables = Exact<{
 }>;
 
 
-export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms?: Array<{ __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, phase?: Phase, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, phase?: Phase, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> } }>, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, previewEmotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null } } | null }> };
+export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms?: Array<{ __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, required?: boolean, phase?: Phase, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, required?: boolean, phase?: Phase, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> } }>, manual?: { __typename?: 'MonsterForm', portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, previewEmotion?: { __typename?: 'Portrait', url: string } | null }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null } } | null }> };
 
 export type ContributorsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -397,6 +397,7 @@ export const CarrouselDocument = gql`
       fullName @include(if: $withSplitForms)
       portraits {
         modifiedDate @include(if: $withSplitForms)
+        required @include(if: $withSplitForms)
         previewEmotion @include(if: $withSplitForms) {
           url
         }
@@ -413,6 +414,7 @@ export const CarrouselDocument = gql`
       }
       sprites {
         modifiedDate @include(if: $withSplitForms)
+        required @include(if: $withSplitForms)
         bounty @include(if: $withSpriteBounty) {
           ...myBounty
         }
