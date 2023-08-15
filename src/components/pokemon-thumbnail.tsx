@@ -1,20 +1,22 @@
 import { Link } from "react-router-dom"
-import { Monster } from "../generated/graphql"
+import { Monster, MonsterForm } from "../generated/graphql"
 import { Paper, Typography } from "@mui/material"
-import { formatDate, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
+import { formatDate, getFormMaxPortraitBounty, getFormMaxSpriteBounty, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
 
 interface Props {
-  info: Monster
+  sprite: Monster
+  form: MonsterForm
   infoKey: string
   doesShowParameters: Record<string, boolean>
+  isSpeciesThumbnail?: boolean
 }
 export default function PokemonThumbnail({
-  info, info: { manual, name },
-  infoKey,
+  sprite, form, infoKey,
   doesShowParameters: {
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
-  }
+  },
+  isSpeciesThumbnail = false
 }: Props) {
   return (
     <Link to={`/${infoKey}`}>
@@ -24,9 +26,9 @@ export default function PokemonThumbnail({
         }}
         elevation={2}
       >
-        {manual?.portraits.previewEmotion?.url ? (
+        {form.portraits.previewEmotion?.url ? (
           <img
-            src={manual.portraits.previewEmotion?.url}
+            src={form.portraits.previewEmotion?.url}
             style={{ height: 80, imageRendering: "pixelated" }}
           />
         ) : (
@@ -40,37 +42,37 @@ export default function PokemonThumbnail({
           noWrap
           sx={{ width: "80px" }}
         >
-          {name}
+          {isSpeciesThumbnail || sprite.name == form.fullName ? sprite.name : `(${form.fullName})`}
         </Typography>
         {index && <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
           {infoKey}
         </Typography>}
         {portraitAuthor && (
           <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-            {manual?.portraits.creditPrimary?.name}
+            {form.portraits.creditPrimary?.name}
           </Typography>
         )}
         {spriteAuthor && (
           <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
-            {manual?.sprites.creditPrimary?.name}
+            {form.sprites.creditPrimary?.name}
           </Typography>
         )}
         {lastModification && (
           <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
             {formatDate(Math.max(
-              new Date(manual?.portraits.modifiedDate).getTime(),
-              new Date(manual?.sprites.modifiedDate).getTime()
+              new Date(form.portraits.modifiedDate).getTime(),
+              new Date(form.sprites.modifiedDate).getTime()
             ))}
           </Typography>
         )}
         {portraitBounty && (
           <Typography color="GrayText" align="center" noWrap>
-            {getMonsterMaxPortraitBounty(info)} gp
+            {isSpeciesThumbnail ? getMonsterMaxPortraitBounty(sprite) : getFormMaxPortraitBounty(form)} gp
           </Typography>
         )}
         {spriteBounty && (
           <Typography color="GrayText" align="center" noWrap>
-            {getMonsterMaxSpriteBounty(info)} gp
+            {isSpeciesThumbnail ? getMonsterMaxSpriteBounty(sprite) : getFormMaxSpriteBounty(form)} gp
           </Typography>
         )}
       </Paper>

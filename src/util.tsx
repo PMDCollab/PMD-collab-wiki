@@ -1,4 +1,4 @@
-import { Monster } from './generated/graphql';
+import { Monster, MonsterForm } from './generated/graphql';
 
 const pad = (number: number) => number < 10 ? `0${number}` : number.toString();
 
@@ -19,7 +19,11 @@ export const getMonsterMaxPortraitBounty = (monster: Monster) => monster.forms.r
         b.portraits.bounty.full || 0,
         b.portraits.bounty.incomplete || 0
     ), 0)
-
+export const getFormMaxPortraitBounty = (form: MonsterForm) => Math.max(
+    form.portraits.bounty.exists || 0,
+    form.portraits.bounty.full || 0,
+    form.portraits.bounty.incomplete || 0
+)
 export const getMonsterMaxSpriteBounty = (monster: Monster) => monster.forms.reduce(
     (a, b) => Math.max(
         a,
@@ -27,3 +31,8 @@ export const getMonsterMaxSpriteBounty = (monster: Monster) => monster.forms.red
         b.sprites.bounty.full || 0,
         b.sprites.bounty.incomplete || 0
     ), 0)
+export const getFormMaxSpriteBounty = (form: MonsterForm) => Math.max(
+    form.portraits.bounty.exists || 0,
+    form.portraits.bounty.full || 0,
+    form.portraits.bounty.incomplete || 0
+)

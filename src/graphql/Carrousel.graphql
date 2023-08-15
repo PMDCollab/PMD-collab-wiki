@@ -4,7 +4,7 @@ fragment myBounty on MonsterBounty {
   full
 }
 
-query Carrousel (
+query Carrousel(
   $ids: [Int!]!
   $withPortraitBounty: Boolean!
   $withSpriteBounty: Boolean!
@@ -13,13 +13,19 @@ query Carrousel (
   $withSpritePhases: Boolean!
   $withCredits: Boolean!
   $withForms: Boolean!
+  $withSplitForms: Boolean!
 ) {
   monster(filter: $ids) {
     id
     name
     rawId
     forms @include(if: $withForms) {
+      fullName @include(if: $withSplitForms)
       portraits {
+        modifiedDate @include(if: $withSplitForms)
+        previewEmotion @include(if: $withSplitForms) {
+          url
+        }
         bounty @include(if: $withPortraitBounty) {
           ...myBounty
         }
@@ -32,6 +38,7 @@ query Carrousel (
         phase @include(if: $withPortraitPhases)
       }
       sprites {
+        modifiedDate @include(if: $withSplitForms)
         bounty @include(if: $withSpriteBounty) {
           ...myBounty
         }

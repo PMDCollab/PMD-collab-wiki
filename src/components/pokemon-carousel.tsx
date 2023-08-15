@@ -71,8 +71,9 @@ interface Props {
   ids: number[]
   showParameters: Record<string, Parameters<RankMethod>>
   filterParameters: Parameters<PhaseCategory>[]
+  splitForms: boolean
 }
-export default function PokemonCarousel({ currentText, rankBy, ids, showParameters, filterParameters }: Props) {
+export default function PokemonCarousel({ currentText, rankBy, ids, showParameters, filterParameters, splitForms }: Props) {
   const doesShowParameters = Object.fromEntries(Object.entries(showParameters).map(param => [param[0], param[1].state[0]]));
   const { portraitAuthor, spriteAuthor, portraitBounty, spriteBounty, lastModification } = doesShowParameters;
   const withPortraitPhases = filterParameters.some(x => x.state[0] && x.value.type == 'portraits');
@@ -86,10 +87,12 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
       withModifiedDate: lastModification,
       withPortraitPhases,
       withSpritePhases,
+      withSplitForms: splitForms,
       withCredits:
         portraitAuthor ||
         spriteAuthor ||
-        currentText !== "",
+        currentText !== "" ||
+        splitForms,
       withForms:
         portraitAuthor ||
         spriteAuthor ||
@@ -97,7 +100,8 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
         spriteBounty ||
         currentText !== "" ||
         withPortraitPhases ||
-        withSpritePhases
+        withSpritePhases ||
+        splitForms
     }
   })
   const visibleMonsters = useMemo(() => {
@@ -124,17 +128,34 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
   }
   if (error) return <Typography>Error</Typography>
 
-  return (
+  return !splitForms ? (
     <Grid container spacing={2} justifyContent={"center"}>
       {visibleMonsters.map(sprite => (
         <Grid item key={sprite.id}>
           <PokemonThumbnail
             infoKey={sprite.rawId}
-            info={sprite}
+            form={sprite.manual!}
+            sprite={sprite}
+            isSpeciesThumbnail={true}
             doesShowParameters={doesShowParameters}
           />
         </Grid>
       ))}
+    </Grid>
+  ) : (
+    <Grid container spacing={2} justifyContent={"center"}>
+      {visibleMonsters.flatMap((sprite, i) =>
+        sprite.forms.map((form, j) => (
+          <Grid item key={`${i} ${j}`}>
+            <PokemonThumbnail
+              infoKey={sprite.rawId}
+              form={form}
+              sprite={sprite}
+              doesShowParameters={doesShowParameters}
+            />
+          </Grid>
+        ))
+      )}
     </Grid>
   )
 }

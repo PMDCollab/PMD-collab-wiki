@@ -41,14 +41,14 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
     portraitBounty: { state: useState<boolean>(false), name: "Portrait Bounty", value: RankMethod.PORTRAIT_BOUNTY },
     spriteBounty: { state: useState<boolean>(false), name: "Sprite Bounty", value: RankMethod.SPRITE_BOUNTY }
   };
-  const filterParameters = ['sprites', 'portraits'].map(type => {
+  const filterParameters = ['sprites', 'portraits'].flatMap(type => {
       const typeUpper = type[0].toUpperCase() + type.slice(1);
       return [
         { state: useState<boolean>(false), name: `Fully-Featured ${typeUpper}`, value: { type, phase: Phase.Full } },
         { state: useState<boolean>(false), name: `Existing ${typeUpper}`, value: { type, phase: Phase.Exists } },
         { state: useState<boolean>(false), name: `Incomplete ${typeUpper}`, value: { type, phase: Phase.Incomplete } },
       ] as Parameters<PhaseCategory>[];
-    }).flat();
+    })
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -84,7 +84,11 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <DisplayParameters showParameters={showParameters} filterParameters={filterParameters} />
+                <DisplayParameters
+                showParameters={showParameters}
+                filterParameters={filterParameters}
+                splitForms={splitForms}
+                setSplitForms={setSplitForms} />
                 <PokemonRanking
                   showParameters={showParameters}
                   setRankBy={setRankBy}
@@ -100,6 +104,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
           rankBy={rankBy}
           showParameters={showParameters}
           filterParameters={filterParameters}
+          splitForms={splitForms}
           ids={ids}
         />
         <Footer meta={meta} />
