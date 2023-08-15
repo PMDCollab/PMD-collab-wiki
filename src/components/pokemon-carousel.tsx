@@ -46,6 +46,7 @@ function rankMonsters(rankBy: RankMethod, a: MonsterFormWithRef, b: MonsterFormW
 function filterMonsterForms(
   forms: MonsterFormWithRef[],
   splitForms: boolean,
+  showObsolete: boolean,
   currentText: string,
   filterParameters: Parameters<PhaseCategory>[],
   rankBy: RankMethod
@@ -79,6 +80,7 @@ function filterMonsterForms(
       return !activeFilters.length ||
         activeFilters.some(({ value: { type, phase } }) => forms.some(form => phase == form[type].phase))
     })
+    .filter(({ portraits, sprites }) => !splitForms || portraits.required || sprites.required || showObsolete)
     .sort((a, b) => rankMonsters(rankBy, a, b, splitForms) ?? 0)
 }
 
@@ -89,8 +91,9 @@ interface Props {
   showParameters: Record<string, Parameters<RankMethod>>
   filterParameters: Parameters<PhaseCategory>[]
   splitForms: boolean
+  showObsolete: boolean
 }
-export default function PokemonCarousel({ currentText, rankBy, ids, showParameters, filterParameters, splitForms }: Props) {
+export default function PokemonCarousel({ currentText, rankBy, ids, showParameters, filterParameters, splitForms, showObsolete }: Props) {
   const doesShowParameters = Object.fromEntries(Object.entries(showParameters).map(param => [param[0], param[1].state[0]]));
   const { portraitAuthor, spriteAuthor, portraitBounty, spriteBounty, lastModification } = doesShowParameters;
   const withPortraitPhases = filterParameters.some(x => x.state[0] && x.value.type == 'portraits');
@@ -101,7 +104,7 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
     variables: {
       ids,
       withPortraitBounty: portraitBounty || rankBy == RankMethod.PORTRAIT_BOUNTY,
-      withSpriteBounty: spriteBounty  || rankBy == RankMethod.SPRITE_BOUNTY,
+      withSpriteBounty: spriteBounty || rankBy == RankMethod.SPRITE_BOUNTY,
       withModifiedDate: lastModification || rankBy == RankMethod.LAST_MODIFICATION,
       withPortraitPhases,
       withSpritePhases,
@@ -125,6 +128,7 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
     return filterMonsterForms(
       monsters,
       splitForms,
+      showObsolete,
       currentText,
       filterParameters,
       rankBy
