@@ -1,12 +1,12 @@
 query Keys {
-    meta{
+    meta {
         apiVersion
         serverVersion
         assetsCommit
         assetsUpdateDate
         updateCheckedDate
     }
-    monster{
+    monster {
         id
         rawId
     }

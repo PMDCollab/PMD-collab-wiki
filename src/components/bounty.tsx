@@ -5,7 +5,7 @@ export default function Bounty({ bounty: { exists, full, incomplete } }: { bount
   if (!exists && !full && !incomplete) return null;
   return (
     <Grid container>
-      {exists && (
+      {!!exists && (
         <Grid item sx={{ display: "flex", gap: "5px" }}>
           <Typography>{exists}</Typography>
           <Typography>Guild Points</Typography>
@@ -13,7 +13,7 @@ export default function Bounty({ bounty: { exists, full, incomplete } }: { bount
         </Grid>
       )}
 
-      {full && (
+      {!!full && (
         <Grid item sx={{ display: "flex", gap: "5px" }}>
           <Typography>{full}</Typography>
           <Typography>Guild Points</Typography>
@@ -21,7 +21,7 @@ export default function Bounty({ bounty: { exists, full, incomplete } }: { bount
         </Grid>
       )}
 
-      {incomplete && (
+      {!!incomplete && (
         <Grid item sx={{ display: "flex", gap: "5px" }}>
           <Typography>{incomplete}</Typography>
           <Typography>Guild Points</Typography>

@@ -1,11 +1,11 @@
 /* eslint-disable no-case-declarations */
 import { useMemo } from "react"
-import { Monster, Phase, useCarrouselQuery } from "../generated/graphql"
+import { Monster, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Grid, Typography } from "@mui/material"
 import { getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
-import { ShowParameters } from '../Home'
+import { Parameters, PhaseCategory } from '../Home'
 
 function rankMonsters(rankBy: RankMethod, a: Monster, b: Monster) {
   switch (rankBy) {
@@ -40,29 +40,28 @@ function rankMonsters(rankBy: RankMethod, a: Monster, b: Monster) {
 function filterMonster(
   monsters: Monster[],
   currentText: string,
-  fullyFeaturedPortraits: boolean,
-  fullyFeaturedSprites: boolean,
+  filterParameters: Parameters<PhaseCategory>[],
   rankBy: RankMethod
 ) {
   const lowerCaseText = currentText.toLowerCase()
   return monsters
-    .filter(
-      ({ name, forms, id }) =>
-        name?.toLowerCase().includes(lowerCaseText) ||
-        forms.some(({ portraits: { creditPrimary, creditSecondary } }) =>
-          creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
-          creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
-        ) ||
-        forms.some(({ sprites: { creditPrimary, creditSecondary } }) =>
-          creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
-          creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
-        ) ||
-        id.toString().includes(lowerCaseText)
+    .filter(({ name, forms, id }) =>
+      name.toLowerCase().includes(lowerCaseText) ||
+      forms.some(({ portraits: { creditPrimary, creditSecondary } }) =>
+        creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+        creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
+      ) ||
+      forms.some(({ sprites: { creditPrimary, creditSecondary } }) =>
+        creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+        creditSecondary.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
+      ) ||
+      id.toString().includes(lowerCaseText)
     )
-    .filter(({ manual }) =>
-      (!fullyFeaturedPortraits || manual?.portraits.phase === Phase.Full) &&
-      (!fullyFeaturedSprites || manual?.sprites.phase === Phase.Full)
-    )
+    .filter(({ forms }) => {
+      const activeFilters = filterParameters.filter(({ state: [active] }) => active);
+      return !activeFilters.length ||
+        forms.some(form => activeFilters.some(({ value: { type, phase } }) => phase == form[type].phase))
+    })
     .sort((a, b) => rankMonsters(rankBy, a, b) ?? 0)
 }
 
@@ -70,14 +69,14 @@ interface Props {
   currentText: string
   rankBy: RankMethod
   ids: number[]
-  showParameters: ShowParameters
+  showParameters: Record<string, Parameters<RankMethod>>
+  filterParameters: Parameters<PhaseCategory>[]
 }
-export default function PokemonCarousel({ currentText, rankBy, ids, showParameters }: Props) {
+export default function PokemonCarousel({ currentText, rankBy, ids, showParameters, filterParameters }: Props) {
   const doesShowParameters = Object.fromEntries(Object.entries(showParameters).map(param => [param[0], param[1].state[0]]));
-  const {
-    portraitAuthor, spriteAuthor, portraitBounty, spriteBounty,
-    lastModification, fullyFeaturedPortraits, fullyFeaturedSprites
-  } = doesShowParameters;
+  const { portraitAuthor, spriteAuthor, portraitBounty, spriteBounty, lastModification } = doesShowParameters;
+  const withPortraitPhases = filterParameters.some(x => x.state[0] && x.value.type == 'portraits');
+  const withSpritePhases = filterParameters.some(x => x.state[0] && x.value.type == 'sprites');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { loading, error, data, refetch, fetchMore } = useCarrouselQuery({
     variables: {
@@ -85,8 +84,8 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
       withPortraitBounty: portraitBounty,
       withSpriteBounty: spriteBounty,
       withModifiedDate: lastModification,
-      withFullyFeaturedPortrait: fullyFeaturedPortraits,
-      withFullyFeaturedSprite: fullyFeaturedSprites,
+      withPortraitPhases,
+      withSpritePhases,
       withCredits:
         portraitAuthor ||
         spriteAuthor ||
@@ -96,7 +95,9 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
         spriteAuthor ||
         portraitBounty ||
         spriteBounty ||
-        currentText !== ""
+        currentText !== "" ||
+        withPortraitPhases ||
+        withSpritePhases
     }
   })
   const visibleMonsters = useMemo(() => {
@@ -104,15 +105,13 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
     return filterMonster(
       monsters,
       currentText,
-      fullyFeaturedPortraits,
-      fullyFeaturedSprites,
+      filterParameters,
       rankBy
     )
   }, [
     data,
     currentText,
-    fullyFeaturedPortraits,
-    fullyFeaturedSprites,
+    filterParameters,
     rankBy
   ])
 

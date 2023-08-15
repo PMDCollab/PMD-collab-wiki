@@ -8,10 +8,10 @@ interface Props {
   infoKey: string
   doesShowParameters: Record<string, boolean>
 }
-
 export default function PokemonThumbnail({
   info, info: { manual, name },
-  infoKey, doesShowParameters: {
+  infoKey,
+  doesShowParameters: {
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
   }
