@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom"
-import { Monster, MonsterForm } from "../generated/graphql"
 import { Paper, Typography } from "@mui/material"
 import { formatDate, getFormMaxPortraitBounty, getFormMaxSpriteBounty, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
+import { MonsterFormWithRef } from "./pokemon-carousel"
 
 interface Props {
-  sprite: Monster
-  form: MonsterForm
+  form: MonsterFormWithRef
   infoKey: string
   doesShowParameters: Record<string, boolean>
   isSpeciesThumbnail?: boolean
 }
 export default function PokemonThumbnail({
-  sprite, form, infoKey,
+  form, form: { monster },
+  infoKey,
   doesShowParameters: {
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
@@ -42,7 +42,7 @@ export default function PokemonThumbnail({
           noWrap
           sx={{ width: "80px" }}
         >
-          {isSpeciesThumbnail || sprite.name == form.fullName ? sprite.name : `(${form.fullName})`}
+          {isSpeciesThumbnail || monster.name == form.fullName ? monster.name : `(${form.fullName})`}
         </Typography>
         {index && <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
           {infoKey}
@@ -67,12 +67,12 @@ export default function PokemonThumbnail({
         )}
         {portraitBounty && (
           <Typography color="GrayText" align="center" noWrap>
-            {isSpeciesThumbnail ? getMonsterMaxPortraitBounty(sprite) : getFormMaxPortraitBounty(form)} gp
+            {isSpeciesThumbnail ? getMonsterMaxPortraitBounty(monster) : getFormMaxPortraitBounty(form)} gp
           </Typography>
         )}
         {spriteBounty && (
           <Typography color="GrayText" align="center" noWrap>
-            {isSpeciesThumbnail ? getMonsterMaxSpriteBounty(sprite) : getFormMaxSpriteBounty(form)} gp
+            {isSpeciesThumbnail ? getMonsterMaxSpriteBounty(monster) : getFormMaxSpriteBounty(form)} gp
           </Typography>
         )}
       </Paper>

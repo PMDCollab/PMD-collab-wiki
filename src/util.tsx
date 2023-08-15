@@ -32,7 +32,7 @@ export const getMonsterMaxSpriteBounty = (monster: Monster) => monster.forms.red
         b.sprites.bounty.incomplete || 0
     ), 0)
 export const getFormMaxSpriteBounty = (form: MonsterForm) => Math.max(
-    form.portraits.bounty.exists || 0,
-    form.portraits.bounty.full || 0,
-    form.portraits.bounty.incomplete || 0
+    form.sprites.bounty.exists || 0,
+    form.sprites.bounty.full || 0,
+    form.sprites.bounty.incomplete || 0
 )
