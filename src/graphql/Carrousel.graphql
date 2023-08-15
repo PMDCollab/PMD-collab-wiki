@@ -9,17 +9,23 @@ query Carrousel(
   $withPortraitBounty: Boolean!
   $withSpriteBounty: Boolean!
   $withModifiedDate: Boolean!
-  $withFullyFeaturedPortrait: Boolean!
-  $withFullyFeaturedSprite: Boolean!
+  $withPortraitPhases: Boolean!
+  $withSpritePhases: Boolean!
   $withCredits: Boolean!
   $withForms: Boolean!
+  $withSplitForms: Boolean!
 ) {
   monster(filter: $ids) {
     id
     name
     rawId
     forms @include(if: $withForms) {
+      fullName @include(if: $withSplitForms)
       portraits {
+        modifiedDate @include(if: $withSplitForms)
+        previewEmotion @include(if: $withSplitForms) {
+          url
+        }
         bounty @include(if: $withPortraitBounty) {
           ...myBounty
         }
@@ -29,8 +35,10 @@ query Carrousel(
         creditSecondary @include(if: $withCredits) {
           name
         }
+        phase @include(if: $withPortraitPhases)
       }
       sprites {
+        modifiedDate @include(if: $withSplitForms)
         bounty @include(if: $withSpriteBounty) {
           ...myBounty
         }
@@ -40,11 +48,11 @@ query Carrousel(
         creditSecondary @include(if: $withCredits) {
           name
         }
+        phase @include(if: $withSpritePhases)
       }
     }
     manual(path: "/") {
       portraits {
-        phase @include(if: $withFullyFeaturedPortrait)
         modifiedDate @include(if: $withModifiedDate)
         creditPrimary {
           name
@@ -54,7 +62,6 @@ query Carrousel(
         }
       }
       sprites {
-        phase @include(if: $withFullyFeaturedSprite)
         modifiedDate @include(if: $withModifiedDate)
         creditPrimary {
           name

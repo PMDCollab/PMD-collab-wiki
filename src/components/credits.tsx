@@ -14,7 +14,7 @@ export default function Credits({ primary, secondary }: {
         </Grid>
       )}
 
-      {secondary.length && (
+      {secondary.length != 0 && (
         <Grid item>
           <Typography>Others</Typography>
           <Box>
