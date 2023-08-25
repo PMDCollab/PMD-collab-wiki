@@ -116,7 +116,9 @@ export default function PokemonCarousel({ currentText, rankBy, ids, showParamete
       withForms:
         withCredits ||
         withPortraitPhases ||
-        withSpritePhases
+        withSpritePhases ||
+        portraitBounty ||
+        spriteBounty
     }
   })
   const visibleMonsters = useMemo(() => {

@@ -28,7 +28,7 @@ export default function PokemonThumbnail({
       >
         {form.portraits.previewEmotion?.url ? (
           <img
-            src={form.portraits.previewEmotion?.url}
+            src={form.portraits.previewEmotion.url}
             style={{ height: 80, imageRendering: "pixelated" }}
           />
         ) : (
