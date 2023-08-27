@@ -11,6 +11,15 @@ fragment myBounty on MonsterBounty {
   full
 }
 
+fragment myHistory on MonsterHistory {
+  credit {
+    ...myCredit
+  }
+  modifiedDate
+  modifications
+  obsolete
+}
+
 query Pokemon($id: Int!) {
   monster(filter: [$id]) {
     id
@@ -20,6 +29,9 @@ query Pokemon($id: Int!) {
       name
       fullName
       portraits {
+        history {
+          ...myHistory
+        }
         sheetUrl
         recolorSheetUrl
         modifiedDate
@@ -44,6 +56,9 @@ query Pokemon($id: Int!) {
         }
       }
       sprites {
+        history {
+          ...myHistory
+        }
         zipUrl
         animDataXml
         modifiedDate

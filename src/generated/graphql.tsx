@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
@@ -14,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** DateTime */
   DateTimeUtc: any;
 };
 
@@ -32,15 +30,9 @@ export type Config = {
   actionMap: Array<ActionId>;
   /** A list of known action. The position is the ID of the action. */
   actions: Array<Scalars['String']>;
-  /**
-   * Returns a list, that for each phase contains a list of actions (by index) that
-   * need to exist for this phase to be considered completed.
-   */
+  /** Returns a list, that for each phase contains a list of actions (by index) that need to exist for this phase to be considered completed. */
   completionActions: Array<Array<Scalars['Int']>>;
-  /**
-   * Returns a list, that for each phase contains a list of emotions (by index)
-   * that need to exist for this phase to be considered completed.
-   */
+  /** Returns a list, that for each phase contains a list of emotions (by index) that need to exist for this phase to be considered completed. */
   completionEmotions: Array<Array<Scalars['Int']>>;
   /** A list of known emotions. The position is the ID of the emotion. */
   emotions: Array<Scalars['String']>;
@@ -67,11 +59,7 @@ export type Credit = {
   __typename?: 'Credit';
   /** Contact information for this author. */
   contact?: Maybe<Scalars['String']>;
-  /**
-   * Discord name and discriminator in the form Name#Discriminator (eg.
-   * Capypara#7887), if this is a credit for a Discord profile, and the server can
-   * resolve the ID to a Discord profile.
-   */
+  /** Discord username or old-style name and discriminator (in the form Name#Discriminator [eg. Capypara#7887)), if this is a credit for a Discord profile, and the server can resolve the ID to a Discord profile. */
   discordHandle?: Maybe<Scalars['String']>;
   /** Discord ID or absentee ID. Guaranteed to be an ASCII string. */
   id: Scalars['String'];
@@ -87,10 +75,7 @@ export type Meta = {
   apiVersion: Scalars['String'];
   /** Git Commit (https://github.com/PMDCollab/SpriteCollab/) currently checked out to serve the assets. */
   assetsCommit: Scalars['String'];
-  /**
-   * Date of the last commit in the assets repository
-   * (https://github.com/PMDCollab/SpriteCollab) that is currently checked out.
-   */
+  /** Date of the last commit in the assets repository (https://github.com/PMDCollab/SpriteCollab) that is currently checked out. */
   assetsUpdateDate: Scalars['DateTimeUtc'];
   /** Version of spritecollab-srv serving this API. */
   serverVersion: Scalars['String'];
@@ -106,11 +91,7 @@ export type Monster = {
   get?: Maybe<MonsterForm>;
   /** ID of this monster. */
   id: Scalars['Int'];
-  /**
-   * Manually enter the path to a monster, seperated by /. This should match the
-   * path as it is stored in SpriteCollab, however the path passed in might be
-   * collapsed until a unique form is found.
-   */
+  /** Manually enter the path to a monster, seperated by /. This should match the path as it is stored in SpriteCollab, however the path passed in might be collapsed until a unique form is found. */
   manual?: Maybe<MonsterForm>;
   /** Human-readable name of this monster. */
   name: Scalars['String'];
@@ -130,10 +111,7 @@ export type MonsterManualArgs = {
   path: Scalars['String'];
 };
 
-/**
- * A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the
- * portrait or sprite has transitioned into a phase.
- */
+/** A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the portrait or sprite has transitioned into a phase. */
 export type MonsterBounty = {
   __typename?: 'MonsterBounty';
   /** Amount of points to reward if the phase changes to Exists. */
@@ -153,10 +131,7 @@ export type MonsterForm = {
   canon: Scalars['Boolean'];
   /** Human-readable full name of this form (excluding the monster name itself). */
   fullName: Scalars['String'];
-  /**
-   * The path to this form (including the monster ID) as it's specified in the
-   * SpriteCollab tracker.json file and repository file structure.
-   */
+  /** The path to this form (including the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure. */
   fullPath: Scalars['String'];
   /** Whether or not this form is considered for a female monsters. */
   isFemale: Scalars['Boolean'];
@@ -166,10 +141,7 @@ export type MonsterForm = {
   monsterId: Scalars['Int'];
   /** Human-readable name of this form. */
   name: Scalars['String'];
-  /**
-   * The path to this form (without the monster ID) as it's specified in the
-   * SpriteCollab tracker.json file and repository file structure.
-   */
+  /** The path to this form (without the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure. */
   path: Scalars['String'];
   /** Portraits for this form. */
   portraits: MonsterFormPortraits;
@@ -193,6 +165,8 @@ export type MonsterFormPortraits = {
   emotions: Array<Portrait>;
   /** A list of all existing flipped portraits for the emotions. */
   emotionsFlipped: Array<Portrait>;
+  /** List of all modifications made to those portraits since its creation. */
+  history: Array<MonsterHistory>;
   /** The date and time this portrait set was last updated. */
   modifiedDate?: Maybe<Scalars['DateTimeUtc']>;
   /** Current completion phase of the portraits. */
@@ -233,6 +207,8 @@ export type MonsterFormSprites = {
   creditPrimary?: Maybe<Credit>;
   /** All other artists credited. */
   creditSecondary: Array<Credit>;
+  /** List of all modifications made to those sprites since its creation. */
+  history: Array<MonsterHistory>;
   /** The date and time this sprite set was last updated. */
   modifiedDate?: Maybe<Scalars['DateTimeUtc']>;
   /** Current completion phase of the sprites. */
@@ -250,6 +226,18 @@ export type MonsterFormSprites = {
 
 export type MonsterFormSpritesActionArgs = {
   action: Scalars['String'];
+};
+
+export type MonsterHistory = {
+  __typename?: 'MonsterHistory';
+  /** The author that contributed for this history entry. */
+  credit?: Maybe<Credit>;
+  /** A list of emotions or actions that were changed in this history entry. */
+  modifications: Array<Scalars['String']>;
+  /** The date of the history entry submission. */
+  modifiedDate: Scalars['DateTimeUtc'];
+  /** True if the credit for this history entry was marked as no longer relevant for the current portraits or sprites. */
+  obsolete: Scalars['Boolean'];
 };
 
 /** A bounty for a non-standard phase. */
@@ -330,10 +318,7 @@ export type Sprite = {
   shadowsUrl: Scalars['String'];
 };
 
-/**
- * A single sprite for a single action that is either a copy of another sprite (as
- * defined in the AnimData.xml) or has it's own sprite data.
- */
+/** A single sprite for a single action that is either a copy of another sprite (as defined in the AnimData.xml) or has it's own sprite data. */
 export type SpriteUnion = CopyOf | Sprite;
 
 export type MyBountyFragment = { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null };
@@ -365,12 +350,14 @@ export type KeysQuery = { __typename?: 'Query', meta: { __typename?: 'Meta', api
 
 export type MyCreditFragment = { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null };
 
+export type MyHistoryFragment = { __typename?: 'MonsterHistory', modifiedDate: any, modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null } | null };
+
 export type PokemonQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, emotionsFlipped: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, modifiedDate?: any | null, recolorSheetUrl?: string | null, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }> }> };
+export type PokemonQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, forms: Array<{ __typename?: 'MonsterForm', path: string, name: string, fullName: string, portraits: { __typename?: 'MonsterFormPortraits', sheetUrl: string, recolorSheetUrl: string, modifiedDate?: any | null, history: Array<{ __typename?: 'MonsterHistory', modifiedDate: any, modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null } | null }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, emotions: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, emotionsFlipped: Array<{ __typename?: 'Portrait', emotion: string, url: string, locked: boolean }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', zipUrl?: string | null, animDataXml?: string | null, modifiedDate?: any | null, recolorSheetUrl?: string | null, history: Array<{ __typename?: 'MonsterHistory', modifiedDate: any, modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null } | null }>, creditPrimary?: { __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null } | null, creditSecondary: Array<{ __typename?: 'Credit', name?: string | null, contact?: string | null, id: string, discordHandle?: string | null }>, actions: Array<{ __typename?: 'CopyOf', action: string, copyOf: string } | { __typename?: 'Sprite', action: string, animUrl: string, offsetsUrl: string, shadowsUrl: string, locked: boolean }>, bounty: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null } } }> }> };
 
 export const MyBountyFragmentDoc = gql`
     fragment myBounty on MonsterBounty {
@@ -387,6 +374,16 @@ export const MyCreditFragmentDoc = gql`
   discordHandle
 }
     `;
+export const MyHistoryFragmentDoc = gql`
+    fragment myHistory on MonsterHistory {
+  credit {
+    ...myCredit
+  }
+  modifiedDate
+  modifications
+  obsolete
+}
+    ${MyCreditFragmentDoc}`;
 export const CarrouselDocument = gql`
     query Carrousel($ids: [Int!]!, $withPortraitBounty: Boolean!, $withSpriteBounty: Boolean!, $withModifiedDate: Boolean!, $withPortraitPhases: Boolean!, $withSpritePhases: Boolean!, $withCredits: Boolean!, $withForms: Boolean!, $withSplitForms: Boolean!) {
   monster(filter: $ids) {
@@ -573,6 +570,9 @@ export const PokemonDocument = gql`
       name
       fullName
       portraits {
+        history {
+          ...myHistory
+        }
         sheetUrl
         recolorSheetUrl
         modifiedDate
@@ -597,6 +597,9 @@ export const PokemonDocument = gql`
         }
       }
       sprites {
+        history {
+          ...myHistory
+        }
         zipUrl
         animDataXml
         modifiedDate
@@ -627,7 +630,8 @@ export const PokemonDocument = gql`
     }
   }
 }
-    ${MyBountyFragmentDoc}
+    ${MyHistoryFragmentDoc}
+${MyBountyFragmentDoc}
 ${MyCreditFragmentDoc}`;
 
 /**
