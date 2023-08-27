@@ -18,13 +18,10 @@ import {
   ListItemAvatar,
   ListItemText,
   Paper,
-  Tooltip,
   Typography
 } from "@mui/material"
 import { formatDate, getLastModification } from "../util"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 
 interface Props {
   info: MonsterForm
@@ -141,7 +138,7 @@ export default function PokemonInformations({
       </Box>
 
       {sprites.history.length > 0 && (
-        <History history={sprites.history} title="Sprite History" />
+        <History history={sprites.history} title="Sprites History" />
       )}
       <Divider />
     </Box>
@@ -156,41 +153,31 @@ export function History(props: { history: MonsterHistory[]; title: string }) {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <>
-          <Typography variant="h6">{props.title}</Typography>
-          <Tooltip title="Entries marked with ! should not be considered for crediting.">
-            <InfoOutlinedIcon color="info" />
-          </Tooltip>
-        </>
+        <Typography variant="h6">{props.title}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         {
           <List>
-            {props.history.map((entry, i) => (
-              <Fragment key={i}>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar sx={{ mr: 2 }}>
-                    <>
+            {props.history
+              .filter((entry) => !entry.obsolete)
+              .map((entry, i) => (
+                <Fragment key={i}>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar sx={{ mr: 2 }}>
                       <Typography>{formatDate(entry.modifiedDate)}</Typography>
-                      {entry.obsolete && (
-                        <Tooltip title="This entry is obsolete and should not be considered for crediting.">
-                          <ErrorOutlineIcon color="error" fontSize="large" />
-                        </Tooltip>
-                      )}
-                    </>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Typography color={"grayText"}>
-                        {entry.modifications.map((m) => m + " ")}
-                      </Typography>
-                    }
-                    secondary={<Author credit={entry.credit} />}
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-              </Fragment>
-            ))}
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Typography color={"grayText"}>
+                          {entry.modifications.map((m) => m + " ")}
+                        </Typography>
+                      }
+                      secondary={<Author credit={entry.credit} />}
+                    />
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </Fragment>
+              ))}
           </List>
         }
       </AccordionDetails>
