@@ -114,7 +114,7 @@
           },
           {
             "name": "completionActions",
-            "description": "Returns a list, that for each phase contains a list of actions (by index) that\nneed to exist for this phase to be considered completed.",
+            "description": "Returns a list, that for each phase contains a list of actions (by index) that need to exist for this phase to be considered completed.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -146,7 +146,7 @@
           },
           {
             "name": "completionEmotions",
-            "description": "Returns a list, that for each phase contains a list of emotions (by index)\nthat need to exist for this phase to be considered completed.",
+            "description": "Returns a list, that for each phase contains a list of emotions (by index) that need to exist for this phase to be considered completed.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -332,7 +332,7 @@
           },
           {
             "name": "discordHandle",
-            "description": "Discord name and discriminator in the form Name#Discriminator (eg.\nCapypara#7887), if this is a credit for a Discord profile, and the server can\nresolve the ID to a Discord profile.",
+            "description": "Discord username or old-style name and discriminator (in the form Name#Discriminator [eg. Capypara#7887)), if this is a credit for a Discord profile, and the server can resolve the ID to a Discord profile.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -447,7 +447,7 @@
           },
           {
             "name": "assetsUpdateDate",
-            "description": "Date of the last commit in the assets repository\n(https://github.com/PMDCollab/SpriteCollab) that is currently checked out.",
+            "description": "Date of the last commit in the assets repository (https://github.com/PMDCollab/SpriteCollab) that is currently checked out.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -607,7 +607,7 @@
           },
           {
             "name": "manual",
-            "description": "Manually enter the path to a monster, seperated by /. This should match the\npath as it is stored in SpriteCollab, however the path passed in might be\ncollapsed until a unique form is found.",
+            "description": "Manually enter the path to a monster, seperated by /. This should match the path as it is stored in SpriteCollab, however the path passed in might be collapsed until a unique form is found.",
             "args": [
               {
                 "name": "path",
@@ -675,7 +675,7 @@
       {
         "kind": "OBJECT",
         "name": "MonsterBounty",
-        "description": "A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the\nportrait or sprite has transitioned into a phase.",
+        "description": "A SkyTemple Discord Server Guild Point bounty that will be rewarded, if the portrait or sprite has transitioned into a phase.",
         "fields": [
           {
             "name": "exists",
@@ -798,7 +798,7 @@
           },
           {
             "name": "fullPath",
-            "description": "The path to this form (including the monster ID) as it's specified in the\nSpriteCollab tracker.json file and repository file structure.",
+            "description": "The path to this form (including the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -878,7 +878,7 @@
           },
           {
             "name": "path",
-            "description": "The path to this form (without the monster ID) as it's specified in the\nSpriteCollab tracker.json file and repository file structure.",
+            "description": "The path to this form (without the monster ID) as it's specified in the SpriteCollab tracker.json file and repository file structure.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1085,6 +1085,30 @@
                   "ofType": {
                     "kind": "OBJECT",
                     "name": "Portrait",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "history",
+            "description": "List of all modifications made to those portraits since its creation.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "MonsterHistory",
                     "ofType": null
                   }
                 }
@@ -1326,6 +1350,30 @@
             "deprecationReason": null
           },
           {
+            "name": "history",
+            "description": "List of all modifications made to those sprites since its creation.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "MonsterHistory",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "modifiedDate",
             "description": "The date and time this sprite set was last updated.",
             "args": [],
@@ -1405,6 +1453,85 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MonsterHistory",
+        "description": null,
+        "fields": [
+          {
+            "name": "credit",
+            "description": "The author that contributed for this history entry.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Credit",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "modifications",
+            "description": "A list of emotions or actions that were changed in this history entry.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "modifiedDate",
+            "description": "The date of the history entry submission.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTimeUtc",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "obsolete",
+            "description": "True if the credit for this history entry was marked as no longer relevant for the current portraits or sprites.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1856,7 +1983,7 @@
       {
         "kind": "UNION",
         "name": "SpriteUnion",
-        "description": "A single sprite for a single action that is either a copy of another sprite (as\ndefined in the AnimData.xml) or has it's own sprite data.",
+        "description": "A single sprite for a single action that is either a copy of another sprite (as defined in the AnimData.xml) or has it's own sprite data.",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2794,33 +2921,8 @@
     ],
     "directives": [
       {
-        "name": "deprecated",
-        "description": "Marks an element of a GraphQL schema as no longer supported.",
-        "isRepeatable": false,
-        "locations": [
-          "ARGUMENT_DEFINITION",
-          "ENUM_VALUE",
-          "FIELD_DEFINITION",
-          "INPUT_FIELD_DEFINITION"
-        ],
-        "args": [
-          {
-            "name": "reason",
-            "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax, as specified by [CommonMark](https://commonmark.org/).",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": "\"No longer supported\"",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
         "name": "include",
-        "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD",
@@ -2830,7 +2932,7 @@
         "args": [
           {
             "name": "if",
-            "description": "Included when true.",
+            "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -2848,7 +2950,7 @@
       },
       {
         "name": "skip",
-        "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
+        "description": null,
         "isRepeatable": false,
         "locations": [
           "FIELD",
@@ -2858,39 +2960,13 @@
         "args": [
           {
             "name": "if",
-            "description": "Skipped when true.",
+            "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ]
-      },
-      {
-        "name": "specifiedBy",
-        "description": "Exposes a URL that specifies the behaviour of this scalar.",
-        "isRepeatable": false,
-        "locations": [
-          "SCALAR"
-        ],
-        "args": [
-          {
-            "name": "url",
-            "description": "The URL that specifies the behaviour of this scalar.",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
                 "ofType": null
               }
             },

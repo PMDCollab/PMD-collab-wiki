@@ -1,7 +1,10 @@
 import { Box, Grid, Link, Typography } from "@mui/material"
 import { Credit } from "../generated/graphql"
 
-export default function Credits({ primary, secondary }: {
+export default function Credits({
+  primary,
+  secondary
+}: {
   primary: Credit | undefined | null
   secondary: Credit[]
 }) {
@@ -28,14 +31,11 @@ export default function Credits({ primary, secondary }: {
   )
 }
 
-function Author({ credit }: { credit: Credit | undefined | null }) {
+export function Author({ credit }: { credit: Credit | undefined | null }) {
   return (
     <Box key={credit?.id}>
       {credit?.name ? (
-        <Link
-          href={credit?.contact ? credit?.contact : ""}
-          target="_blank"
-        >
+        <Link href={credit?.contact ? credit?.contact : ""} target="_blank">
           {credit?.name}
         </Link>
       ) : (
