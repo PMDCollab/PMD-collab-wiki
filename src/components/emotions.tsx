@@ -1,8 +1,14 @@
 import { Grid, Paper, Typography } from "@mui/material"
-import { Portrait } from "../generated/graphql"
+import { MonsterHistory, Portrait } from "../generated/graphql"
 import Lock from "./lock"
 
-export default function Emotions({ emotions }: { emotions: Portrait[] }) {
+export default function Emotions({
+  emotions,
+  history
+}: {
+  emotions: Portrait[]
+  history: MonsterHistory[]
+}) {
   const emotionsCopy = [...emotions]
   return (
     <Grid container spacing={2} sx={{ mt: 3 }}>
@@ -22,7 +28,12 @@ export default function Emotions({ emotions }: { emotions: Portrait[] }) {
                   alignItems="start"
                   sx={{ maxWidth: "80px" }}
                 >
-                  <Lock locked={locked} />
+                  <Lock
+                    locked={locked}
+                    history={history.filter((e) =>
+                      e.modifications.includes(emotion)
+                    )}
+                  />
                   <Typography
                     align="center"
                     color="grayText"

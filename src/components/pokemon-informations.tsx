@@ -1,32 +1,40 @@
-import Credits, { Author } from "./credits"
+import Credits from "./credits"
 import Emotions from "./emotions"
 import SpritePreview from "./sprite-preview"
 import { Dungeon } from "../types/enum"
-import { Fragment, useRef } from "react"
-import { MonsterForm, MonsterHistory } from "../generated/graphql"
+import { useRef } from "react"
+import { MonsterForm } from "../generated/graphql"
 import Bounty from "./bounty"
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Divider,
   Grid,
   Link,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Paper,
-  Typography
+  Tooltip,
+  TooltipProps,
+  Typography,
+  styled,
+  tooltipClasses
 } from "@mui/material"
-import { formatDate, getLastModification } from "../util"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import { getLastModification } from "../util"
 
 interface Props {
   info: MonsterForm
   infoKey: number
 }
+
+export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: "1rem"
+  }
+}))
+
 export default function PokemonInformations({
   info: { sprites, portraits }
 }: Props) {
@@ -85,14 +93,12 @@ export default function PokemonInformations({
             emotions={portraits.emotions.concat(
               portraits.emotionsFlipped ?? []
             )}
+            history={portraits.history.filter((e) => !e.obsolete)}
           />
         ) : (
           <Typography variant="h5">No portraits available for now.</Typography>
         )}
       </Box>
-      {portraits.history.length > 0 && (
-        <History history={portraits.history} title="Portraits History" />
-      )}
       <Divider />
       <Box sx={{ mt: 4, mb: 2 }}>
         <Grid container spacing={2} alignItems="center">
@@ -126,6 +132,7 @@ export default function PokemonInformations({
                         dungeon={bg.current}
                         sprite={sprite}
                         animDataUrl={sprites.animDataXml}
+                        history={sprites.history.filter((e) => !e.obsolete)}
                       />
                     </Paper>
                   </Grid>
@@ -136,51 +143,7 @@ export default function PokemonInformations({
           <Typography variant="h6">No sprites available for now.</Typography>
         )}
       </Box>
-
-      {sprites.history.length > 0 && (
-        <History history={sprites.history} title="Sprites History" />
-      )}
       <Divider />
     </Box>
-  )
-}
-
-export function History(props: { history: MonsterHistory[]; title: string }) {
-  return (
-    <Accordion>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography variant="h6">{props.title}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        {
-          <List>
-            {props.history
-              .filter((entry) => !entry.obsolete)
-              .map((entry, i) => (
-                <Fragment key={i}>
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar sx={{ mr: 2 }}>
-                      <Typography>{formatDate(entry.modifiedDate)}</Typography>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Typography color={"grayText"}>
-                          {entry.modifications.map((m) => m + " ")}
-                        </Typography>
-                      }
-                      secondary={<Author credit={entry.credit} />}
-                    />
-                  </ListItem>
-                  <Divider variant="inset" component="li" />
-                </Fragment>
-              ))}
-          </List>
-        }
-      </AccordionDetails>
-    </Accordion>
   )
 }

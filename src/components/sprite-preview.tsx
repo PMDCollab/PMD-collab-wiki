@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Sprite } from "../generated/graphql"
+import { MonsterHistory, Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
@@ -9,11 +9,13 @@ import { Card, Grid, Typography } from "@mui/material"
 export default function SpritePreview({
   sprite,
   dungeon,
-  animDataUrl
+  animDataUrl,
+  history
 }: {
   sprite: Sprite
   dungeon: Dungeon
   animDataUrl: string
+  history: MonsterHistory[]
 }) {
   const [initialized, setInitialized] = useState<boolean>(false)
   const gameContainer = useRef<GameContainer>()
@@ -50,7 +52,12 @@ export default function SpritePreview({
     <Card>
       <div id={`action-${sprite.action}`} ref={container}></div>
       <Grid container justifyContent="center" alignItems="start">
-        <Lock locked={sprite.locked} />
+        <Lock
+          locked={sprite.locked}
+          history={history.filter((e) =>
+            e.modifications.includes(sprite.action)
+          )}
+        />
         <Typography align="center">{sprite.action}</Typography>
       </Grid>
     </Card>
