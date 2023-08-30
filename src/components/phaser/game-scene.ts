@@ -15,21 +15,30 @@ export default class GameScene extends Scene {
 
   init() {
     const {
-      animationData: { Anims: { Anim } },
-      sprite: { animUrl, shadowsUrl, action }, dungeon
-    } = this.game as MyGame;
-    this.metadata = Anim.find(({ Name }) => Name === action);
-    this.animUrl = animUrl;
-    this.shadowsUrl = shadowsUrl;
-    this.action = action;
-    this.dungeon = dungeon;
+      animationData: {
+        Anims: { Anim }
+      },
+      sprite: { animUrl, shadowsUrl, action },
+      dungeon
+    } = this.game as MyGame
+    this.metadata = Anim.find(({ Name }) => Name === action)
+    this.animUrl = animUrl
+    this.shadowsUrl = shadowsUrl
+    this.action = action
+    this.dungeon = dungeon
     this.scaleFactor =
-      Math.max(...Anim.map(({ FrameHeight }) => FrameHeight ?? 0))
-        > 120 ? 1 : 2;
+      Math.max(
+        ...Anim.filter((a) => a.Name !== "QuickStrike").map(
+          ({ FrameHeight }) => FrameHeight ?? 0
+        )
+      ) > 120
+        ? 1
+        : 2
   }
 
   preload() {
-    const { FrameWidth: frameWidth, FrameHeight: frameHeight } = this.metadata as IAnim
+    const { FrameWidth: frameWidth, FrameHeight: frameHeight } = this
+      .metadata as IAnim
     this.load.image(
       "small-ba",
       `${process.env.PUBLIC_URL}/maps/${this.dungeon}.png`
@@ -52,7 +61,9 @@ export default class GameScene extends Scene {
         `${this.action}-${animationType}`,
         { start: 0, end: -1 }
       )
-      const { Durations: { Duration } } = this.metadata as IAnim
+      const {
+        Durations: { Duration }
+      } = this.metadata as IAnim
       const durationArray = Array.isArray(Duration) ? Duration : [Duration]
       for (let i = 0; i < frames.length; i++) {
         frames[i]["duration"] = durationArray[i % durationArray.length] * 20

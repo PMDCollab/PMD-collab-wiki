@@ -1,33 +1,27 @@
-import { Box, Grid, Link, Typography } from "@mui/material"
+import { Box, Link, Typography } from "@mui/material"
 import { Credit } from "../generated/graphql"
 
-export default function Credits({
-  primary,
-  secondary
+export function CreditsPrimary({
+  primary
 }: {
   primary: Credit | undefined | null
-  secondary: Credit[]
 }) {
   return (
-    <Grid container spacing={3} sx={{ mt: 1 }}>
-      {primary?.name && (
-        <Grid item>
-          <Typography>by</Typography>
-          <Author credit={primary} />
-        </Grid>
-      )}
+    <div style={{ display: "flex", gap: "8px" }}>
+      <Typography>by</Typography>
+      <Author credit={primary} />
+    </div>
+  )
+}
 
-      {secondary.length != 0 && (
-        <Grid item>
-          <Typography>Others</Typography>
-          <Box>
-            {secondary.map((s, i) => (
-              <Author credit={s} key={i} />
-            ))}
-          </Box>
-        </Grid>
-      )}
-    </Grid>
+export function CreditsSecondary(props: { secondary: Credit[] }) {
+  return (
+    <div style={{ display: "flex", gap: "8px" }}>
+      <Typography>Others</Typography>
+      {props.secondary.map((s, i) => (
+        <Author credit={s} key={i} />
+      ))}
+    </div>
   )
 }
 
