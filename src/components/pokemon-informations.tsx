@@ -1,4 +1,3 @@
-import Credits from "./credits"
 import Emotions from "./emotions"
 import SpritePreview from "./sprite-preview"
 import { Dungeon } from "../types/enum"
@@ -18,6 +17,7 @@ import {
   tooltipClasses
 } from "@mui/material"
 import { getLastModification } from "../util"
+import { CreditsPrimary, CreditsSecondary } from "./credits"
 
 interface Props {
   info: MonsterForm
@@ -83,11 +83,16 @@ export default function PokemonInformations({
           </Grid>
           <Grid item>{portraitSheetUrl}</Grid>
           <Grid item>{portraitRecolorSheetUrl}</Grid>
+          <Grid item>
+            <CreditsPrimary primary={portraits.creditPrimary} />
+          </Grid>
+          {portraits.creditSecondary.length > 0 && (
+            <Grid item>
+              <CreditsSecondary secondary={portraits.creditSecondary} />
+            </Grid>
+          )}
         </Grid>
-        <Credits
-          primary={portraits.creditPrimary}
-          secondary={portraits.creditSecondary}
-        />
+
         {portraits.emotions.length ? (
           <Emotions
             emotions={portraits.emotions.concat(
@@ -115,11 +120,16 @@ export default function PokemonInformations({
           </Grid>
           <Grid item>{zipUrl}</Grid>
           <Grid item>{spriteRecolorSheetUrl}</Grid>
+          <Grid item>
+            <CreditsPrimary primary={sprites.creditPrimary} />
+          </Grid>
+          {sprites.creditSecondary?.length > 0 && (
+            <Grid item>
+              <CreditsSecondary secondary={sprites.creditSecondary} />
+            </Grid>
+          )}
         </Grid>
-        <Credits
-          primary={sprites.creditPrimary}
-          secondary={sprites.creditSecondary}
-        />
+
         {sprites.actions.length ? (
           <Grid container spacing={2} sx={{ mt: 3 }}>
             {sprites.actions.map(

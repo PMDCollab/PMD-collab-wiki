@@ -1,29 +1,17 @@
 import PokemonInformations from "./pokemon-informations"
-import { useState, SyntheticEvent } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 import { Bar } from "./bar"
-import { Box, Container, Grid, Tab, Tabs, Typography } from "@mui/material"
-
-interface TabPanelProps {
-  children?: React.ReactNode
-  index: number
-  value: number
-}
-
-function TabPanel({ children, index, value, ...other }: TabPanelProps) {
-  return (
-    <Box
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ pt: 1 }}>{children}</Box>}
-    </Box>
-  )
-}
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  MenuItem,
+  Select,
+  Typography
+} from "@mui/material"
 
 interface Props {
   infoKey: number
@@ -32,15 +20,21 @@ interface Props {
   rawId: string
 }
 
-export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Props) {
-  const [value, setValue] = useState(0)
-
+export default function PokemonPage({
+  infoKey,
+  prevIndex,
+  nextIndex,
+  rawId
+}: Props) {
   const { loading, error, data } = usePokemonQuery({
     variables: { id: infoKey }
   })
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(parseInt(newValue))
-  }
+  const [form, setForm] = useState<MonsterForm | undefined>(undefined)
+  const formList = data?.monster[0]?.forms
+
+  useEffect(() => {
+    setForm(data?.monster[0].forms[0] as MonsterForm)
+  }, [data])
 
   const prevLink = prevIndex && (
     <Link to={`/${prevIndex}`}>
@@ -59,27 +53,6 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
     </Link>
   )
 
-  const formList = data?.monster[0]?.forms;
-  const tablist = formList?.map(form => (
-    <Tab
-      key={form.path}
-      sx={{ textTransform: "none" }}
-      label={
-        <Typography variant="h6" color="text.primary">
-          {form.fullName}
-        </Typography>
-      }
-    />
-  ))
-  const tabPanelList = formList?.map((form, i) =>
-    <TabPanel key={`${form.path}`} value={value} index={i}>
-      <PokemonInformations
-        info={form as MonsterForm}
-        infoKey={infoKey}
-      />
-    </TabPanel>
-  )
-
   return (
     <Box>
       <Bar />
@@ -94,26 +67,53 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
             {prevLink}
           </Grid>
           <Grid item xs={8}>
-            <Typography align="center" variant="h5" fontWeight="bold">
-              {rawId} {data?.monster[0].name}
-            </Typography>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "16px"
+              }}
+            >
+              <Typography align="center" variant="h5" fontWeight="bold">
+                {rawId} {data?.monster[0].name}
+              </Typography>
+              {form && (
+                <Select
+                  value={form?.fullName}
+                  onChange={(e) =>
+                    setForm(
+                      formList?.find(
+                        (f) => f.fullName === e.target.value
+                      ) as MonsterForm
+                    )
+                  }
+                >
+                  {formList?.map((form) => (
+                    <MenuItem
+                      key={form.path}
+                      sx={{ textTransform: "none" }}
+                      value={form.fullName}
+                    >
+                      <Typography variant="h6" color="text.primary">
+                        {form.fullName !== data?.monster[0].name
+                          ? form.fullName.replaceAll("_", " ")
+                          : "Normal"}
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            </div>
           </Grid>
           <Grid item xs={2}>
             {nextLink}
           </Grid>
         </Grid>
-        <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            scrollButtons="auto"
-            variant="scrollable"
-            allowScrollButtonsMobile
-          >
-            {tablist}
-          </Tabs>
-        </Box>
-        {tabPanelList}
+        <Divider sx={{ mt: 2 }} />
+        {form && (
+          <PokemonInformations info={form as MonsterForm} infoKey={infoKey} />
+        )}
       </Container>
     </Box>
   )
