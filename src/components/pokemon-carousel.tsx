@@ -18,7 +18,8 @@ function rankMonsters(
   rankBy: RankMethod,
   a: MonsterFormWithRef,
   b: MonsterFormWithRef,
-  splitForms: boolean
+  splitForms: boolean,
+  showUnnecessary: boolean
 ) {
   switch (rankBy) {
     case RankMethod.POKEDEX_NUMBER:
@@ -47,20 +48,20 @@ function rankMonsters(
     case RankMethod.PORTRAIT_BOUNTY:
       return splitForms
         ? getFormMaxPortraitBounty(b) - getFormMaxPortraitBounty(a)
-        : getMonsterMaxPortraitBounty(b.monster) -
-            getMonsterMaxPortraitBounty(a.monster)
+        : getMonsterMaxPortraitBounty(b.monster, showUnnecessary) -
+        getMonsterMaxPortraitBounty(a.monster, showUnnecessary)
     case RankMethod.SPRITE_BOUNTY:
       return splitForms
         ? getFormMaxSpriteBounty(b) - getFormMaxSpriteBounty(a)
-        : getMonsterMaxSpriteBounty(b.monster) -
-            getMonsterMaxSpriteBounty(a.monster)
+        : getMonsterMaxSpriteBounty(b.monster, showUnnecessary) -
+        getMonsterMaxSpriteBounty(a.monster, showUnnecessary)
   }
 }
 
 function filterMonsterForms(
   forms: MonsterFormWithRef[],
   splitForms: boolean,
-  showObsolete: boolean,
+  showUnnecessary: boolean,
   currentText: string,
   filterParameters: Parameters<PhaseCategory>[],
   rankBy: RankMethod
@@ -70,68 +71,68 @@ function filterMonsterForms(
     .filter(
       splitForms
         ? ({ monster: { name, id }, portraits, sprites }) =>
-            name.toLowerCase().includes(lowerCaseText) ||
-            portraits.creditPrimary?.name
-              ?.toLowerCase()
-              .includes(lowerCaseText) ||
-            portraits.creditSecondary.some(({ name }) =>
-              name?.toLowerCase().includes(lowerCaseText)
-            ) ||
-            sprites.creditPrimary?.name
-              ?.toLowerCase()
-              .includes(lowerCaseText) ||
-            sprites.creditSecondary.some(({ name }) =>
-              name?.toLowerCase().includes(lowerCaseText)
-            ) ||
-            id.toString().includes(lowerCaseText)
+          name.toLowerCase().includes(lowerCaseText) ||
+          portraits.creditPrimary?.name
+            ?.toLowerCase()
+            .includes(lowerCaseText) ||
+          portraits.creditSecondary.some(({ name }) =>
+            name?.toLowerCase().includes(lowerCaseText)
+          ) ||
+          sprites.creditPrimary?.name
+            ?.toLowerCase()
+            .includes(lowerCaseText) ||
+          sprites.creditSecondary.some(({ name }) =>
+            name?.toLowerCase().includes(lowerCaseText)
+          ) ||
+          id.toString().includes(lowerCaseText)
         : ({ monster: { name, forms, id } }) =>
-            name.toLowerCase().includes(lowerCaseText) ||
-            forms.some(
-              ({ portraits: { creditPrimary, creditSecondary } }) =>
-                creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
-                creditSecondary.some(({ name }) =>
-                  name?.toLowerCase().includes(lowerCaseText)
-                )
-            ) ||
-            forms.some(
-              ({ sprites: { creditPrimary, creditSecondary } }) =>
-                creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
-                creditSecondary.some(({ name }) =>
-                  name?.toLowerCase().includes(lowerCaseText)
-                )
-            ) ||
-            id.toString().includes(lowerCaseText)
+          name.toLowerCase().includes(lowerCaseText) ||
+          forms.some(
+            ({ portraits: { creditPrimary, creditSecondary } }) =>
+              creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+              creditSecondary.some(({ name }) =>
+                name?.toLowerCase().includes(lowerCaseText)
+              )
+          ) ||
+          forms.some(
+            ({ sprites: { creditPrimary, creditSecondary } }) =>
+              creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
+              creditSecondary.some(({ name }) =>
+                name?.toLowerCase().includes(lowerCaseText)
+              )
+          ) ||
+          id.toString().includes(lowerCaseText)
     )
     .filter(
       splitForms
         ? (form) => {
-            const activeFilters = filterParameters.filter(
-              ({ state: [active] }) => active
+          const activeFilters = filterParameters.filter(
+            ({ state: [active] }) => active
+          )
+          return (
+            !activeFilters.length ||
+            activeFilters.some(
+              ({ value: { type, phase } }) => phase == form[type].phase
             )
-            return (
-              !activeFilters.length ||
-              activeFilters.some(
-                ({ value: { type, phase } }) => phase == form[type].phase
-              )
-            )
-          }
+          )
+        }
         : ({ monster: { forms } }) => {
-            const activeFilters = filterParameters.filter(
-              ({ state: [active] }) => active
+          const activeFilters = filterParameters.filter(
+            ({ state: [active] }) => active
+          )
+          return (
+            !activeFilters.length ||
+            activeFilters.some(({ value: { type, phase } }) =>
+              forms.some(form => (showUnnecessary || form[type].required) && phase == form[type].phase)
             )
-            return (
-              !activeFilters.length ||
-              activeFilters.some(({ value: { type, phase } }) =>
-                forms.some((form) => phase == form[type].phase)
-              )
-            )
-          }
+          )
+        }
     )
     .filter(
       ({ portraits, sprites }) =>
-        !splitForms || portraits.required || sprites.required || showObsolete
+        !splitForms || portraits.required || sprites.required || showUnnecessary
     )
-    .sort((a, b) => rankMonsters(rankBy, a, b, splitForms) ?? 0)
+    .sort((a, b) => rankMonsters(rankBy, a, b, splitForms, showUnnecessary) ?? 0)
 }
 
 interface Props {
@@ -141,7 +142,7 @@ interface Props {
   showParameters: Record<string, Parameters<RankMethod>>
   filterParameters: Parameters<PhaseCategory>[]
   splitForms: boolean
-  showObsolete: boolean
+  showUnnecessary: boolean
 }
 export default function PokemonCarousel({
   currentText,
@@ -150,7 +151,7 @@ export default function PokemonCarousel({
   showParameters,
   filterParameters,
   splitForms,
-  showObsolete
+  showUnnecessary
 }: Props) {
   const doesShowParameters = Object.fromEntries(
     Object.entries(showParameters).map((param) => [param[0], param[1].state[0]])
@@ -196,17 +197,14 @@ export default function PokemonCarousel({
     }
   })
   const visibleMonsters = useMemo(() => {
-    const monsters = (data?.monster.flatMap((monster) =>
-      splitForms
-        ? monster.forms?.map((form) => ({ ...form, monster })) ?? []
-        : monster.manual
-        ? { ...monster.manual, monster }
-        : {}
-    ) ?? []) as MonsterFormWithRef[]
+    const monsterForms = (data?.monster.flatMap((monster) =>
+      splitForms ? monster.forms?.map((form) => ({ ...form, monster })) ?? [] :
+        monster.manual ? { ...monster.manual, monster } : {}
+    ) ?? []) as MonsterFormWithRef[];
     return filterMonsterForms(
-      monsters,
+      monsterForms,
       splitForms,
-      showObsolete,
+      showUnnecessary,
       currentText,
       filterParameters,
       rankBy
@@ -219,20 +217,20 @@ export default function PokemonCarousel({
     <Grid container spacing={2} justifyContent={"center"}>
       {loading
         ? Array.from(new Array(100)).map((v, i) => (
-            <Grid item key={i}>
-              <Skeleton width={80} height={111} variant="rectangular" />
-            </Grid>
-          ))
+          <Grid item key={i}>
+            <Skeleton width={80} height={111} variant="rectangular" />
+          </Grid>
+        ))
         : visibleMonsters.map((form, i) => (
-            <Grid item key={i}>
-              <PokemonThumbnail
-                infoKey={form.monster.rawId}
-                form={form}
-                isSpeciesThumbnail={!splitForms}
-                doesShowParameters={doesShowParameters}
-              />
-            </Grid>
-          ))}
+          <Grid item key={i}>
+            <PokemonThumbnail
+              infoKey={form.monster.rawId}
+              form={form}
+              isSpeciesThumbnail={!splitForms}
+              doesShowParameters={doesShowParameters}
+            />
+          </Grid>
+        ))}
     </Grid>
   )
 }
