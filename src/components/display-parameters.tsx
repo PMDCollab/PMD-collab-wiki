@@ -8,13 +8,13 @@ interface Props {
   filterParameters: Parameters<PhaseCategory>[]
   splitForms: boolean
   setSplitForms: Dispatch<SetStateAction<boolean>>
-  showObsolete: boolean
-  setShowObsolete: Dispatch<SetStateAction<boolean>>
+  showUnnecessary: boolean
+  setShowUnnecessary: Dispatch<SetStateAction<boolean>>
 }
 export default function DisplayParameters({
   showParameters, filterParameters,
   splitForms, setSplitForms,
-  showObsolete, setShowObsolete
+  showUnnecessary, setShowUnnecessary
 }: Props) {
   return (
     <Grid container spacing={2}>
@@ -32,13 +32,12 @@ export default function DisplayParameters({
           }
         />
         <FormControlLabel
-          label={<Typography color="text.secondary">Show Obsolete Forms</Typography>}
+          label={<Typography color="text.secondary">Use Unnecessary Forms</Typography>}
           control={
             <Checkbox
-              disabled={!splitForms}
-              checked={showObsolete}
+              checked={showUnnecessary}
               onChange={(e) => {
-                setShowObsolete(e.target.checked);
+                setShowUnnecessary(e.target.checked);
               }}
             />
           }

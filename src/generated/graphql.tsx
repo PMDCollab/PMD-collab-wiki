@@ -394,7 +394,7 @@ export const CarrouselDocument = gql`
       fullName @include(if: $withSplitForms)
       portraits {
         modifiedDate @include(if: $withSplitForms)
-        required @include(if: $withSplitForms)
+        required @include(if: $withForms)
         previewEmotion @include(if: $withSplitForms) {
           url
         }
@@ -411,7 +411,7 @@ export const CarrouselDocument = gql`
       }
       sprites {
         modifiedDate @include(if: $withSplitForms)
-        required @include(if: $withSplitForms)
+        required @include(if: $withForms)
         bounty @include(if: $withSpriteBounty) {
           ...myBounty
         }
