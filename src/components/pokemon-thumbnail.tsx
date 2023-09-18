@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { Paper, Typography } from "@mui/material"
-import { formatDate, getFormMaxPortraitBounty, getFormMaxSpriteBounty, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty } from '../util'
+import { formatDate, getFormMaxPortraitBounty, getFormMaxSpriteBounty, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty, thumbnailScale } from '../util'
 import { MonsterFormWithRef } from "./pokemon-carousel"
 
 interface Props {
@@ -8,18 +8,20 @@ interface Props {
   infoKey: string
   doesShowParameters: Record<string, boolean>
   isSpeciesThumbnail?: boolean
+  showForms: boolean
 }
 export default function PokemonThumbnail({
-  form, form: { monster },
+  form, form: { monster, formIndex },
   infoKey,
   doesShowParameters: {
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
   },
-  isSpeciesThumbnail = false
+  isSpeciesThumbnail = false,
+  showForms
 }: Props) {
   return (
-    <Link to={`/${infoKey}`}>
+    <Link to={`/${infoKey}?form=${formIndex}`}>
       <Paper
         sx={{
           minWidth: 80
@@ -40,9 +42,9 @@ export default function PokemonThumbnail({
           align="center"
           color="GrayText"
           noWrap
-          sx={{ width: "80px" }}
+          sx={{ width: "80px", fontSize: `${thumbnailScale(monster.name)}em` }}
         >
-          {isSpeciesThumbnail || monster.name == form.fullName ? monster.name : `(${form.fullName})`}
+          {monster.name}
         </Typography>
         {index && <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
           {infoKey}
@@ -73,6 +75,11 @@ export default function PokemonThumbnail({
         {spriteBounty && (
           <Typography color="GrayText" align="center" noWrap>
             {isSpeciesThumbnail ? getMonsterMaxSpriteBounty(monster) : getFormMaxSpriteBounty(form)} gp
+          </Typography>
+        )}
+        {showForms && (
+          <Typography color="GrayText" align="center" noWrap sx={{ width: "80px", fontSize: `${thumbnailScale(form.fullName)}em` }}>
+            {form.fullName}
           </Typography>
         )}
       </Paper>

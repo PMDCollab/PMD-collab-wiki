@@ -1,6 +1,6 @@
 import PokemonInformations from "./pokemon-informations"
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 import { Bar } from "./bar"
 import {
@@ -29,11 +29,15 @@ export default function PokemonPage({
   const { loading, error, data } = usePokemonQuery({
     variables: { id: infoKey }
   })
+  const [formParam, setFormParam] = useSearchParams();
   const [form, setForm] = useState<MonsterForm | undefined>(undefined)
   const formList = data?.monster[0]?.forms
 
   useEffect(() => {
-    setForm(data?.monster[0].forms[0] as MonsterForm)
+    if (!data) return;
+    const forms = data.monster[0].forms as MonsterForm[];
+    const index = parseInt(formParam.get("form") ?? "0");
+    setForm(forms[index] ?? forms[0] as MonsterForm)
   }, [data])
 
   const prevLink = prevIndex && (
@@ -81,13 +85,16 @@ export default function PokemonPage({
               {form && (
                 <Select
                   value={form?.fullName}
-                  onChange={(e) =>
-                    setForm(
-                      formList?.find(
-                        (f) => f.fullName === e.target.value
-                      ) as MonsterForm
-                    )
-                  }
+                  onChange={(e) => {
+                    if (!formList) return;
+                    const formIndex = formList.findIndex((f) => f.fullName === e.target.value);
+                    if (formIndex == -1) return;
+                    setForm(formList[formIndex] as MonsterForm);
+                    setFormParam(param => {
+                      param.set("form", formIndex.toString())
+                      return param;
+                    });
+                  }}
                 >
                   {formList?.map((form) => (
                     <MenuItem

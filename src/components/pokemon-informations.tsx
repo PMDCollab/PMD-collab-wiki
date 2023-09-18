@@ -40,11 +40,10 @@ export default function PokemonInformations({
 }: Props) {
   const bg = useRef<Dungeon>(
     Object.keys(Dungeon)[
-      Math.floor(Math.random() * Object.keys(Dungeon).length)
+    Math.floor(Math.random() * Object.keys(Dungeon).length)
     ] as Dungeon
   )
-  const portraitDate =
-    portraits.modifiedDate && new Date(portraits.modifiedDate)
+  const portraitDate = portraits.modifiedDate && new Date(portraits.modifiedDate)
   const spriteDate = sprites.modifiedDate && new Date(sprites.modifiedDate)
   const portraitSheetUrl = portraits.sheetUrl && (
     <Link target="_blank" href={portraits.sheetUrl}>
@@ -101,7 +100,9 @@ export default function PokemonInformations({
             history={portraits.history.filter((e) => !e.obsolete)}
           />
         ) : (
-          <Typography variant="h5">No portraits available for now.</Typography>
+          <Typography variant="h5">{
+            portraits.required ? "No portraits available for now." : "This form's portraits are unnecessary."
+          }</Typography>
         )}
       </Box>
       <Divider />
@@ -150,7 +151,9 @@ export default function PokemonInformations({
             )}
           </Grid>
         ) : (
-          <Typography variant="h6">No sprites available for now.</Typography>
+          <Typography variant="h6">{
+            portraits.required ? "No sprites available for now." : "This form's sprites are unnecessary."
+          }</Typography>
         )}
       </Box>
       <Divider />

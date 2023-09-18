@@ -10,11 +10,14 @@ interface Props {
   setSplitForms: Dispatch<SetStateAction<boolean>>
   showUnnecessary: boolean
   setShowUnnecessary: Dispatch<SetStateAction<boolean>>
+  showForms: boolean
+  setShowForms: Dispatch<SetStateAction<boolean>>
 }
 export default function DisplayParameters({
   showParameters, filterParameters,
   splitForms, setSplitForms,
-  showUnnecessary, setShowUnnecessary
+  showUnnecessary, setShowUnnecessary,
+  showForms, setShowForms
 }: Props) {
   return (
     <Grid container spacing={2}>
@@ -26,6 +29,7 @@ export default function DisplayParameters({
             <Checkbox
               checked={splitForms}
               onChange={(e) => {
+                setShowForms(e.target.checked)
                 setSplitForms(e.target.checked)
               }}
             />
@@ -38,6 +42,18 @@ export default function DisplayParameters({
               checked={showUnnecessary}
               onChange={(e) => {
                 setShowUnnecessary(e.target.checked);
+              }}
+            />
+          }
+        />
+        <FormControlLabel
+          label={<Typography color="text.secondary">Show Form Name</Typography>}
+          control={
+            <Checkbox
+              disabled={!splitForms}
+              checked={showForms && splitForms}
+              onChange={(e) => {
+                setShowForms(e.target.checked);
               }}
             />
           }

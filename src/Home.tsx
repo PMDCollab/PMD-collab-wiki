@@ -34,6 +34,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
   const [splitForms, setSplitForms] = useState<boolean>(false);
   const [showUnnecessary, setShowUnnecessary] = useState<boolean>(false);
+  const [showForms, setShowForms] = useState<boolean>(false);
   const showParameters: Record<string, Parameters<RankMethod>> = {
     index: { state: useState<boolean>(false), name: "Index", value: RankMethod.POKEDEX_NUMBER },
     portraitAuthor: { state: useState<boolean>(false), name: "Portrait Author", value: RankMethod.PORTRAIT_AUTHOR },
@@ -91,7 +92,9 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
                 splitForms={splitForms}
                 setSplitForms={setSplitForms}
                 showUnnecessary={showUnnecessary}
-                setShowUnnecessary={setShowUnnecessary} />
+                setShowUnnecessary={setShowUnnecessary}
+                showForms={showForms}
+                setShowForms={setShowForms} />
                 <PokemonRanking
                   showParameters={showParameters}
                   setRankBy={setRankBy}
@@ -109,6 +112,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
           filterParameters={filterParameters}
           splitForms={splitForms}
           showUnnecessary={showUnnecessary}
+          showForms={showForms}
           ids={ids}
         />
         <Footer meta={meta} />
