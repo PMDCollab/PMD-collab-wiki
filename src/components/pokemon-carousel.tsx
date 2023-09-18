@@ -12,7 +12,7 @@ import {
 } from "../util"
 import { Parameters, PhaseCategory } from "../Home"
 
-export type MonsterFormWithRef = MonsterForm & { monster: Monster }
+export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number }
 
 function rankMonsters(
   rankBy: RankMethod,
@@ -143,6 +143,7 @@ interface Props {
   filterParameters: Parameters<PhaseCategory>[]
   splitForms: boolean
   showUnnecessary: boolean
+  showForms: boolean
 }
 export default function PokemonCarousel({
   currentText,
@@ -151,7 +152,8 @@ export default function PokemonCarousel({
   showParameters,
   filterParameters,
   splitForms,
-  showUnnecessary
+  showUnnecessary,
+  showForms
 }: Props) {
   const doesShowParameters = Object.fromEntries(
     Object.entries(showParameters).map((param) => [param[0], param[1].state[0]])
@@ -198,8 +200,8 @@ export default function PokemonCarousel({
   })
   const visibleMonsters = useMemo(() => {
     const monsterForms = (data?.monster.flatMap((monster) =>
-      splitForms ? monster.forms?.map((form) => ({ ...form, monster })) ?? [] :
-        monster.manual ? { ...monster.manual, monster } : {}
+      splitForms ? monster.forms?.map((form, formIndex) => ({ ...form, monster, formIndex })) ?? [] :
+        monster.manual ? { ...monster.manual, monster, formIndex: 0 } : {}
     ) ?? []) as MonsterFormWithRef[];
     return filterMonsterForms(
       monsterForms,
@@ -228,6 +230,7 @@ export default function PokemonCarousel({
               form={form}
               isSpeciesThumbnail={!splitForms}
               doesShowParameters={doesShowParameters}
+              showForms={showForms}
             />
           </Grid>
         ))}

@@ -1,17 +1,13 @@
 import { Box, Link, Typography } from "@mui/material"
-import { Credit } from "../generated/graphql"
+import { Credit, Maybe } from "../generated/graphql"
 
-export function CreditsPrimary({
-  primary
-}: {
-  primary: Credit | undefined | null
-}) {
-  return (
+export function CreditsPrimary({ primary }: { primary?: Maybe<Credit> }) {
+  return primary ? (
     <div style={{ display: "flex", gap: "8px" }}>
       <Typography>by</Typography>
       <Author credit={primary} />
     </div>
-  )
+  ) : null;
 }
 
 export function CreditsSecondary(props: { secondary: Credit[] }) {
@@ -25,11 +21,11 @@ export function CreditsSecondary(props: { secondary: Credit[] }) {
   )
 }
 
-export function Author({ credit }: { credit: Credit | undefined | null }) {
+export function Author({ credit }: { credit?: Maybe<Credit> }) {
   return (
     <Box key={credit?.id}>
       {credit?.name ? (
-        <Link href={credit?.contact ? credit?.contact : ""} target="_blank">
+        <Link href={credit?.contact ?? ""} target="_blank">
           {credit?.name}
         </Link>
       ) : (
