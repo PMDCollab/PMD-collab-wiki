@@ -19,11 +19,6 @@ import {
 import { getLastModification } from "../util"
 import { CreditsPrimary, CreditsSecondary } from "./credits"
 
-interface Props {
-  info: MonsterForm
-  infoKey: number
-}
-
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
@@ -35,6 +30,10 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   }
 }))
 
+interface Props {
+  info: MonsterForm
+  infoKey: number
+}
 export default function PokemonInformations({
   info: { sprites, portraits }
 }: Props) {

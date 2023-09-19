@@ -1,30 +1,27 @@
 import { XMLParser } from "fast-xml-parser"
-import { useCallback, useRef } from "react"
+import { useCallback, useRef, useState } from "react"
 import { MonsterHistory, Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
 import { Card, Grid, Typography } from "@mui/material"
 
-export default function SpritePreview({
-  sprite,
-  dungeon,
-  animDataUrl,
-  history
-}: {
+interface Props {
   sprite: Sprite
   dungeon: Dungeon
   animDataUrl: string
   history: MonsterHistory[]
-}) {
+}
+export default function SpritePreview({ sprite, dungeon, animDataUrl, history }: Props) {
+  const [initialized, setInitialized] = useState<boolean>(false)
   const gameContainer = useRef<GameContainer>()
 
   const container = useCallback(
     (node: HTMLDivElement) => {
       async function initialize() {
-        const xmlData = await (await fetch(animDataUrl)).text()
-        const parser = new XMLParser()
-        const data = parser.parse(xmlData) as IPMDCollab
+        const xmlData = await (await fetch(animDataUrl)).text();
+        const parser = new XMLParser();
+        const data = parser.parse(xmlData) as IPMDCollab;
         gameContainer.current = new GameContainer(
           node,
           sprite,
@@ -32,10 +29,11 @@ export default function SpritePreview({
           dungeon
         )
       }
-      if (node !== null) {
-        gameContainer.current?.game.destroy(true)
+
+      if (node && !initialized) {
+        setInitialized(true)
+        initialize()
       }
-      initialize()
     },
     [animDataUrl, sprite, dungeon]
   )

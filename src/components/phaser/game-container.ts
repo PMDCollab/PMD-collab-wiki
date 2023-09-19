@@ -4,19 +4,13 @@ import { Dungeon, IAnimData } from "../../types/enum"
 import GameScene from "./game-scene"
 
 export default class GameContainer {
-  div: HTMLDivElement
-  sprite: Sprite
   game: MyGame
-  dungeon: Dungeon
   constructor(
-    div: HTMLDivElement,
-    sprite: Sprite,
+    public div: HTMLDivElement,
+    public sprite: Sprite,
     animationData: IAnimData,
-    dungeon: Dungeon
+    public dungeon: Dungeon
   ) {
-    this.div = div
-    this.sprite = sprite
-    this.dungeon = dungeon
     const config = {
       type: Phaser.CANVAS,
       width: 200,

@@ -15,11 +15,8 @@ import { Credit, useContributorsQuery } from "./generated/graphql"
 import { useEffect, useState } from "react"
 
 export default function Contributors() {
-  const [credits, setCredits] = useState<Credit[]>([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { loading, error, data } = useContributorsQuery({
-    errorPolicy: "ignore"
-  })
+  const [credits, setCredits] = useState<Credit[]>([]);
+  const { data } = useContributorsQuery({ errorPolicy: "ignore" })
 
   useEffect(() => {
     if (data?.credit) {
@@ -31,7 +28,7 @@ export default function Contributors() {
     <Box>
       <Bar />
       <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
-        {credits?.length === 0 ? (
+        {!credits.length ? (
           <Typography variant="h5" align="center">
             Loading...
           </Typography>
@@ -52,41 +49,34 @@ export default function Contributors() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {credits
-                  ?.filter(
-                    (credit) =>
-                      (credit.name || credit.discordHandle) &&
-                      !credit.discordHandle?.includes("Deleted User")
-                  )
-                  .sort((a, b) => {
-                    const reputationA = a.reputation ?? 0
-                    const reputationB = b.reputation ?? 0
-                    return reputationB - reputationA
-                  })
-                  .map((credit) => (
+                {credits.filter(({ name, discordHandle }) =>
+                  (name || discordHandle) &&
+                  !discordHandle?.includes("Deleted User"))
+                  .sort((a, b) => (b.reputation ?? 0) - (a.reputation ?? 0))
+                  .map(({ name, id, discordHandle, contact, reputation }) => (
                     <TableRow
-                      key={credit.id}
+                      key={id}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell align="center">
                         <Typography variant="h6">
-                          {credit.name ?? credit.discordHandle}
+                          {name ?? discordHandle}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        {credit.contact && credit.contact.includes("http") ? (
-                          <Link href={credit.contact}>
+                        {contact?.includes("http") ? (
+                          <Link href={contact}>
                             <Typography variant="h6">
-                              {credit.contact}
+                              {contact}
                             </Typography>
                           </Link>
-                        ) : credit.contact && (
-                          <Typography variant="h6">{credit.contact}</Typography>
+                        ) : contact && (
+                          <Typography variant="h6">{contact}</Typography>
                         )}
                       </TableCell>
                       <TableCell align="center">
                         <Typography variant="h6">
-                          {credit.reputation ?? "???"}
+                          {reputation ?? "???"}
                         </Typography>
                       </TableCell>
                     </TableRow>

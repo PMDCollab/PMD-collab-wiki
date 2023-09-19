@@ -19,13 +19,7 @@ interface Props {
   nextIndex?: string
   rawId: string
 }
-
-export default function PokemonPage({
-  infoKey,
-  prevIndex,
-  nextIndex,
-  rawId
-}: Props) {
+export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Props) {
   const { loading, error, data } = usePokemonQuery({
     variables: { id: infoKey }
   });

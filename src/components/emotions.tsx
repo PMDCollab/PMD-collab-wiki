@@ -9,10 +9,9 @@ export default function Emotions({
   emotions: Portrait[]
   history: MonsterHistory[]
 }) {
-  const emotionsCopy = [...emotions]
   return (
     <Grid container spacing={2} sx={{ mt: 3 }}>
-      {emotionsCopy
+      {[...emotions]
         .sort((a, b) => a.emotion.localeCompare(b.emotion))
         .map(({ emotion, url, locked }) => {
           return (
