@@ -29,6 +29,7 @@ query Pokemon($id: Int!) {
       name
       fullName
       portraits {
+        required
         history {
           ...myHistory
         }
@@ -56,6 +57,7 @@ query Pokemon($id: Int!) {
         }
       }
       sprites {
+        required
         history {
           ...myHistory
         }

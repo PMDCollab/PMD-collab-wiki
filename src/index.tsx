@@ -12,65 +12,59 @@ import { ThemeProvider } from "@emotion/react"
 import { CssBaseline, createTheme } from "@mui/material"
 import "./index.css"
 import Contributors from "./Contributors"
-
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
-
-const cache = new InMemoryCache()
 const defaultTheme = createTheme({ typography: { fontFamily: "wonderMail" } })
-
 const client = new ApolloClient({
   uri: "https://spriteserver.pmdcollab.org/graphql",
-  cache: cache
+  cache: new InMemoryCache()
 })
 
 async function initialize() {
   const result = (await client.query({
     query: KeysDocument
-  })) as KeysQueryResult
-  if (result.data) {
-    const sortedMonsters = result.data?.monster
-      .slice()
-      .sort((a, b) => a.id - b.id)
-    root.render(
-      <React.StrictMode>
-        <ThemeProvider theme={defaultTheme}>
-          <CssBaseline />
-          <ApolloProvider client={client}>
-            <HashRouter>
-              <Routes>
+  })) as KeysQueryResult;
+  if (!result.data) return;
+  const sortedMonsters = result.data.monster
+    .slice()
+    .sort((a, b) => a.id - b.id)
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <ThemeProvider theme={defaultTheme}>
+        <CssBaseline />
+        <ApolloProvider client={client}>
+          <HashRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Home
+                    meta={result.data.meta}
+                    ids={sortedMonsters.map(({ id }) => id)}
+                  />
+                }
+              />
+              {sortedMonsters.map(({ id, rawId }, i) => (
                 <Route
-                  path="/"
+                  key={rawId}
+                  path={`/${rawId}`}
                   element={
-                    <Home
-                      meta={result.data.meta}
-                      ids={sortedMonsters.map((m) => m.id)}
+                    <PokemonPage
+                      infoKey={id}
+                      rawId={rawId}
+                      prevIndex={sortedMonsters[i - 1]?.rawId}
+                      nextIndex={sortedMonsters[i + 1]?.rawId}
                     />
                   }
                 />
-                {sortedMonsters.map((m, i) => (
-                  <Route
-                    key={m.rawId}
-                    path={`/${m.rawId}`}
-                    element={
-                      <PokemonPage
-                        infoKey={m.id}
-                        rawId={m.rawId}
-                        prevIndex={sortedMonsters[i - 1]?.rawId}
-                        nextIndex={sortedMonsters[i + 1]?.rawId}
-                      />
-                    }
-                  />
-                ))}
-                <Route path="/About" element={<About />} />
-                <Route path="/Contributors" element={<Contributors />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </HashRouter>
-          </ApolloProvider>
-        </ThemeProvider>
-      </React.StrictMode>
-    )
-  }
+              ))}
+              <Route path="/About" element={<About />} />
+              <Route path="/Contributors" element={<Contributors />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </HashRouter>
+        </ApolloProvider>
+      </ThemeProvider>
+    </React.StrictMode>
+  );
 }
 
 initialize()

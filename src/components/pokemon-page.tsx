@@ -15,8 +15,8 @@ import {
 
 interface Props {
   infoKey: number
-  prevIndex: string | undefined
-  nextIndex: string | undefined
+  prevIndex?: string
+  nextIndex?: string
   rawId: string
 }
 
@@ -28,11 +28,12 @@ export default function PokemonPage({
 }: Props) {
   const { loading, error, data } = usePokemonQuery({
     variables: { id: infoKey }
-  })
+  });
   const [formParam, setFormParam] = useSearchParams();
-  const [form, setForm] = useState<MonsterForm | undefined>(undefined)
-  const formList = data?.monster[0]?.forms
+  const [form, setForm] = useState<MonsterForm | undefined>(undefined);
+  const formList = data?.monster[0].forms as MonsterForm[] | undefined;
 
+  //TODO: use the same method for other apollo queries because i wrote the guard myself -sec
   useEffect(() => {
     if (!data) return;
     const forms = data.monster[0].forms as MonsterForm[];
@@ -84,10 +85,10 @@ export default function PokemonPage({
               </Typography>
               {form && (
                 <Select
-                  value={form?.fullName}
+                  value={form.fullName}
                   onChange={(e) => {
                     if (!formList) return;
-                    const formIndex = formList.findIndex((f) => f.fullName === e.target.value);
+                    const formIndex = formList.findIndex(f => f.fullName === e.target.value);
                     if (formIndex == -1) return;
                     setForm(formList[formIndex] as MonsterForm);
                     setFormParam(param => {
@@ -96,15 +97,15 @@ export default function PokemonPage({
                     });
                   }}
                 >
-                  {formList?.map((form) => (
+                  {formList?.map(({ path, fullName }) => (
                     <MenuItem
-                      key={form.path}
+                      key={path}
                       sx={{ textTransform: "none" }}
-                      value={form.fullName}
+                      value={fullName}
                     >
                       <Typography variant="h6" color="text.primary">
-                        {form.fullName !== data?.monster[0].name
-                          ? form.fullName.replaceAll("_", " ")
+                        {fullName !== data?.monster[0].name
+                          ? fullName.replaceAll("_", " ")
                           : "Normal"}
                       </Typography>
                     </MenuItem>
@@ -119,7 +120,7 @@ export default function PokemonPage({
         </Grid>
         <Divider sx={{ mt: 2 }} />
         {form && (
-          <PokemonInformations info={form as MonsterForm} infoKey={infoKey} />
+          <PokemonInformations info={form} infoKey={infoKey} />
         )}
       </Container>
     </Box>

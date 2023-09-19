@@ -62,7 +62,7 @@ export default function PokemonInformations({
   )
   const spriteRecolorSheetUrl = sprites.recolorSheetUrl && (
     <Link target="_blank" href={sprites.recolorSheetUrl}>
-      <Typography> Download recolor sprites</Typography>
+      <Typography>Download recolor sprites</Typography>
     </Link>
   )
   return (

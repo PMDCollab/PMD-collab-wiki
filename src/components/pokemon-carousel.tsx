@@ -23,16 +23,12 @@ function rankMonsters(
 ) {
   switch (rankBy) {
     case RankMethod.POKEDEX_NUMBER:
-      return a.monster.id - b.monster.id
+      return a.monster.id - b.monster.id;
     case RankMethod.LAST_MODIFICATION:
-      const dap = new Date(a.portraits.modifiedDate)
-      const dbp = new Date(b.portraits.modifiedDate)
-      const das = new Date(a.sprites.modifiedDate)
-      const dbs = new Date(b.sprites.modifiedDate)
-      return (
-        Math.max(dbp.getTime(), dbs.getTime()) -
-        Math.max(dap.getTime(), das.getTime())
-      )
+      const { portraits: { modifiedDate: dap }, sprites: { modifiedDate: das } } = a;
+      const { portraits: { modifiedDate: dbp }, sprites: { modifiedDate: dbs } } = b;
+      return Math.max(new Date(dbp).getTime(), new Date(dbs).getTime()) -
+        Math.max(new Date(dap).getTime(), new Date(das).getTime());
     case RankMethod.NAME:
       return a.monster.name.localeCompare(b.monster.name)
     case RankMethod.PORTRAIT_AUTHOR:
@@ -66,68 +62,46 @@ function filterMonsterForms(
   filterParameters: Parameters<PhaseCategory>[],
   rankBy: RankMethod
 ) {
-  const lowerCaseText = currentText.toLowerCase()
+  // Although not a lot of time is spent filtering out it would be better to avoid unnecessary checks here -sec
+  const lowerCaseText = currentText.toLowerCase();
+  if (lowerCaseText) forms = forms.filter(splitForms
+    ? ({ monster: { name, id }, portraits, sprites }) =>
+      name.toLowerCase().includes(lowerCaseText) ||
+      portraits.creditPrimary?.name
+        ?.toLowerCase()
+        .includes(lowerCaseText) ||
+      portraits.creditSecondary.some(({ name }) =>
+        name?.toLowerCase().includes(lowerCaseText)
+      ) ||
+      sprites.creditPrimary?.name
+        ?.toLowerCase()
+        .includes(lowerCaseText) ||
+      sprites.creditSecondary.some(({ name }) =>
+        name?.toLowerCase().includes(lowerCaseText)
+      ) ||
+      id.toString().includes(lowerCaseText)
+    : ({ monster: { name, forms, id } }) =>
+      name.toLowerCase().includes(lowerCaseText) ||
+      forms.some(
+        ({ portraits: { creditPrimary: cpp, creditSecondary: csp },
+          sprites: { creditPrimary: cps, creditSecondary: css } }) =>
+          cpp?.name?.toLowerCase().includes(lowerCaseText) ||
+          cps?.name?.toLowerCase().includes(lowerCaseText) ||
+          csp.some(({ name }) => name?.toLowerCase().includes(lowerCaseText)) ||
+          css.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
+      ) ||
+      id.toString().includes(lowerCaseText))
+  const activeFilters = filterParameters.filter(({ state: [active] }) => active);
+  if (activeFilters.length) forms = forms.filter(
+    splitForms
+      ? (form) => activeFilters.some(
+        ({ value: { type, phase } }) => phase == form[type].phase
+      )
+      : ({ monster: { forms } }) => activeFilters.some(({ value: { type, phase } }) =>
+        forms.some(form => (showUnnecessary || form[type].required) && phase == form[type].phase)
+      )
+  )
   return forms
-    .filter(
-      splitForms
-        ? ({ monster: { name, id }, portraits, sprites }) =>
-          name.toLowerCase().includes(lowerCaseText) ||
-          portraits.creditPrimary?.name
-            ?.toLowerCase()
-            .includes(lowerCaseText) ||
-          portraits.creditSecondary.some(({ name }) =>
-            name?.toLowerCase().includes(lowerCaseText)
-          ) ||
-          sprites.creditPrimary?.name
-            ?.toLowerCase()
-            .includes(lowerCaseText) ||
-          sprites.creditSecondary.some(({ name }) =>
-            name?.toLowerCase().includes(lowerCaseText)
-          ) ||
-          id.toString().includes(lowerCaseText)
-        : ({ monster: { name, forms, id } }) =>
-          name.toLowerCase().includes(lowerCaseText) ||
-          forms.some(
-            ({ portraits: { creditPrimary, creditSecondary } }) =>
-              creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
-              creditSecondary.some(({ name }) =>
-                name?.toLowerCase().includes(lowerCaseText)
-              )
-          ) ||
-          forms.some(
-            ({ sprites: { creditPrimary, creditSecondary } }) =>
-              creditPrimary?.name?.toLowerCase().includes(lowerCaseText) ||
-              creditSecondary.some(({ name }) =>
-                name?.toLowerCase().includes(lowerCaseText)
-              )
-          ) ||
-          id.toString().includes(lowerCaseText)
-    )
-    .filter(
-      splitForms
-        ? (form) => {
-          const activeFilters = filterParameters.filter(
-            ({ state: [active] }) => active
-          )
-          return (
-            !activeFilters.length ||
-            activeFilters.some(
-              ({ value: { type, phase } }) => phase == form[type].phase
-            )
-          )
-        }
-        : ({ monster: { forms } }) => {
-          const activeFilters = filterParameters.filter(
-            ({ state: [active] }) => active
-          )
-          return (
-            !activeFilters.length ||
-            activeFilters.some(({ value: { type, phase } }) =>
-              forms.some(form => (showUnnecessary || form[type].required) && phase == form[type].phase)
-            )
-          )
-        }
-    )
     .filter(
       ({ portraits, sprites }) =>
         !splitForms || portraits.required || sprites.required || showUnnecessary
@@ -156,7 +130,7 @@ export default function PokemonCarousel({
   showForms
 }: Props) {
   const doesShowParameters = Object.fromEntries(
-    Object.entries(showParameters).map((param) => [param[0], param[1].state[0]])
+    Object.entries(showParameters).map(([paramType, { state: [showParam] }]) => [paramType, showParam])
   )
   const {
     portraitAuthor,
@@ -166,15 +140,15 @@ export default function PokemonCarousel({
     lastModification
   } = doesShowParameters
   const withPortraitPhases = filterParameters.some(
-    (x) => x.state[0] && x.value.type == "portraits"
+    ({ state: [filterPhases], value: { type } }) => filterPhases && type == "portraits"
   )
   const withSpritePhases = filterParameters.some(
-    (x) => x.state[0] && x.value.type == "sprites"
+    ({ state: [filterPhases], value: { type } }) => filterPhases && type == "sprites"
   )
   const withCredits =
     portraitAuthor || spriteAuthor || currentText !== "" || splitForms
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { loading, error, data, refetch, fetchMore } = useCarrouselQuery({
+  // TODO: use refetch and fetchMore options in carrousel query to save time -sec
+  const { loading, error, data } = useCarrouselQuery({
     variables: {
       ids,
       withPortraitBounty:
@@ -203,7 +177,7 @@ export default function PokemonCarousel({
       splitForms ? monster.forms?.map((form, formIndex) => ({ ...form, monster, formIndex })) ?? [] :
         monster.manual ? { ...monster.manual, monster, formIndex: 0 } : {}
     ) ?? []) as MonsterFormWithRef[];
-    return filterMonsterForms(
+    const filters = filterMonsterForms(
       monsterForms,
       splitForms,
       showUnnecessary,
@@ -211,14 +185,14 @@ export default function PokemonCarousel({
       filterParameters,
       rankBy
     )
+    return filters;
   }, [data, splitForms, currentText, filterParameters, rankBy])
 
   if (error) return <Typography>Error</Typography>
-
   return (
     <Grid container spacing={2} justifyContent={"center"}>
       {loading
-        ? Array.from(new Array(100)).map((v, i) => (
+        ? Array.from({ length: 100 }, (_, i) => (
           <Grid item key={i}>
             <Skeleton width={80} height={111} variant="rectangular" />
           </Grid>
