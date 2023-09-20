@@ -44,7 +44,7 @@ export default function Contributors() {
                     <Typography variant="h5">Contact</Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Typography variant="h5">Guild oints</Typography>
+                    <Typography variant="h5">Guild Points</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>

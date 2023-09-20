@@ -9,7 +9,7 @@ export default function Bounty({ bounty: { exists, full, incomplete } }: { bount
         <Grid item sx={{ display: "flex", gap: "5px" }}>
           <Typography>{exists}</Typography>
           <Typography>Guild Points</Typography>
-          <Typography>exists</Typography>
+          <Typography>Exists</Typography>
         </Grid>
       )}
 
@@ -17,7 +17,7 @@ export default function Bounty({ bounty: { exists, full, incomplete } }: { bount
         <Grid item sx={{ display: "flex", gap: "5px" }}>
           <Typography>{full}</Typography>
           <Typography>Guild Points</Typography>
-          <Typography>full</Typography>
+          <Typography>Full</Typography>
         </Grid>
       )}
 
@@ -25,7 +25,7 @@ export default function Bounty({ bounty: { exists, full, incomplete } }: { bount
         <Grid item sx={{ display: "flex", gap: "5px" }}>
           <Typography>{incomplete}</Typography>
           <Typography>Guild Points</Typography>
-          <Typography>incomplete</Typography>
+          <Typography>Incomplete</Typography>
         </Grid>
       )}
     </Grid>
