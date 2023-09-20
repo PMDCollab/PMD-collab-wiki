@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { Paper, Typography } from "@mui/material"
 import { formatDate, getFormMaxPortraitBounty, getFormMaxSpriteBounty, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty, thumbnailScale } from '../util'
 import { MonsterFormWithRef } from "./pokemon-carousel"
+import { Maybe } from '../generated/graphql'
 
 interface Props {
   form: MonsterFormWithRef
@@ -21,11 +22,11 @@ export default function PokemonThumbnail({
   showForms
 }: Props) {
   const textBoxStyle = { width: 80, height: 25 };
-  const textBoxWithResize = {
+  const textBoxWithResize = (name?: Maybe<string>) => ({
     ...textBoxStyle,
-    fontSize: `${thumbnailScale(monster.name)}em`,
-    lineHeight: `${1.2 / thumbnailScale(monster.name)}em`
-  }
+    fontSize: `${thumbnailScale(name)}em`,
+    lineHeight: `${1.2 / thumbnailScale(name)}em`
+  })
   return (
     <Link to={`/${infoKey}?form=${formIndex}`}>
       <Paper
@@ -44,12 +45,12 @@ export default function PokemonThumbnail({
           </Typography>
         )}
         <Typography
-          align="center" color="GrayText" noWrap sx={textBoxWithResize}
+          align="center" color="GrayText" noWrap sx={textBoxWithResize(monster.name)}
         >
           {monster.name}
         </Typography>
         {showForms && (
-          <Typography color="GrayText" align="center" noWrap sx={textBoxWithResize}>
+          <Typography color="GrayText" align="center" noWrap sx={textBoxWithResize(form.fullName)}>
             {form.fullName}
           </Typography>
         )}
@@ -57,12 +58,12 @@ export default function PokemonThumbnail({
           {infoKey}
         </Typography>}
         {portraitAuthor && (
-          <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize}>
+          <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize(form.portraits.creditPrimary?.name)}>
             {form.portraits.creditPrimary?.name}
           </Typography>
         )}
         {spriteAuthor && (
-          <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize}>
+          <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize(form.sprites.creditPrimary?.name)}>
             {form.sprites.creditPrimary?.name}
           </Typography>
         )}
