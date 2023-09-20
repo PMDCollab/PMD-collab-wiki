@@ -20,12 +20,16 @@ export default function PokemonThumbnail({
   isSpeciesThumbnail = false,
   showForms
 }: Props) {
+  const textBoxStyle = { width: 80, height: 25 };
+  const textBoxWithResize = {
+    ...textBoxStyle,
+    fontSize: `${thumbnailScale(monster.name)}em`,
+    lineHeight: `${1.2 / thumbnailScale(monster.name)}em`
+  }
   return (
     <Link to={`/${infoKey}?form=${formIndex}`}>
       <Paper
-        sx={{
-          minWidth: 80
-        }}
+        sx={{ minWidth: 80 }}
         elevation={2}
       >
         {form.portraits.previewEmotion?.url ? (
@@ -34,33 +38,36 @@ export default function PokemonThumbnail({
             style={{ height: 80, imageRendering: "pixelated" }}
           />
         ) : (
-          <Typography variant="h4" align="center" sx={{ height: 80 }}>
+          // TODO: Fix margin so that the image and text line up perfectly (6.93333px gap) -sec
+          <Typography variant="h4" align="center" sx={{ height: 80, display: "grid", marginBottom: 13 / 15, placeItems: "center" }}>
             ?
           </Typography>
         )}
         <Typography
-          align="center"
-          color="GrayText"
-          noWrap
-          sx={{ width: "80px", fontSize: `${thumbnailScale(monster.name)}em` }}
+          align="center" color="GrayText" noWrap sx={textBoxWithResize}
         >
           {monster.name}
         </Typography>
-        {index && <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+        {showForms && (
+          <Typography color="GrayText" align="center" noWrap sx={textBoxWithResize}>
+            {form.fullName}
+          </Typography>
+        )}
+        {index && <Typography align="center" color="GrayText" noWrap sx={{ width: 80, height: 25 }}>
           {infoKey}
         </Typography>}
         {portraitAuthor && (
-          <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+          <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize}>
             {form.portraits.creditPrimary?.name}
           </Typography>
         )}
         {spriteAuthor && (
-          <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+          <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize}>
             {form.sprites.creditPrimary?.name}
           </Typography>
         )}
         {lastModification && (
-          <Typography align="center" color="GrayText" noWrap sx={{ width: "80px" }}>
+          <Typography align="center" color="GrayText" noWrap sx={textBoxStyle}>
             {formatDate(Math.max(
               new Date(form.portraits.modifiedDate).getTime(),
               new Date(form.sprites.modifiedDate).getTime()
@@ -68,18 +75,13 @@ export default function PokemonThumbnail({
           </Typography>
         )}
         {portraitBounty && (
-          <Typography color="GrayText" align="center" noWrap>
+          <Typography color="GrayText" align="center" noWrap sx={textBoxStyle}>
             {isSpeciesThumbnail ? getMonsterMaxPortraitBounty(monster) : getFormMaxPortraitBounty(form)} gp
           </Typography>
         )}
         {spriteBounty && (
-          <Typography color="GrayText" align="center" noWrap>
+          <Typography color="GrayText" align="center" noWrap sx={textBoxStyle}>
             {isSpeciesThumbnail ? getMonsterMaxSpriteBounty(monster) : getFormMaxSpriteBounty(form)} gp
-          </Typography>
-        )}
-        {showForms && (
-          <Typography color="GrayText" align="center" noWrap sx={{ width: "80px", fontSize: `${thumbnailScale(form.fullName)}em` }}>
-            {form.fullName}
           </Typography>
         )}
       </Paper>

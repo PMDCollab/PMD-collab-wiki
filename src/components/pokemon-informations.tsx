@@ -19,11 +19,6 @@ import {
 import { getLastModification } from "../util"
 import { CreditsPrimary, CreditsSecondary } from "./credits"
 
-interface Props {
-  info: MonsterForm
-  infoKey: number
-}
-
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
@@ -35,6 +30,10 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   }
 }))
 
+interface Props {
+  info: MonsterForm
+  infoKey: number
+}
 export default function PokemonInformations({
   info: { sprites, portraits }
 }: Props) {
@@ -62,7 +61,7 @@ export default function PokemonInformations({
   )
   const spriteRecolorSheetUrl = sprites.recolorSheetUrl && (
     <Link target="_blank" href={sprites.recolorSheetUrl}>
-      <Typography> Download recolor sprites</Typography>
+      <Typography>Download recolor sprites</Typography>
     </Link>
   )
   return (
@@ -94,9 +93,7 @@ export default function PokemonInformations({
 
         {portraits.emotions.length ? (
           <Emotions
-            emotions={portraits.emotions.concat(
-              portraits.emotionsFlipped ?? []
-            )}
+            emotions={portraits.emotions.concat(portraits.emotionsFlipped)}
             history={portraits.history.filter((e) => !e.obsolete)}
           />
         ) : (

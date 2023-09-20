@@ -1,5 +1,4 @@
 import PokemonInformations from "./pokemon-informations"
-import { useState, useEffect } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 import { Bar } from "./bar"
@@ -15,30 +14,18 @@ import {
 
 interface Props {
   infoKey: number
-  prevIndex: string | undefined
-  nextIndex: string | undefined
+  prevIndex?: string
+  nextIndex?: string
   rawId: string
 }
-
-export default function PokemonPage({
-  infoKey,
-  prevIndex,
-  nextIndex,
-  rawId
-}: Props) {
+export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Props) {
   const { loading, error, data } = usePokemonQuery({
     variables: { id: infoKey }
-  })
-  const [formParam, setFormParam] = useSearchParams();
-  const [form, setForm] = useState<MonsterForm | undefined>(undefined)
-  const formList = data?.monster[0]?.forms
-
-  useEffect(() => {
-    if (!data) return;
-    const forms = data.monster[0].forms as MonsterForm[];
-    const index = parseInt(formParam.get("form") ?? "0");
-    setForm(forms[index] ?? forms[0] as MonsterForm)
-  }, [data])
+  });
+  const [searchParam, setSearchParam] = useSearchParams({ form: "0" });
+  const formList = data?.monster[0].forms as MonsterForm[] | undefined;
+  const formIndex = parseInt(searchParam.get("form") ?? "0") ?? 0;
+  const form = formList?.[formIndex] ?? formList?.[0];
 
   const prevLink = prevIndex && (
     <Link to={`/${prevIndex}`}>
@@ -84,27 +71,26 @@ export default function PokemonPage({
               </Typography>
               {form && (
                 <Select
-                  value={form?.fullName}
+                  value={form.fullName}
                   onChange={(e) => {
                     if (!formList) return;
-                    const formIndex = formList.findIndex((f) => f.fullName === e.target.value);
+                    const formIndex = formList.findIndex(f => f.fullName === e.target.value);
                     if (formIndex == -1) return;
-                    setForm(formList[formIndex] as MonsterForm);
-                    setFormParam(param => {
+                    setSearchParam(param => {
                       param.set("form", formIndex.toString())
                       return param;
                     });
                   }}
                 >
-                  {formList?.map((form) => (
+                  {formList?.map(({ path, fullName }) => (
                     <MenuItem
-                      key={form.path}
+                      key={path}
                       sx={{ textTransform: "none" }}
-                      value={form.fullName}
+                      value={fullName}
                     >
                       <Typography variant="h6" color="text.primary">
-                        {form.fullName !== data?.monster[0].name
-                          ? form.fullName.replaceAll("_", " ")
+                        {fullName !== data?.monster[0].name
+                          ? fullName.replaceAll("_", " ")
                           : "Normal"}
                       </Typography>
                     </MenuItem>
@@ -119,7 +105,7 @@ export default function PokemonPage({
         </Grid>
         <Divider sx={{ mt: 2 }} />
         {form && (
-          <PokemonInformations info={form as MonsterForm} infoKey={infoKey} />
+          <PokemonInformations info={form} infoKey={infoKey} />
         )}
       </Container>
     </Box>

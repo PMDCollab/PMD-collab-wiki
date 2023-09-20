@@ -36,7 +36,7 @@ export default function DisplayParameters({
           }
         />
         <FormControlLabel
-          label={<Typography color="text.secondary">Use Unnecessary Forms</Typography>}
+          label={<Typography color="text.secondary">Show Unnecessary Forms</Typography>}
           control={
             <Checkbox
               checked={showUnnecessary}
