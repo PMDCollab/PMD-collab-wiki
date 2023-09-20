@@ -93,9 +93,7 @@ export default function PokemonInformations({
 
         {portraits.emotions.length ? (
           <Emotions
-            emotions={portraits.emotions.concat(
-              portraits.emotionsFlipped ?? []
-            )}
+            emotions={portraits.emotions.concat(portraits.emotionsFlipped)}
             history={portraits.history.filter((e) => !e.obsolete)}
           />
         ) : (
