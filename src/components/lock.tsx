@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material"
 import { MonsterHistory } from "../generated/graphql"
-import { Fragment } from "react"
 import { formatDate } from "../util"
 import { Author } from "./credits"
 import { LightTooltip } from "./pokemon-informations"
