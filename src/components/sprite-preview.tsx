@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser"
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useRef } from "react"
 import { MonsterHistory, Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
@@ -13,7 +13,6 @@ interface Props {
   history: MonsterHistory[]
 }
 export default function SpritePreview({ sprite, dungeon, animDataUrl, history }: Props) {
-  const [initialized, setInitialized] = useState<boolean>(false)
   const gameContainer = useRef<GameContainer>()
 
   const container = useCallback(
@@ -30,10 +29,11 @@ export default function SpritePreview({ sprite, dungeon, animDataUrl, history }:
         )
       }
 
-      if (node && !initialized) {
-        setInitialized(true)
-        initialize()
+      if (node !== null) {
+        gameContainer.current?.game.destroy(true)
       }
+
+      initialize()
     },
     [animDataUrl, sprite, dungeon]
   )

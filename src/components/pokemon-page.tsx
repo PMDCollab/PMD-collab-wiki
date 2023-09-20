@@ -1,5 +1,4 @@
 import PokemonInformations from "./pokemon-informations"
-import { useState, useEffect } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { MonsterForm, usePokemonQuery } from "../generated/graphql"
 import { Bar } from "./bar"
@@ -23,17 +22,10 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
   const { loading, error, data } = usePokemonQuery({
     variables: { id: infoKey }
   });
-  const [formParam, setFormParam] = useSearchParams();
-  const [form, setForm] = useState<MonsterForm | undefined>(undefined);
+  const [searchParam, setSearchParam] = useSearchParams({ form: "0" });
   const formList = data?.monster[0].forms as MonsterForm[] | undefined;
-
-  //TODO: use the same method for other apollo queries because i wrote the guard myself -sec
-  useEffect(() => {
-    if (!data) return;
-    const forms = data.monster[0].forms as MonsterForm[];
-    const index = parseInt(formParam.get("form") ?? "0");
-    setForm(forms[index] ?? forms[0] as MonsterForm)
-  }, [data])
+  const formIndex = parseInt(searchParam.get("form") ?? "0") ?? 0;
+  const form = formList?.[formIndex] ?? formList?.[0];
 
   const prevLink = prevIndex && (
     <Link to={`/${prevIndex}`}>
@@ -84,8 +76,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
                     if (!formList) return;
                     const formIndex = formList.findIndex(f => f.fullName === e.target.value);
                     if (formIndex == -1) return;
-                    setForm(formList[formIndex] as MonsterForm);
-                    setFormParam(param => {
+                    setSearchParam(param => {
                       param.set("form", formIndex.toString())
                       return param;
                     });

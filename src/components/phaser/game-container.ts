@@ -22,23 +22,17 @@ export default class GameContainer {
       autoFocus: false,
       input: false
     }
-    this.game = new MyGame(config, sprite, animationData, dungeon)
+    this.game = new MyGame(sprite, animationData, dungeon, config)
   }
 }
 
 export class MyGame extends Phaser.Game {
-  sprite: Sprite
-  animationData: IAnimData
-  dungeon: Dungeon
   constructor(
-    config: Phaser.Types.Core.GameConfig | undefined,
-    sprite: Sprite,
-    animationData: IAnimData,
-    dungeon: Dungeon
+    public sprite: Sprite,
+    public animationData: IAnimData,
+    public dungeon: Dungeon,
+    config?: Phaser.Types.Core.GameConfig
   ) {
-    super(config)
-    this.dungeon = dungeon
-    this.sprite = sprite
-    this.animationData = animationData
+    super(config);
   }
 }

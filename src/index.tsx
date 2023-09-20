@@ -11,6 +11,7 @@ import { ThemeProvider } from "@emotion/react"
 import { CssBaseline, createTheme } from "@mui/material"
 import "./index.css"
 import Contributors from "./Contributors"
+
 const defaultTheme = createTheme({ typography: { fontFamily: "wonderMail" } })
 const client = new ApolloClient({
   uri: "https://spriteserver.pmdcollab.org/graphql",
@@ -18,13 +19,11 @@ const client = new ApolloClient({
 })
 
 async function initialize() {
-  const result = (await client.query({
+  const result = await client.query({
     query: KeysDocument
-  })) as KeysQueryResult;
+}) as KeysQueryResult;
   if (!result.data) return;
-  const sortedMonsters = result.data.monster
-    .slice()
-    .sort((a, b) => a.id - b.id)
+  const sortedMonsters = [...result.data.monster].sort((a, b) => a.id - b.id)
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <ThemeProvider theme={defaultTheme}>
@@ -66,4 +65,4 @@ async function initialize() {
   );
 }
 
-initialize()
+initialize();
