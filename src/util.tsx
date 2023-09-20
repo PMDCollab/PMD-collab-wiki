@@ -1,7 +1,7 @@
-import { Monster, MonsterForm } from './generated/graphql';
+import { Maybe, Monster, MonsterForm } from './generated/graphql';
 
 const pad = (number: number) => number < 10 ? `0${number}` : number.toString();
-export const thumbnailScale = (str: string) => Math.max(9 / Math.max(str.length, 9), 0.6);
+export const thumbnailScale = (str?: Maybe<string>) => Math.max(9 / Math.max(str?.length ?? 0, 9), 0.6);
 
 export function formatDate(n: number) {
     const date = new Date(n);
