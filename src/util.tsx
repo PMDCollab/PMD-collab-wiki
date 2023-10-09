@@ -13,7 +13,7 @@ export function getLastModification(t?: Date) {
 }
 
 export const getMonsterMaxPortraitBounty = (monster: Monster, useUnnecessary = false) => monster.forms.reduce(
-    (a, b) => !b.portraits.required && !useUnnecessary ? 0 : Math.max(a, getFormMaxPortraitBounty(b)), 0
+    (a, b) => !b.portraits.required && !useUnnecessary ? a : Math.max(a, getFormMaxPortraitBounty(b)), 0
 )
 export const getFormMaxPortraitBounty = ({ portraits: { bounty: { exists, full, incomplete } } }: MonsterForm) => Math.max(
     exists || 0,
@@ -21,7 +21,7 @@ export const getFormMaxPortraitBounty = ({ portraits: { bounty: { exists, full, 
     incomplete || 0
 )
 export const getMonsterMaxSpriteBounty = (monster: Monster, useUnnecessary = false) => monster.forms.reduce(
-    (a, b) => !b.sprites.required && !useUnnecessary ? 0 : Math.max(a, getFormMaxSpriteBounty(b)), 0
+    (a, b) => !b.sprites.required && !useUnnecessary ? a : Math.max(a, getFormMaxSpriteBounty(b)), 0
 )
 export const getFormMaxSpriteBounty = ({ sprites: { bounty: { exists, full, incomplete } } }: MonsterForm) => Math.max(
     exists || 0,
