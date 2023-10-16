@@ -341,7 +341,7 @@ export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename
 export type ContributorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ContributorsQuery = { __typename?: 'Query', credit: Array<{ __typename?: 'Credit', id: string, name?: string | null, contact?: string | null, discordHandle?: string | null, reputation?: number | null }> };
+export type ContributorsQuery = { __typename?: 'Query', credit: Array<{ __typename?: 'Credit', id: string, name?: string | null, contact?: string | null, discordHandle?: string | null }> };
 
 export type KeysQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -487,7 +487,6 @@ export const ContributorsDocument = gql`
     name
     contact
     discordHandle
-    reputation
   }
 }
     `;

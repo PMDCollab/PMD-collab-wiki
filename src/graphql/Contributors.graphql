@@ -4,6 +4,5 @@ query Contributors {
     name
     contact
     discordHandle
-    reputation
   }
 }
