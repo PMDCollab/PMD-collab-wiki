@@ -15,7 +15,7 @@ import { Credit, useContributorsQuery } from "./generated/graphql"
 import { useEffect, useState } from "react"
 
 export default function Contributors() {
-  const [credits, setCredits] = useState<Credit[]>([]);
+  const [credits, setCredits] = useState<Credit[]>([])
   const { data } = useContributorsQuery({ errorPolicy: "ignore" })
 
   useEffect(() => {
@@ -43,17 +43,29 @@ export default function Contributors() {
                   <TableCell align="center">
                     <Typography variant="h5">Contact</Typography>
                   </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h5">Guild Points</Typography>
-                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {credits.filter(({ name, discordHandle }) =>
-                  (name || discordHandle) &&
-                  !discordHandle?.includes("Deleted User"))
-                  .sort((a, b) => (b.reputation ?? 0) - (a.reputation ?? 0))
-                  .map(({ name, id, discordHandle, contact, reputation }) => (
+                {credits
+                  .filter(
+                    ({ name, discordHandle }) =>
+                      (name || discordHandle) &&
+                      !discordHandle?.includes("Deleted User")
+                  )
+                  .sort((a, b) => {
+                    const nameA = a.name
+                      ? a.name
+                      : a.discordHandle
+                      ? a.discordHandle
+                      : ""
+                    const nameB = b.name
+                      ? b.name
+                      : b.discordHandle
+                      ? b.discordHandle
+                      : ""
+                    return nameA.localeCompare(nameB)
+                  })
+                  .map(({ name, id, discordHandle, contact }) => (
                     <TableRow
                       key={id}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -66,18 +78,13 @@ export default function Contributors() {
                       <TableCell align="center">
                         {contact?.includes("http") ? (
                           <Link href={contact}>
-                            <Typography variant="h6">
-                              {contact}
-                            </Typography>
+                            <Typography variant="h6">{contact}</Typography>
                           </Link>
-                        ) : contact && (
-                          <Typography variant="h6">{contact}</Typography>
+                        ) : (
+                          contact && (
+                            <Typography variant="h6">{contact}</Typography>
+                          )
                         )}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography variant="h6">
-                          {reputation ?? "???"}
-                        </Typography>
                       </TableCell>
                     </TableRow>
                   ))}
