@@ -17,7 +17,7 @@ export default function PokemonRanking({ showParameters, rankBy, setRankBy }: Pr
         labelId="rank-by-label"
         id="rank-by"
         value={rankBy}
-        onChange={(e) => {
+        onChange={async (e) => {
           const selectedRankMethod = e.target.value as RankMethod;
           Object.values(showParameters)
             .find(({ value }) => value == selectedRankMethod)

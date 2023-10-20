@@ -28,7 +28,7 @@ export default function DisplayParameters({
           control={
             <Checkbox
               checked={splitForms}
-              onChange={(e) => {
+              onChange={async (e) => {
                 setShowForms(e.target.checked)
                 setSplitForms(e.target.checked)
               }}
@@ -40,7 +40,7 @@ export default function DisplayParameters({
           control={
             <Checkbox
               checked={showUnnecessary}
-              onChange={(e) => {
+              onChange={async (e) => {
                 setShowUnnecessary(e.target.checked);
               }}
             />
@@ -52,7 +52,7 @@ export default function DisplayParameters({
             <Checkbox
               disabled={!splitForms}
               checked={showForms && splitForms}
-              onChange={(e) => {
+              onChange={async (e) => {
                 setShowForms(e.target.checked);
               }}
             />
@@ -68,7 +68,7 @@ export default function DisplayParameters({
               control={
                 <Checkbox
                   checked={state}
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     setState(e.target.checked)
                   }}
                 />
