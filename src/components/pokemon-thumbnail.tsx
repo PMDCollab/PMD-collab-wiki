@@ -37,6 +37,7 @@ export default function PokemonThumbnail({
           <img
             src={form.portraits.previewEmotion.url}
             style={{ height: 80, imageRendering: "pixelated" }}
+            loading='lazy'
           />
         ) : (
           // TODO: Fix margin so that the image and text line up perfectly (6.93333px gap) -sec
@@ -59,12 +60,12 @@ export default function PokemonThumbnail({
         </Typography>}
         {portraitAuthor && (
           <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize(form.portraits.creditPrimary?.name)}>
-            {form.portraits.creditPrimary?.name}
+            {form.portraits.creditPrimary?.name ?? "N/A"}
           </Typography>
         )}
         {spriteAuthor && (
           <Typography align="center" color="GrayText" noWrap sx={textBoxWithResize(form.sprites.creditPrimary?.name)}>
-            {form.sprites.creditPrimary?.name}
+            {form.sprites.creditPrimary?.name ?? "N/A"}
           </Typography>
         )}
         {lastModification && (

@@ -10,7 +10,7 @@ export default function Search({ currentText, setCurrentText }: {
       fullWidth
       label="Mewtwo... Emmuffin... 151..."
       value={currentText}
-      onChange={({ target: { value } }) => setCurrentText(value)}
+      onChange={async ({ target: { value } }) => setCurrentText(value)}
     />
   )
 }

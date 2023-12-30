@@ -1,8 +1,9 @@
 /* eslint-disable no-case-declarations */
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Monster, MonsterForm, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
+// import IntermediateComponent from './intermediate-component'
 import { Grid, Skeleton, Typography } from "@mui/material"
 import {
   getFormMaxPortraitBounty,
@@ -129,6 +130,7 @@ export default function PokemonCarousel({
   showUnnecessary,
   showForms
 }: Props) {
+  const [limitedLoad, setLimitedLoad] = useState<boolean>(true);
   const doesShowParameters = Object.fromEntries(
     Object.entries(showParameters).map(([paramType, { state: [showParam] }]) => [paramType, showParam])
   )
@@ -172,6 +174,9 @@ export default function PokemonCarousel({
         spriteBounty
     }
   })
+  useEffect(() => {
+    setLimitedLoad((loading && data && limitedLoad) ?? true)
+  }, [data])
   const visibleMonsters = useMemo(() => {
     const monsterForms = (data?.monster.flatMap((monster) =>
       splitForms ? monster.forms?.map((form, formIndex) => ({ ...form, monster, formIndex })) ?? [] :
@@ -192,20 +197,24 @@ export default function PokemonCarousel({
   return (
     <Grid container spacing={2} justifyContent={"center"}>
       {loading
-        ? Array.from({ length: 100 }, (_, i) => (
-          <Grid item key={i}>
-            <Skeleton width={80} height={111} variant="rectangular" />
-          </Grid>
-        ))
-        : visibleMonsters.map((form, i) => (
+        ? Array.from({ length: 100 }, (_, i) => <Grid item key={i}>
+          <Skeleton width={80} height={111} variant="rectangular" />
+        </Grid>)
+        // : <IntermediateComponent
+        // visibleMonsters={visibleMonsters}
+        // splitForms={splitForms}
+        // doesShowParameters={doesShowParameters}
+        // showForms={showForms} />}
+
+        : visibleMonsters.map((form, i) => (!limitedLoad || i < 151) && (
           <Grid item key={i}>
             <PokemonThumbnail
-              infoKey={form.monster.rawId}
-              form={form}
-              isSpeciesThumbnail={!splitForms}
-              doesShowParameters={doesShowParameters}
-              showForms={showForms}
-            />
+                infoKey={form.monster.rawId}
+                form={form}
+                isSpeciesThumbnail={!splitForms}
+                doesShowParameters={doesShowParameters}
+                showForms={showForms}
+              />
           </Grid>
         ))}
     </Grid>
