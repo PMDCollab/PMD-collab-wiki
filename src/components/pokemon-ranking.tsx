@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from "react"
 import { RankMethod } from "../types/enum"
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
-import { Parameters } from '../Home'
+import { Toggle, rankMethodToToggle } from '../types/params'
 
 interface Props {
-  showParameters: Record<string, Parameters<RankMethod>>
+  setToggles: Dispatch<SetStateAction<Record<Toggle, boolean>>>
   rankBy: RankMethod
   setRankBy: Dispatch<SetStateAction<RankMethod>>
 }
-export default function PokemonRanking({ showParameters, rankBy, setRankBy }: Props) {
+export default function PokemonRanking({ setToggles, rankBy, setRankBy }: Props) {
   return (
     <FormControl sx={{ mt: 2 }} fullWidth>
       <InputLabel id="rank-by-label">Rank by</InputLabel>
@@ -19,10 +19,13 @@ export default function PokemonRanking({ showParameters, rankBy, setRankBy }: Pr
         value={rankBy}
         onChange={async (e) => {
           const selectedRankMethod = e.target.value as RankMethod;
-          Object.values(showParameters)
-            .find(({ value }) => value == selectedRankMethod)
-            ?.state[1](true);
           setRankBy(selectedRankMethod);
+          if (selectedRankMethod == RankMethod.NAME) return;
+          const selectedToggle = rankMethodToToggle[selectedRankMethod];
+          setToggles(toggle => ({
+            ...toggle,
+            [selectedToggle]: true
+          }));
         }}
       >
         {Object.values(RankMethod).map((r) => (
