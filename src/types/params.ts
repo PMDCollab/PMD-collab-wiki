@@ -1,8 +1,15 @@
 import { Dispatch, SetStateAction } from 'react';
 import { RankMethod } from './enum';
 
+// Fixes Object.entries keys displaying the wrong type
+declare global {
+  interface ObjectConstructor {
+    entries<T extends object>(o: T): { [K in keyof T]: [K, T[K]]; }[keyof T][];
+  }
+}
+
 export type UseState<T> = [T, Dispatch<SetStateAction<T>>];
-export type Toggle = keyof typeof toggleToName;
+export type Toggle = "index" | "portraitAuthor" | "spriteAuthor" | "lastModification" | "portraitBounty" | "spriteBounty";
 
 export const rankMethodToToggle: Record<Exclude<RankMethod, RankMethod.NAME>, Toggle> = {
   [RankMethod.POKEDEX_NUMBER]: "index",
@@ -10,10 +17,10 @@ export const rankMethodToToggle: Record<Exclude<RankMethod, RankMethod.NAME>, To
   [RankMethod.SPRITE_AUTHOR]: "spriteAuthor",
   [RankMethod.LAST_MODIFICATION]: "lastModification",
   [RankMethod.PORTRAIT_BOUNTY]: "portraitBounty",
-  [RankMethod.SPRITE_BOUNTY]: "spriteBounty"
+  [RankMethod.SPRITE_BOUNTY]: "spriteBounty",
 };
 
-export const toggleToName = {
+export const toggleToName: Record<Toggle, string> = {
   index: "Index",
   portraitAuthor: "Portrait Author",
   spriteAuthor: "Sprite Author",
@@ -21,3 +28,14 @@ export const toggleToName = {
   portraitBounty: "Portrait Bounty",
   spriteBounty: "Sprite Bounty"
 } as const;
+
+export type Filter = `${"fullyFeatured" | "existing" | "incomplete"}${"Sprites" | "Portraits"}`
+
+export const filterToName: Record<Filter, string> = {
+  fullyFeaturedPortraits: "Fully-Featured Portraits",
+  fullyFeaturedSprites: "Fully-Featured Sprites",
+  existingPortraits: "Existing Portraits",
+  existingSprites: "Existing Sprites",
+  incompletePortraits: "Incomplete Portraits",
+  incompleteSprites: "Incomplete Sprites"
+}

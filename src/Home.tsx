@@ -1,10 +1,10 @@
 import PokemonCarousel from "./components/pokemon-carousel"
 import Search from "./components/search"
-import { Dispatch, SetStateAction, useState } from "react"
+import { useState } from "react"
 import { RankMethod } from "./types/enum"
 import DisplayParameters from "./components/display-parameters"
 import PokemonRanking from "./components/pokemon-ranking"
-import { Meta, Phase } from "./generated/graphql"
+import { Meta } from "./generated/graphql"
 import {
   Accordion,
   AccordionDetails,
@@ -18,19 +18,7 @@ import {
 import { Bar } from "./components/bar"
 import { Footer } from "./components/footer"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import { Toggle, UseState } from './types/params'
-
-// TODO: Move to extra types file
-export interface Parameters<T> {
-  state: [boolean, Dispatch<SetStateAction<boolean>>]
-  name: string
-  value: T
-}
-
-export interface PhaseCategory {
-  type: 'sprites' | 'portraits'
-  phase: Phase
-}
+import { Filter, Toggle } from './types/params'
 
 export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const [currentText, setCurrentText] = useState("");
@@ -46,15 +34,14 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
     portraitBounty: false,
     spriteBounty: false
   }), [toggles, setToggles] = toggleState;
-  const filterParameters = ['sprites', 'portraits'].flatMap(type => {
-    const typeUpper = type[0].toUpperCase() + type.slice(1);
-    return [
-      { state: useState<boolean>(false), name: `Fully-Featured ${typeUpper}`, value: { type, phase: Phase.Full } },
-      { state: useState<boolean>(false), name: `Existing ${typeUpper}`, value: { type, phase: Phase.Exists } },
-      { state: useState<boolean>(false), name: `Incomplete ${typeUpper}`, value: { type, phase: Phase.Incomplete } },
-    ] as Parameters<PhaseCategory>[];
-  })
-
+  const filterState = useState<Record<Filter, boolean>>({
+    fullyFeaturedPortraits: false,
+    fullyFeaturedSprites: false,
+    existingPortraits: false,
+    existingSprites: false,
+    incompletePortraits: false,
+    incompleteSprites: false
+  }), [filters] = filterState;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -91,7 +78,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
               <AccordionDetails>
                 <DisplayParameters
                   toggleState={toggleState}
-                  filterParameters={filterParameters}
+                  filterState={filterState}
                   splitForms={splitForms}
                   setSplitForms={setSplitForms}
                   unnecessaryState={unnecessaryState}
@@ -111,7 +98,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
           currentText={currentText}
           rankBy={rankBy}
           toggles={toggles}
-          filterParameters={filterParameters}
+          filters={filters}
           splitForms={splitForms}
           showUnnecessary={showUnnecessary}
           showForms={showForms}

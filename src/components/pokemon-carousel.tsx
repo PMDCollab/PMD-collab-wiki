@@ -1,9 +1,7 @@
-/* eslint-disable no-case-declarations */
 import { useEffect, useMemo, useState } from "react"
-import { Monster, MonsterForm, useCarrouselQuery } from "../generated/graphql"
+import { Monster, MonsterForm, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
-// import IntermediateComponent from './intermediate-component'
 import { Grid, Skeleton, Typography } from "@mui/material"
 import {
   getFormMaxPortraitBounty,
@@ -11,10 +9,21 @@ import {
   getMonsterMaxPortraitBounty,
   getMonsterMaxSpriteBounty
 } from "../util"
-import { Parameters, PhaseCategory } from "../Home"
-import { Toggle } from '../types/params'
+import { Filter, Toggle } from '../types/params'
 
 export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number }
+
+function getFilterType(filter: Filter): { type: 'sprites' | 'portraits', phase: Phase } {
+  const type = filter.endsWith('sprites') ? 'sprites' : 'portraits';
+  switch (true) {
+    case filter.startsWith("fullyFeatured"):
+      return { type, phase: Phase.Full };
+    case filter.startsWith("existing"):
+      return { type, phase: Phase.Exists };
+    default:
+      return { type, phase: Phase.Incomplete }
+  }
+}
 
 function rankMonsters(
   rankBy: RankMethod,
@@ -61,7 +70,7 @@ function filterMonsterForms(
   splitForms: boolean,
   showUnnecessary: boolean,
   currentText: string,
-  filterParameters: Parameters<PhaseCategory>[],
+  filters: Record<Filter, boolean>,
   rankBy: RankMethod
 ) {
   // Although not a lot of time is spent filtering out it would be better to avoid unnecessary checks here -sec
@@ -93,16 +102,12 @@ function filterMonsterForms(
           css.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
       ) ||
       id.toString().includes(lowerCaseText))
-  const activeFilters = filterParameters.filter(({ state: [active] }) => active);
+  const activeFilters = Object.entries(filters).filter(([_, isShowing]) => isShowing).map(([filter]) => getFilterType(filter));
   if (activeFilters.length) forms = forms.filter(
     splitForms
-      ? (form) => activeFilters.some(
-        ({ value: { type, phase } }) => phase == form[type].phase
-      )
-      : ({ monster: { forms } }) => activeFilters.some(({ value: { type, phase } }) =>
-        forms.some(form => (showUnnecessary || form[type].required) && phase == form[type].phase)
-      )
-  )
+      ? (form) => activeFilters.some(({ type, phase }) => phase == form[type].phase)
+      : ({ monster: { forms } }) => activeFilters.some(({ type, phase }) =>
+        forms.some(form => (showUnnecessary || form[type].required) && phase == form[type].phase)))
   return forms
     .filter(
       ({ portraits, sprites }) =>
@@ -116,7 +121,7 @@ interface Props {
   rankBy: RankMethod
   ids: number[]
   toggles: Record<Toggle, boolean>
-  filterParameters: Parameters<PhaseCategory>[]
+  filters: Record<Filter, boolean>
   splitForms: boolean
   showUnnecessary: boolean
   showForms: boolean
@@ -126,7 +131,7 @@ export default function PokemonCarousel({
   rankBy,
   ids,
   toggles,
-  filterParameters,
+  filters,
   splitForms,
   showUnnecessary,
   showForms
@@ -139,12 +144,8 @@ export default function PokemonCarousel({
     spriteBounty,
     lastModification
   } = toggles;
-  const withPortraitPhases = filterParameters.some(
-    ({ state: [filterPhases], value: { type } }) => filterPhases && type == "portraits"
-  )
-  const withSpritePhases = filterParameters.some(
-    ({ state: [filterPhases], value: { type } }) => filterPhases && type == "sprites"
-  )
+  const withPortraitPhases = Object.entries(filters).some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "portraits")
+  const withSpritePhases = Object.entries(filters).some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "sprites")
   const withCredits =
     portraitAuthor || spriteAuthor || currentText !== "" || splitForms
   // TODO: use refetch and fetchMore options in carrousel query to save time -sec
@@ -181,16 +182,16 @@ export default function PokemonCarousel({
         monster.manual ? { ...monster.manual, monster, formIndex: 0 } : {}
     ) ?? []) as MonsterFormWithRef[];
     // TODO: move to object containing instead of making new one
-    const filters = filterMonsterForms(
+    const monsters = filterMonsterForms(
       monsterForms,
       splitForms,
       showUnnecessary,
       currentText,
-      filterParameters,
+      filters,
       rankBy
     )
-    return filters;
-  }, [data, splitForms, currentText, filterParameters, rankBy])
+    return monsters;
+  }, [data, splitForms, currentText, filters, rankBy])
 
   if (error) return <Typography>Error</Typography>
   return (
@@ -208,12 +209,12 @@ export default function PokemonCarousel({
         : visibleMonsters.map((form, i) => (!limitedLoad || i < 151) && (
           <Grid item key={i}>
             <PokemonThumbnail
-                infoKey={form.monster.rawId}
-                form={form}
-                isSpeciesThumbnail={!splitForms}
-                toggles={toggles}
-                showForms={showForms}
-              />
+              infoKey={form.monster.rawId}
+              form={form}
+              isSpeciesThumbnail={!splitForms}
+              toggles={toggles}
+              showForms={showForms}
+            />
           </Grid>
         ))}
     </Grid>
