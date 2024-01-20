@@ -18,12 +18,15 @@ import {
 import { Bar } from "./components/bar"
 import { Footer } from "./components/footer"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import { Toggle, UseState } from './types/params'
 
+// TODO: Move to extra types file
 export interface Parameters<T> {
   state: [boolean, Dispatch<SetStateAction<boolean>>]
   name: string
   value: T
 }
+
 export interface PhaseCategory {
   type: 'sprites' | 'portraits'
   phase: Phase
@@ -33,24 +36,24 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const [currentText, setCurrentText] = useState("");
   const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
   const [splitForms, setSplitForms] = useState<boolean>(false);
-  const [showUnnecessary, setShowUnnecessary] = useState<boolean>(false);
-  const [showForms, setShowForms] = useState<boolean>(false);
-  const showParameters: Record<string, Parameters<RankMethod>> = {
-    index: { state: useState<boolean>(false), name: "Index", value: RankMethod.POKEDEX_NUMBER },
-    portraitAuthor: { state: useState<boolean>(false), name: "Portrait Author", value: RankMethod.PORTRAIT_AUTHOR },
-    spriteAuthor: { state: useState<boolean>(false), name: "Sprite Author", value: RankMethod.SPRITE_AUTHOR },
-    lastModification: { state: useState<boolean>(false), name: "Last Change", value: RankMethod.LAST_MODIFICATION },
-    portraitBounty: { state: useState<boolean>(false), name: "Portrait Bounty", value: RankMethod.PORTRAIT_BOUNTY },
-    spriteBounty: { state: useState<boolean>(false), name: "Sprite Bounty", value: RankMethod.SPRITE_BOUNTY }
-  };
+  const unnecessaryState = useState<boolean>(false), [showUnnecessary] = unnecessaryState;
+  const showFormState = useState<boolean>(false), [showForms] = showFormState;
+  const toggleState = useState<Record<Toggle, boolean>>({
+    index: false,
+    portraitAuthor: false,
+    spriteAuthor: false,
+    lastModification: false,
+    portraitBounty: false,
+    spriteBounty: false
+  }), [toggles, setToggles] = toggleState;
   const filterParameters = ['sprites', 'portraits'].flatMap(type => {
-      const typeUpper = type[0].toUpperCase() + type.slice(1);
-      return [
-        { state: useState<boolean>(false), name: `Fully-Featured ${typeUpper}`, value: { type, phase: Phase.Full } },
-        { state: useState<boolean>(false), name: `Existing ${typeUpper}`, value: { type, phase: Phase.Exists } },
-        { state: useState<boolean>(false), name: `Incomplete ${typeUpper}`, value: { type, phase: Phase.Incomplete } },
-      ] as Parameters<PhaseCategory>[];
-    })
+    const typeUpper = type[0].toUpperCase() + type.slice(1);
+    return [
+      { state: useState<boolean>(false), name: `Fully-Featured ${typeUpper}`, value: { type, phase: Phase.Full } },
+      { state: useState<boolean>(false), name: `Existing ${typeUpper}`, value: { type, phase: Phase.Exists } },
+      { state: useState<boolean>(false), name: `Incomplete ${typeUpper}`, value: { type, phase: Phase.Incomplete } },
+    ] as Parameters<PhaseCategory>[];
+  })
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -87,16 +90,15 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
               </AccordionSummary>
               <AccordionDetails>
                 <DisplayParameters
-                showParameters={showParameters}
-                filterParameters={filterParameters}
-                splitForms={splitForms}
-                setSplitForms={setSplitForms}
-                showUnnecessary={showUnnecessary}
-                setShowUnnecessary={setShowUnnecessary}
-                showForms={showForms}
-                setShowForms={setShowForms} />
+                  toggleState={toggleState}
+                  filterParameters={filterParameters}
+                  splitForms={splitForms}
+                  setSplitForms={setSplitForms}
+                  unnecessaryState={unnecessaryState}
+                  showFormState={showFormState}
+                />
                 <PokemonRanking
-                  showParameters={showParameters}
+                  setToggles={setToggles}
                   setRankBy={setRankBy}
                   rankBy={rankBy}
                 />
@@ -108,7 +110,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
         <PokemonCarousel
           currentText={currentText}
           rankBy={rankBy}
-          showParameters={showParameters}
+          toggles={toggles}
           filterParameters={filterParameters}
           splitForms={splitForms}
           showUnnecessary={showUnnecessary}

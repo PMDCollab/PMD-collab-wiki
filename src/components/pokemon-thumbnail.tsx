@@ -3,18 +3,19 @@ import { Paper, Typography } from "@mui/material"
 import { formatDate, getFormMaxPortraitBounty, getFormMaxSpriteBounty, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty, thumbnailScale } from '../util'
 import { MonsterFormWithRef } from "./pokemon-carousel"
 import { Maybe } from '../generated/graphql'
+import { Toggle } from '../types/params'
 
 interface Props {
   form: MonsterFormWithRef
   infoKey: string
-  doesShowParameters: Record<string, boolean>
+  toggles: Record<Toggle, boolean>
   isSpeciesThumbnail?: boolean
   showForms: boolean
 }
 export default function PokemonThumbnail({
   form, form: { monster, formIndex },
   infoKey,
-  doesShowParameters: {
+  toggles: {
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
   },

@@ -1,23 +1,21 @@
 import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
 import { Parameters, PhaseCategory } from '../Home'
-import { RankMethod } from "../types/enum"
 import { Dispatch, SetStateAction } from "react"
+import { Toggle, UseState, toggleToName } from '../types/params'
 
 interface Props {
-  showParameters: Record<string, Parameters<RankMethod>>
+  toggleState: UseState<Record<Toggle, boolean>>
   filterParameters: Parameters<PhaseCategory>[]
   splitForms: boolean
   setSplitForms: Dispatch<SetStateAction<boolean>>
-  showUnnecessary: boolean
-  setShowUnnecessary: Dispatch<SetStateAction<boolean>>
-  showForms: boolean
-  setShowForms: Dispatch<SetStateAction<boolean>>
+  unnecessaryState: UseState<boolean>
+  showFormState: UseState<boolean>
 }
 export default function DisplayParameters({
-  showParameters, filterParameters,
+  toggleState: [toggles, setToggle], filterParameters,
   splitForms, setSplitForms,
-  showUnnecessary, setShowUnnecessary,
-  showForms, setShowForms
+  unnecessaryState: [showUnnecessary, setShowUnnecessary],
+  showFormState: [showForms, setShowForms],
 }: Props) {
   return (
     <Grid container spacing={2}>
@@ -59,21 +57,25 @@ export default function DisplayParameters({
           }
         />
       </Grid>
-      {[Object.values(showParameters), filterParameters].map((params, i) =>
+      {/* TODO: add filter params back */}
+      {[Object.entries(toggles)].map((params, i) =>
         <Grid item key={i + 1}>
           <Typography sx={{ fontWeight: "bold" }}>{!i ? "Toggles" : "Filters"}</Typography>
-          {params.map(({ state: [state, setState], name }) => (
+          {params.map(([toggle, isShowing]) => (
             <FormControlLabel
-              label={<Typography color="text.secondary">{name}</Typography>}
+              label={<Typography color="text.secondary">{toggleToName[toggle as Toggle]}</Typography>}
               control={
                 <Checkbox
-                  checked={state}
+                  checked={isShowing}
                   onChange={async (e) => {
-                    setState(e.target.checked)
+                    setToggle(toggles => ({
+                      ...toggles,
+                      [toggle]: e.target.checked
+                    }))
                   }}
                 />
               }
-              key={name}
+              key={toggle}
             />
           ))}
         </Grid>

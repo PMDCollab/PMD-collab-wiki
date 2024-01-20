@@ -12,6 +12,7 @@ import {
   getMonsterMaxSpriteBounty
 } from "../util"
 import { Parameters, PhaseCategory } from "../Home"
+import { Toggle } from '../types/params'
 
 export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number }
 
@@ -114,7 +115,7 @@ interface Props {
   currentText: string
   rankBy: RankMethod
   ids: number[]
-  showParameters: Record<string, Parameters<RankMethod>>
+  toggles: Record<Toggle, boolean>
   filterParameters: Parameters<PhaseCategory>[]
   splitForms: boolean
   showUnnecessary: boolean
@@ -124,23 +125,20 @@ export default function PokemonCarousel({
   currentText,
   rankBy,
   ids,
-  showParameters,
+  toggles,
   filterParameters,
   splitForms,
   showUnnecessary,
   showForms
 }: Props) {
   const [limitedLoad, setLimitedLoad] = useState<boolean>(true);
-  const doesShowParameters = Object.fromEntries(
-    Object.entries(showParameters).map(([paramType, { state: [showParam] }]) => [paramType, showParam])
-  )
   const {
     portraitAuthor,
     spriteAuthor,
     portraitBounty,
     spriteBounty,
     lastModification
-  } = doesShowParameters
+  } = toggles;
   const withPortraitPhases = filterParameters.some(
     ({ state: [filterPhases], value: { type } }) => filterPhases && type == "portraits"
   )
@@ -182,6 +180,7 @@ export default function PokemonCarousel({
       splitForms ? monster.forms?.map((form, formIndex) => ({ ...form, monster, formIndex })) ?? [] :
         monster.manual ? { ...monster.manual, monster, formIndex: 0 } : {}
     ) ?? []) as MonsterFormWithRef[];
+    // TODO: move to object containing instead of making new one
     const filters = filterMonsterForms(
       monsterForms,
       splitForms,
@@ -212,7 +211,7 @@ export default function PokemonCarousel({
                 infoKey={form.monster.rawId}
                 form={form}
                 isSpeciesThumbnail={!splitForms}
-                doesShowParameters={doesShowParameters}
+                toggles={toggles}
                 showForms={showForms}
               />
           </Grid>
