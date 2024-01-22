@@ -1,4 +1,7 @@
+import { Dispatch, SetStateAction } from 'react';
 import { Maybe, Monster, MonsterForm } from './generated/graphql';
+
+export type UseState<T> = [T, Dispatch<SetStateAction<T>>];
 
 const pad = (number: number) => number < 10 ? `0${number}` : number.toString();
 export const thumbnailScale = (str?: Maybe<string>) => Math.max(9 / Math.max(str?.length ?? 0, 9), 0.6);

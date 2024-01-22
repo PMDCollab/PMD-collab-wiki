@@ -1,6 +1,7 @@
 import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
-import { Filter, Toggle, UseState, filterNames, toggleNames } from '../types/params'
+import { Filter, Toggle, filterNames, toggleNames } from '../types/params'
 import { Fragment } from 'react'
+import { UseState } from '../util'
 
 interface Props {
   toggleState: UseState<Map<Toggle, boolean>>

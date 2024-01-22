@@ -1,7 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
 import { RankMethod } from './enum';
-
-export type UseState<T> = [T, Dispatch<SetStateAction<T>>];
 export type Toggle = "index" | "portraitAuthor" | "spriteAuthor" | "lastModification" | "portraitBounty" | "spriteBounty";
 
 export const rankMethodToToggle: Record<Exclude<RankMethod, RankMethod.NAME>, Toggle> = {
