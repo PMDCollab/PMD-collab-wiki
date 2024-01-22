@@ -12,19 +12,22 @@ export function getLastModification(t?: Date) {
     return t ? `Modified at ${formatDate(t.getTime())}` : "";
 }
 
-export const getMonsterMaxPortraitBounty = (monster: Monster, useUnnecessary = false) => monster.forms.reduce(
-    (a, b) => !b.portraits.required && !useUnnecessary ? a : Math.max(a, getFormMaxPortraitBounty(b)), 0
-)
-export const getFormMaxPortraitBounty = ({ portraits: { bounty: { exists, full, incomplete } } }: MonsterForm) => Math.max(
-    exists || 0,
-    full || 0,
-    incomplete || 0
-)
-export const getMonsterMaxSpriteBounty = (monster: Monster, useUnnecessary = false) => monster.forms.reduce(
-    (a, b) => !b.sprites.required && !useUnnecessary ? a : Math.max(a, getFormMaxSpriteBounty(b)), 0
-)
-export const getFormMaxSpriteBounty = ({ sprites: { bounty: { exists, full, incomplete } } }: MonsterForm) => Math.max(
-    exists || 0,
-    full || 0,
-    incomplete || 0
-)
+export function getMonsterBounty(monster: Monster, type: 'sprites' | 'portraits', useUnnecessary = false): number {
+    return monster.forms.reduce((a, monster) => {
+        if (!monster.portraits.required && !useUnnecessary) return a;
+        return Math.max(a, getFormBounty(monster, type))
+    }, 0)
+}
+export function getFormBounty(monster: MonsterForm, type: 'sprites' | 'portraits'): number {
+    const { [type]: { bounty: { exists, full, incomplete } } } = monster;
+    return Math.max(exists || 0, full || 0, incomplete || 0);
+}
+
+// TODO: if the new version with Object.groupBy comes around then replace this
+export function groupBy<T, K extends PropertyKey>(arr: T[], cb: (element: T) => K): Partial<Record<K, T[]>> {
+    return arr.reduce((a, element) => {
+        const key = cb(element);
+        (a[key] = a[key] || []).push(element);
+        return a;
+    }, {} as Record<K, T[]>)
+}

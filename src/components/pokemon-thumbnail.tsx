@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { Paper, Typography } from "@mui/material"
-import { formatDate, getFormMaxPortraitBounty, getFormMaxSpriteBounty, getMonsterMaxPortraitBounty, getMonsterMaxSpriteBounty, thumbnailScale } from '../util'
+import { formatDate, getFormBounty, getMonsterBounty, thumbnailScale } from '../util'
 import { MonsterFormWithRef } from "./pokemon-carousel"
 import { Maybe } from '../generated/graphql'
 import { Toggle } from '../types/params'
@@ -8,20 +8,21 @@ import { Toggle } from '../types/params'
 interface Props {
   form: MonsterFormWithRef
   infoKey: string
-  toggles: Record<Toggle, boolean>
+  toggles: Map<Toggle, boolean>
   isSpeciesThumbnail?: boolean
   showForms: boolean
 }
 export default function PokemonThumbnail({
   form, form: { monster, formIndex },
   infoKey,
-  toggles: {
-    index, spriteAuthor, portraitAuthor, lastModification,
-    portraitBounty, spriteBounty
-  },
+  toggles,
   isSpeciesThumbnail = false,
   showForms
 }: Props) {
+  const {
+    index, spriteAuthor, portraitAuthor, lastModification,
+    portraitBounty, spriteBounty
+  } = Object.fromEntries(toggles);
   const textBoxStyle = { width: 80, height: 25 };
   const textBoxWithResize = (name?: Maybe<string>) => ({
     ...textBoxStyle,
@@ -79,12 +80,12 @@ export default function PokemonThumbnail({
         )}
         {portraitBounty && (
           <Typography color="GrayText" align="center" noWrap sx={textBoxStyle}>
-            {isSpeciesThumbnail ? getMonsterMaxPortraitBounty(monster) : getFormMaxPortraitBounty(form)} gp
+            {isSpeciesThumbnail ? getMonsterBounty(monster ,'portraits') : getFormBounty(form, 'portraits')} gp
           </Typography>
         )}
         {spriteBounty && (
           <Typography color="GrayText" align="center" noWrap sx={textBoxStyle}>
-            {isSpeciesThumbnail ? getMonsterMaxSpriteBounty(monster) : getFormMaxSpriteBounty(form)} gp
+            {isSpeciesThumbnail ? getMonsterBounty(monster, 'sprites') : getFormBounty(form, 'sprites')} gp
           </Typography>
         )}
       </Paper>

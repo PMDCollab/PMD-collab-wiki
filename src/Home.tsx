@@ -23,25 +23,25 @@ import { Filter, Toggle } from './types/params'
 export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const [currentText, setCurrentText] = useState("");
   const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
-  const [splitForms, setSplitForms] = useState<boolean>(false);
+  const splitFormState = useState<boolean>(false), [splitForms] = splitFormState;
   const unnecessaryState = useState<boolean>(false), [showUnnecessary] = unnecessaryState;
   const showFormState = useState<boolean>(false), [showForms] = showFormState;
-  const toggleState = useState<Record<Toggle, boolean>>({
-    index: false,
-    portraitAuthor: false,
-    spriteAuthor: false,
-    lastModification: false,
-    portraitBounty: false,
-    spriteBounty: false
-  }), [toggles, setToggles] = toggleState;
-  const filterState = useState<Record<Filter, boolean>>({
-    fullyFeaturedPortraits: false,
-    fullyFeaturedSprites: false,
-    existingPortraits: false,
-    existingSprites: false,
-    incompletePortraits: false,
-    incompleteSprites: false
-  }), [filters] = filterState;
+  const toggleState = useState(new Map<Toggle, boolean>([
+    ["index", false],
+    ["portraitAuthor", false],
+    ["spriteAuthor", false],
+    ["lastModification", false],
+    ["portraitBounty", false],
+    ["spriteBounty", false]
+  ])), [toggles, setToggles] = toggleState;
+  const filterState = useState(new Map<Filter, boolean>([
+    ['fullyFeaturedPortraits', false],
+    ['existingPortraits', false],
+    ['incompletePortraits', false],
+    ['fullyFeaturedSprites', false],
+    ['existingSprites', false],
+    ['incompleteSprites', false]
+  ])), [filters] = filterState;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -79,8 +79,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
                 <DisplayParameters
                   toggleState={toggleState}
                   filterState={filterState}
-                  splitForms={splitForms}
-                  setSplitForms={setSplitForms}
+                  splitFormState={splitFormState}
                   unnecessaryState={unnecessaryState}
                   showFormState={showFormState}
                 />

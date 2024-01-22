@@ -4,7 +4,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import { Toggle, rankMethodToToggle } from '../types/params'
 
 interface Props {
-  setToggles: Dispatch<SetStateAction<Record<Toggle, boolean>>>
+  setToggles: Dispatch<SetStateAction<Map<Toggle, boolean>>>
   rankBy: RankMethod
   setRankBy: Dispatch<SetStateAction<RankMethod>>
 }

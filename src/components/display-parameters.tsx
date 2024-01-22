@@ -1,18 +1,17 @@
 import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
-import { Dispatch, SetStateAction } from "react"
-import { Filter, Toggle, UseState, filterToName, toggleToName } from '../types/params'
+import { Filter, Toggle, UseState, filterNames, toggleNames } from '../types/params'
+import { Fragment } from 'react'
 
 interface Props {
-  toggleState: UseState<Record<Toggle, boolean>>
-  filterState: UseState<Record<Filter, boolean>>
-  splitForms: boolean
-  setSplitForms: Dispatch<SetStateAction<boolean>>
+  toggleState: UseState<Map<Toggle, boolean>>
+  filterState: UseState<Map<Filter, boolean>>
+  splitFormState: UseState<boolean>
   unnecessaryState: UseState<boolean>
   showFormState: UseState<boolean>
 }
 export default function DisplayParameters({
   toggleState: [toggles, setToggle], filterState: [filters, setFilter],
-  splitForms, setSplitForms,
+  splitFormState: [splitForms, setSplitForms],
   unnecessaryState: [showUnnecessary, setShowUnnecessary],
   showFormState: [showForms, setShowForms],
 }: Props) {
@@ -56,43 +55,40 @@ export default function DisplayParameters({
           }
         />
       </Grid>
-      {/* TODO: add filter params back */}
-      <Grid item >
+      <Grid item key={1}>
         <Typography sx={{ fontWeight: "bold" }}>Toggles</Typography>
-        {Object.entries(toggles).map(([toggle, isShowing]) => (
+        {[...toggles.entries()].map(([toggle, isShowing]) => (
           <FormControlLabel
-            label={<Typography color="text.secondary">{toggleToName[toggle]}</Typography>}
+            label={<Typography color="text.secondary">{toggleNames[toggle]}</Typography>}
             control={
               <Checkbox
                 checked={isShowing}
                 onChange={async (e) => {
-                  setToggle(toggles => ({
-                    ...toggles,
-                    [toggle]: e.target.checked
-                  }))
+                  setToggle(new Map(toggles.set(toggle, e.target.checked)))
                 }}
               />
             }
+            key={toggle}
           />
         ))}
       </Grid>
-      <Grid item>
+      <Grid item key={2}>
         <Typography sx={{ fontWeight: "bold" }}>Filters</Typography>
-        {Object.entries(filters).map(([filter, isShowing]) => (
-          <FormControlLabel
-            label={<Typography color="text.secondary">{filterToName[filter]}</Typography>}
-            control={
-              <Checkbox
-                checked={isShowing}
-                onChange={async (e) => {
-                  setFilter(filters => ({
-                    ...filters,
-                    [filter]: e.target.checked
-                  }))
-                }}
-              />
-            }
-          />
+        {[...filters.entries()].map(([filter, isShowing], index) => (
+          <Fragment key={filter}>
+            {index == 3 && <br />}
+            <FormControlLabel
+              label={<Typography color="text.secondary">{filterNames[filter]}</Typography>}
+              control={
+                <Checkbox
+                  checked={isShowing}
+                  onChange={async (e) => {
+                    setFilter(new Map(filters.set(filter, e.target.checked)))
+                  }}
+                />
+              }
+            />
+          </Fragment>
         ))}
       </Grid>
     </Grid>

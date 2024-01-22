@@ -1,13 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { RankMethod } from './enum';
 
-// Fixes Object.entries keys displaying the wrong type
-declare global {
-  interface ObjectConstructor {
-    entries<T extends object>(o: T): { [K in keyof T]: [K, T[K]]; }[keyof T][];
-  }
-}
-
 export type UseState<T> = [T, Dispatch<SetStateAction<T>>];
 export type Toggle = "index" | "portraitAuthor" | "spriteAuthor" | "lastModification" | "portraitBounty" | "spriteBounty";
 
@@ -20,7 +13,7 @@ export const rankMethodToToggle: Record<Exclude<RankMethod, RankMethod.NAME>, To
   [RankMethod.SPRITE_BOUNTY]: "spriteBounty",
 };
 
-export const toggleToName: Record<Toggle, string> = {
+export const toggleNames: Record<Toggle, string> = {
   index: "Index",
   portraitAuthor: "Portrait Author",
   spriteAuthor: "Sprite Author",
@@ -29,13 +22,14 @@ export const toggleToName: Record<Toggle, string> = {
   spriteBounty: "Sprite Bounty"
 } as const;
 
-export type Filter = `${"fullyFeatured" | "existing" | "incomplete"}${"Sprites" | "Portraits"}`
 
-export const filterToName: Record<Filter, string> = {
+export type Filter = `${"fullyFeatured" | "existing" | "incomplete"}${"Sprites" | "Portraits"}`;
+
+export const filterNames: Record<Filter, string> = {
   fullyFeaturedPortraits: "Fully-Featured Portraits",
-  fullyFeaturedSprites: "Fully-Featured Sprites",
   existingPortraits: "Existing Portraits",
-  existingSprites: "Existing Sprites",
   incompletePortraits: "Incomplete Portraits",
+  fullyFeaturedSprites: "Fully-Featured Sprites",
+  existingSprites: "Existing Sprites",
   incompleteSprites: "Incomplete Sprites"
-}
+};
