@@ -9,7 +9,7 @@ import { Filter, Toggle } from '../types/params'
 export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number }
 
 function getFilterType(filter: Filter): { type: 'sprites' | 'portraits', phase: Phase } {
-  const type = filter.endsWith('sprites') ? 'sprites' : 'portraits';
+  const type = filter.endsWith('Sprites') ? 'sprites' : 'portraits';
   switch (true) {
     case filter.startsWith("fullyFeatured"):
       return { type, phase: Phase.Full };
@@ -97,22 +97,21 @@ function filterMonsterForms(
           css.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
       ) ||
       id.toString().includes(lowerCaseText))
-  const { portraits: portraitFilters, sprites: spriteFilters } = groupBy([...filters.entries()]
+  const { portraits: portraitFilters = [], sprites: spriteFilters = [] } = groupBy([...filters.entries()]
     .filter(([_, isShowing]) => isShowing)
     .map(([filter]) => getFilterType(filter)),
     (filter) => filter.type);
   // TODO: make this a bit nicer i kinda dont like having to write 4 different filters
-  if (portraitFilters) {
+  if (portraitFilters.length || spriteFilters.length) {
     forms = splitForms
-      ? forms.filter((form) => portraitFilters.some(({ phase }) => phase == form.portraits.phase))
-      : forms.filter(({ monster: { forms } }) => portraitFilters.some(({ phase }) =>
-        forms.some(form => (showUnnecessary || form.portraits.required) && phase == form.portraits.phase)));
-  }
-  if (spriteFilters) {
-    forms = splitForms
-      ? forms.filter((form) => spriteFilters.some(({ phase }) => phase == form.sprites.phase))
-      : forms.filter(({ monster: { forms } }) => spriteFilters.some(({ phase }) =>
-        forms.some(form => (showUnnecessary || form.sprites.required) && phase == form.sprites.phase)));
+      ? forms.filter((form) =>
+        (!portraitFilters.length || portraitFilters.some(({ phase }) => phase == form.portraits.phase))
+        && (!spriteFilters.length || spriteFilters.some(({ phase }) => phase == form.sprites.phase)))
+      : forms.filter(({ monster: { forms } }) =>
+        (!portraitFilters.length || portraitFilters.some(({ phase }) =>
+          forms.some(form => (showUnnecessary || form.portraits.required) && phase == form.portraits.phase)))
+        && (!spriteFilters.length || spriteFilters.some(({ phase }) =>
+          forms.some(form => (showUnnecessary || form.sprites.required) && phase == form.sprites.phase))));
   }
   return forms
     .filter(({ portraits, sprites }) => !splitForms || portraits.required || sprites.required || showUnnecessary)
