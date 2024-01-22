@@ -8,7 +8,7 @@ export const rankMethodToToggle: Record<Exclude<RankMethod, RankMethod.NAME>, To
   [RankMethod.LAST_MODIFICATION]: "lastModification",
   [RankMethod.PORTRAIT_BOUNTY]: "portraitBounty",
   [RankMethod.SPRITE_BOUNTY]: "spriteBounty",
-};
+} as const;
 
 export const toggleNames: Record<Toggle, string> = {
   index: "Index",
@@ -29,4 +29,4 @@ export const filterNames: Record<Filter, string> = {
   fullyFeaturedSprites: "Fully-Featured Sprites",
   existingSprites: "Existing Sprites",
   incompleteSprites: "Incomplete Sprites"
-};
+} as const;
