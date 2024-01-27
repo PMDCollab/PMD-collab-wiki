@@ -1,19 +1,24 @@
-/* eslint-disable no-case-declarations */
 import { useEffect, useMemo, useState } from "react"
-import { Monster, MonsterForm, useCarrouselQuery } from "../generated/graphql"
+import { Monster, MonsterForm, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
-// import IntermediateComponent from './intermediate-component'
 import { Grid, Skeleton, Typography } from "@mui/material"
-import {
-  getFormMaxPortraitBounty,
-  getFormMaxSpriteBounty,
-  getMonsterMaxPortraitBounty,
-  getMonsterMaxSpriteBounty
-} from "../util"
-import { Parameters, PhaseCategory } from "../Home"
+import { getFormBounty, getMonsterBounty, groupBy } from "../util"
+import { Filter, Toggle } from '../types/params'
 
 export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number }
+
+function getFilterType(filter: Filter): { type: 'sprites' | 'portraits', phase: Phase } {
+  const type = filter.endsWith('Sprites') ? 'sprites' : 'portraits';
+  switch (true) {
+    case filter.startsWith("fullyFeatured"):
+      return { type, phase: Phase.Full };
+    case filter.startsWith("existing"):
+      return { type, phase: Phase.Exists };
+    default:
+      return { type, phase: Phase.Incomplete };
+  }
+}
 
 function rankMonsters(
   rankBy: RankMethod,
@@ -44,14 +49,14 @@ function rankMonsters(
       return aNameSprite.localeCompare(bNameSprite)
     case RankMethod.PORTRAIT_BOUNTY:
       return splitForms
-        ? getFormMaxPortraitBounty(b) - getFormMaxPortraitBounty(a)
-        : getMonsterMaxPortraitBounty(b.monster, showUnnecessary) -
-        getMonsterMaxPortraitBounty(a.monster, showUnnecessary)
+        ? getFormBounty(b, 'portraits') - getFormBounty(a, 'portraits')
+        : getMonsterBounty(b.monster, 'portraits', showUnnecessary) -
+        getMonsterBounty(a.monster, 'portraits', showUnnecessary)
     case RankMethod.SPRITE_BOUNTY:
       return splitForms
-        ? getFormMaxSpriteBounty(b) - getFormMaxSpriteBounty(a)
-        : getMonsterMaxSpriteBounty(b.monster, showUnnecessary) -
-        getMonsterMaxSpriteBounty(a.monster, showUnnecessary)
+        ? getFormBounty(b, 'sprites') - getFormBounty(a, 'sprites')
+        : getMonsterBounty(b.monster, 'sprites', showUnnecessary) -
+        getMonsterBounty(a.monster, 'sprites', showUnnecessary)
   }
 }
 
@@ -60,7 +65,7 @@ function filterMonsterForms(
   splitForms: boolean,
   showUnnecessary: boolean,
   currentText: string,
-  filterParameters: Parameters<PhaseCategory>[],
+  filters: Map<Filter, boolean>,
   rankBy: RankMethod
 ) {
   // Although not a lot of time is spent filtering out it would be better to avoid unnecessary checks here -sec
@@ -92,30 +97,33 @@ function filterMonsterForms(
           css.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
       ) ||
       id.toString().includes(lowerCaseText))
-  const activeFilters = filterParameters.filter(({ state: [active] }) => active);
-  if (activeFilters.length) forms = forms.filter(
-    splitForms
-      ? (form) => activeFilters.some(
-        ({ value: { type, phase } }) => phase == form[type].phase
-      )
-      : ({ monster: { forms } }) => activeFilters.some(({ value: { type, phase } }) =>
-        forms.some(form => (showUnnecessary || form[type].required) && phase == form[type].phase)
-      )
-  )
+  const { portraits: portraitFilters = [], sprites: spriteFilters = [] } = groupBy([...filters.entries()]
+    .filter(([_, isShowing]) => isShowing)
+    .map(([filter]) => getFilterType(filter)),
+    (filter) => filter.type);
+  // TODO: make this a bit nicer i kinda dont like having to write 4 different filters
+  if (portraitFilters.length || spriteFilters.length) {
+    forms = splitForms
+      ? forms.filter((form) =>
+        (!portraitFilters.length || portraitFilters.some(({ phase }) => phase == form.portraits.phase))
+        && (!spriteFilters.length || spriteFilters.some(({ phase }) => phase == form.sprites.phase)))
+      : forms.filter(({ monster: { forms } }) =>
+        (!portraitFilters.length || portraitFilters.some(({ phase }) =>
+          forms.some(form => (showUnnecessary || form.portraits.required) && phase == form.portraits.phase)))
+        && (!spriteFilters.length || spriteFilters.some(({ phase }) =>
+          forms.some(form => (showUnnecessary || form.sprites.required) && phase == form.sprites.phase))));
+  }
   return forms
-    .filter(
-      ({ portraits, sprites }) =>
-        !splitForms || portraits.required || sprites.required || showUnnecessary
-    )
-    .sort((a, b) => rankMonsters(rankBy, a, b, splitForms, showUnnecessary) ?? 0)
+    .filter(({ portraits, sprites }) => !splitForms || portraits.required || sprites.required || showUnnecessary)
+    .sort((a, b) => rankMonsters(rankBy, a, b, splitForms, showUnnecessary) ?? 0);
 }
 
 interface Props {
   currentText: string
   rankBy: RankMethod
   ids: number[]
-  showParameters: Record<string, Parameters<RankMethod>>
-  filterParameters: Parameters<PhaseCategory>[]
+  toggles: Map<Toggle, boolean>
+  filters: Map<Filter, boolean>
   splitForms: boolean
   showUnnecessary: boolean
   showForms: boolean
@@ -124,29 +132,22 @@ export default function PokemonCarousel({
   currentText,
   rankBy,
   ids,
-  showParameters,
-  filterParameters,
+  toggles,
+  filters,
   splitForms,
   showUnnecessary,
   showForms
 }: Props) {
   const [limitedLoad, setLimitedLoad] = useState<boolean>(true);
-  const doesShowParameters = Object.fromEntries(
-    Object.entries(showParameters).map(([paramType, { state: [showParam] }]) => [paramType, showParam])
-  )
   const {
     portraitAuthor,
     spriteAuthor,
     portraitBounty,
     spriteBounty,
     lastModification
-  } = doesShowParameters
-  const withPortraitPhases = filterParameters.some(
-    ({ state: [filterPhases], value: { type } }) => filterPhases && type == "portraits"
-  )
-  const withSpritePhases = filterParameters.some(
-    ({ state: [filterPhases], value: { type } }) => filterPhases && type == "sprites"
-  )
+  } = Object.fromEntries(toggles);
+  const withPortraitPhases = [...filters.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "portraits")
+  const withSpritePhases = [...filters.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "sprites")
   const withCredits =
     portraitAuthor || spriteAuthor || currentText !== "" || splitForms
   // TODO: use refetch and fetchMore options in carrousel query to save time -sec
@@ -182,16 +183,17 @@ export default function PokemonCarousel({
       splitForms ? monster.forms?.map((form, formIndex) => ({ ...form, monster, formIndex })) ?? [] :
         monster.manual ? { ...monster.manual, monster, formIndex: 0 } : {}
     ) ?? []) as MonsterFormWithRef[];
-    const filters = filterMonsterForms(
+    // TODO: move to object containing instead of making new one
+    const monsters = filterMonsterForms(
       monsterForms,
       splitForms,
       showUnnecessary,
       currentText,
-      filterParameters,
+      filters,
       rankBy
     )
-    return filters;
-  }, [data, splitForms, currentText, filterParameters, rankBy])
+    return monsters;
+  }, [data, splitForms, currentText, filters, rankBy])
 
   if (error) return <Typography>Error</Typography>
   return (
@@ -200,21 +202,16 @@ export default function PokemonCarousel({
         ? Array.from({ length: 100 }, (_, i) => <Grid item key={i}>
           <Skeleton width={80} height={111} variant="rectangular" />
         </Grid>)
-        // : <IntermediateComponent
-        // visibleMonsters={visibleMonsters}
-        // splitForms={splitForms}
-        // doesShowParameters={doesShowParameters}
-        // showForms={showForms} />}
 
         : visibleMonsters.map((form, i) => (!limitedLoad || i < 151) && (
           <Grid item key={i}>
             <PokemonThumbnail
-                infoKey={form.monster.rawId}
-                form={form}
-                isSpeciesThumbnail={!splitForms}
-                doesShowParameters={doesShowParameters}
-                showForms={showForms}
-              />
+              infoKey={form.monster.rawId}
+              form={form}
+              isSpeciesThumbnail={!splitForms}
+              toggles={toggles}
+              showForms={showForms}
+            />
           </Grid>
         ))}
     </Grid>
