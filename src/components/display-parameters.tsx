@@ -16,6 +16,7 @@ export default function DisplayParameters({
   unnecessaryState: [showUnnecessary, setShowUnnecessary],
   showFormState: [showForms, setShowForms],
 }: Props) {
+  console.log(toggles)
   return (
     <Grid container spacing={2}>
       <Grid item key={0}>
@@ -65,7 +66,7 @@ export default function DisplayParameters({
               <Checkbox
                 checked={isShowing}
                 onChange={async (e) => {
-                  setToggle(new Map(toggles.set(toggle, e.target.checked)))
+                  setToggle(prev => new Map([...prev, [toggle, e.target.checked]]))
                 }}
               />
             }
@@ -84,7 +85,7 @@ export default function DisplayParameters({
                 <Checkbox
                   checked={isShowing}
                   onChange={async (e) => {
-                    setFilter(new Map(filters.set(filter, e.target.checked)))
+                    setFilter(prev => new Map([...prev, [filter, e.target.checked]]))
                   }}
                 />
               }

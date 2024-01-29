@@ -22,10 +22,7 @@ export default function PokemonRanking({ setToggles, rankBy, setRankBy }: Props)
           setRankBy(selectedRankMethod);
           if (selectedRankMethod == RankMethod.NAME) return;
           const selectedToggle = rankMethodToToggle[selectedRankMethod];
-          setToggles(toggle => ({
-            ...toggle,
-            [selectedToggle]: true
-          }));
+          setToggles(toggle => new Map([...toggle, [selectedToggle, true]]));
         }}
       >
         {Object.values(RankMethod).map((r) => (
