@@ -16,7 +16,6 @@ export default function DisplayParameters({
   unnecessaryState: [showUnnecessary, setShowUnnecessary],
   showFormState: [showForms, setShowForms],
 }: Props) {
-  console.log(toggles)
   return (
     <Grid container spacing={2}>
       <Grid item key={0}>
