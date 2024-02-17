@@ -41,7 +41,8 @@ export default function PokemonInformations({
   const [animData, setAnimData] = useState<IPMDCollab>();
   useEffect(() => {
     (async () => {
-      const xmlData = await (await fetch(sprites.animDataXml!)).text();
+      if (!sprites.animDataXml) return;
+      const xmlData = await (await fetch(sprites.animDataXml)).text();
       const parser = new XMLParser();
       setAnimData(parser.parse(xmlData) as IPMDCollab);
     })();
