@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from "react"
 import { Monster, MonsterForm, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
-import { Grid, Skeleton, Typography } from "@mui/material"
+import { Box, Grid, Link, Skeleton, Typography } from "@mui/material"
 import { getFormBounty, getMonsterBounty, groupBy } from "../util"
 import { Filter, Toggle } from '../types/params'
 
-export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number }
+export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number } // TODO: don't merge with existing form
 
 function getFilterType(filter: Filter): { type: 'sprites' | 'portraits', phase: Phase } {
   const type = filter.endsWith('Sprites') ? 'sprites' : 'portraits';
@@ -33,8 +33,8 @@ function rankMonsters(
     case RankMethod.LAST_MODIFICATION:
       const { portraits: { modifiedDate: dap }, sprites: { modifiedDate: das } } = a;
       const { portraits: { modifiedDate: dbp }, sprites: { modifiedDate: dbs } } = b;
-      return Math.max(new Date(dbp).getTime(), new Date(dbs).getTime()) -
-        Math.max(new Date(dap).getTime(), new Date(das).getTime());
+      return Math.max(new Date(dbp ?? 0).getTime(), new Date(dbs ?? 0).getTime()) -
+        Math.max(new Date(dap ?? 0).getTime(), new Date(das ?? 0).getTime());
     case RankMethod.NAME:
       return a.monster.name.localeCompare(b.monster.name)
     case RankMethod.PORTRAIT_AUTHOR:
@@ -148,8 +148,7 @@ export default function PokemonCarousel({
   } = Object.fromEntries(toggles);
   const withPortraitPhases = [...filters.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "portraits")
   const withSpritePhases = [...filters.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "sprites")
-  const withCredits =
-    portraitAuthor || spriteAuthor || currentText !== "" || splitForms
+  const withCredits = portraitAuthor || spriteAuthor || !!currentText || splitForms
   // TODO: use refetch and fetchMore options in carrousel query to save time -sec
   const { loading, error, data } = useCarrouselQuery({
     variables: {
@@ -176,7 +175,7 @@ export default function PokemonCarousel({
     }
   })
   useEffect(() => {
-    setLimitedLoad((loading && data && limitedLoad) ?? true)
+    setLimitedLoad(loading && (data ?? true) && limitedLoad)
   }, [data])
   const visibleMonsters = useMemo(() => {
     const monsterForms = (data?.monster.flatMap((monster) =>
@@ -195,7 +194,16 @@ export default function PokemonCarousel({
     return monsters;
   }, [data, splitForms, currentText, filters, rankBy])
 
-  if (error) return <Typography>Error</Typography>
+  if (error) return <Box textAlign='center' alignItems='center'>
+    <h1>Uh Oh!</h1>
+    <Typography>
+      Looks like the server ran into an error. This typically happens when our sprite server is down, and we'll try to get it back up as soon as possible.
+    </Typography>
+    <Typography>
+      If this problem still occurs, check server uptime at <Link href="https://status.pmdcollab.org/">PMDCollab Status</Link>.
+    </Typography>
+  </Box>
+
   return (
     <Grid container spacing={2} justifyContent={"center"}>
       {loading

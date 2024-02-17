@@ -21,7 +21,7 @@ const client = new ApolloClient({
 async function initialize() {
   const result = await client.query({
     query: KeysDocument
-}) as KeysQueryResult;
+  }) as KeysQueryResult;
   if (!result.data) return;
   const sortedMonsters = [...result.data.monster].sort((a, b) => a.id - b.id)
   ReactDOM.createRoot(document.getElementById("root")!).render(

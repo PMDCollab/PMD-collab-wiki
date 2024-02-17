@@ -1,4 +1,3 @@
-import { XMLParser } from "fast-xml-parser"
 import { useCallback, useRef } from "react"
 import { MonsterHistory, Sprite } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
@@ -9,22 +8,19 @@ import { Card, Grid, Typography } from "@mui/material"
 interface Props {
   sprite: Sprite
   dungeon: Dungeon
-  animDataUrl: string
+  animData: IPMDCollab
   history: MonsterHistory[]
 }
-export default function SpritePreview({ sprite, dungeon, animDataUrl, history }: Props) {
+export default function SpritePreview({ sprite, dungeon, animData, history }: Props) {
   const gameContainer = useRef<GameContainer>()
 
   const container = useCallback(
     (node: HTMLDivElement) => {
       async function initialize() {
-        const xmlData = await (await fetch(animDataUrl)).text();
-        const parser = new XMLParser();
-        const data = parser.parse(xmlData) as IPMDCollab;
         gameContainer.current = new GameContainer(
           node,
           sprite,
-          data.AnimData,
+          animData.AnimData,
           dungeon
         )
       }
@@ -35,7 +31,7 @@ export default function SpritePreview({ sprite, dungeon, animDataUrl, history }:
 
       initialize()
     },
-    [animDataUrl, sprite, dungeon]
+    [animData, sprite, dungeon]
   )
 
   return (
