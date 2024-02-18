@@ -13,7 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTimeUtc: any;
+  DateTimeUtc: string; // TODO: spriteserver should change any to string
 };
 
 /** An action mapped uniquely to an ID. */

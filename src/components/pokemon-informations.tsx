@@ -1,7 +1,7 @@
 import Emotions from "./emotions"
 import SpritePreview from "./sprite-preview"
-import { Dungeon } from "../types/enum"
-import { useRef } from "react"
+import { Dungeon, IPMDCollab } from "../types/enum"
+import { useEffect, useRef, useState } from "react"
 import { MonsterForm } from "../generated/graphql"
 import Bounty from "./bounty"
 import {
@@ -18,6 +18,7 @@ import {
 } from "@mui/material"
 import { getLastModification } from "../util"
 import { CreditsPrimary, CreditsSecondary } from "./credits"
+import { XMLParser } from 'fast-xml-parser'
 
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -37,6 +38,21 @@ interface Props {
 export default function PokemonInformations({
   info: { sprites, portraits }
 }: Props) {
+  const [animData, setAnimData] = useState<IPMDCollab>();
+  useEffect(() => {
+    (async () => {
+      if (!sprites.animDataXml) return;
+      const xmlData = await (await fetch(sprites.animDataXml)).text();
+      const parser = new XMLParser();
+      setAnimData(parser.parse(xmlData) as IPMDCollab);
+    })();
+  }, [sprites.animDataXml]);
+
+  const animList = animData?.AnimData.Anims.Anim;
+  const animNames = animList?.map(anim => anim.Name);
+  const sortedActions = !animNames ? sprites.actions : [...sprites.actions]
+    .sort((a, b) => animNames.indexOf(a.action) - animNames.indexOf(b.action));
+
   const bg = useRef<Dungeon>(Object.values(Dungeon)[Math.floor(Math.random() * Object.values(Dungeon).length)]);
   const portraitDate = portraits.modifiedDate && new Date(portraits.modifiedDate)
   const spriteDate = sprites.modifiedDate && new Date(sprites.modifiedDate)
@@ -126,16 +142,16 @@ export default function PokemonInformations({
 
         {sprites.actions.length ? (
           <Grid container spacing={2} sx={{ mt: 3 }}>
-            {sprites.actions.map(
+            {animList && sortedActions.map(
               (sprite) =>
                 sprite.__typename === "Sprite" &&
-                sprites.animDataXml && (
+                (
                   <Grid item key={sprite.action}>
                     <Paper elevation={2}>
                       <SpritePreview
                         dungeon={bg.current}
                         sprite={sprite}
-                        animDataUrl={sprites.animDataXml}
+                        animData={animData}
                         history={sprites.history.filter((e) => !e.obsolete)}
                       />
                     </Paper>
@@ -153,3 +169,4 @@ export default function PokemonInformations({
     </Box>
   )
 }
+

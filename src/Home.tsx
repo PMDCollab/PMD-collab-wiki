@@ -18,7 +18,7 @@ import {
 import { Bar } from "./components/bar"
 import { Footer } from "./components/footer"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import { Filter, Toggle } from './types/params'
+import { Filter, Toggle } from "./types/params"
 
 export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const [currentText, setCurrentText] = useState("");

@@ -7,14 +7,12 @@ export function Footer({ meta: { assetsUpdateDate, updateCheckedDate, assetsComm
       <Grid container spacing={2} justifyContent="space-around">
         <Grid item>
           <Typography color="GrayText">
-            Last update:
-            {new Date(assetsUpdateDate).toLocaleString()}
+            Last update: {new Date(assetsUpdateDate).toLocaleString()}
           </Typography>
         </Grid>
         <Grid item>
           <Typography color="GrayText">
-            Last Check for updates:
-            {new Date(updateCheckedDate).toLocaleString()}
+            Last Check for updates: {new Date(updateCheckedDate).toLocaleString()}
           </Typography>
         </Grid>
         <Grid item>
