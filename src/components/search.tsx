@@ -1,9 +1,7 @@
 import { TextField } from "@mui/material"
+import { UseState } from '../util'
 
-export default function Search({ currentText, setCurrentText }: {
-  currentText: string
-  setCurrentText: React.Dispatch<React.SetStateAction<string>>
-}) {
+export default function Search({ textState: [currentText, setCurrentText] }: { textState: UseState<string> }) {
   return (
     <TextField
       sx={{ backgroundColor: "white" }}
