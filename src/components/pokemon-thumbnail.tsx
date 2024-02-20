@@ -72,9 +72,9 @@ export default function PokemonThumbnail({
         )}
         {lastModification && (
           <Typography align="center" color="GrayText" noWrap sx={textBoxStyle}>
-            {formatDate(Math.max(
-              new Date(form.portraits.modifiedDate).getTime(),
-              new Date(form.sprites.modifiedDate).getTime()
+            {formatDate(Math.max( // TODO: this sucks rewrite it
+              form.portraits.modifiedDate && new Date(form.portraits.modifiedDate).getTime() || 0,
+              form.sprites.modifiedDate && new Date(form.sprites.modifiedDate).getTime() || 0
             ))}
           </Typography>
         )}
