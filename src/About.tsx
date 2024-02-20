@@ -39,13 +39,19 @@ export default function About() {
         <Typography variant="h5" gutterBottom>
           Terms of Use
         </Typography>
+        <Typography>
+          <p xmlns:cc="http://creativecommons.org/ns#" >Custom sprites are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Attribution-NonCommercial 4.0 International<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"></Link></p>
+        </Typography>
+		<Typography>
+		  All acceptable use of custom sprites must be done with <Link href="https://wiki.creativecommons.org/wiki/Recommended_practices_for_attribution">appropriate credit</Link>.  We recommend including a file or link of the <Link href="https://github.com/PMDCollab/SpriteCollab/blob/master/credit_names.txt">credit_names.txt</Link>, which contains all authors of the project.
+		</Typography>
         <Container sx={{ mb: 2 }}>
           <Grid container spacing={2} justifyContent="space-around">
             <Grid>
               <Card>
                 <CardContent>
                   <Typography align="center" variant="h5">
-                    You may
+                    Examples of Acceptable Use:
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -55,8 +61,7 @@ export default function About() {
                         <CheckIcon color="success" />
                       </ListItemIcon>
                       <Typography>
-                        Use these sprites in a ROMhack, fangame, sprite comic,
-                        etc.
+                        ROMhacks, fangames
                       </Typography>
                     </ListItem>
                     <ListItem>
@@ -64,8 +69,7 @@ export default function About() {
                         <CheckIcon color="success" />
                       </ListItemIcon>
                       <Typography>
-                        Use these sprites as profile pictures, Discord emotes,
-                        etc.
+                        Sprite comics, videos
                       </Typography>
                     </ListItem>
                     <ListItem>
@@ -73,7 +77,15 @@ export default function About() {
                         <CheckIcon color="success" />
                       </ListItemIcon>
                       <Typography>
-                        Make edits or recolors of these sprites.
+                        Use in profile pictures, banners, emotes
+                      </Typography>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <CheckIcon color="success" />
+                      </ListItemIcon>
+                      <Typography>
+                        Posting edits or recolors
                       </Typography>
                     </ListItem>
                   </List>
@@ -84,7 +96,7 @@ export default function About() {
               <Card>
                 <CardContent>
                   <Typography align="center" variant="h5">
-                    Do not
+                    Examples of Unacceptable Use:
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -94,7 +106,7 @@ export default function About() {
                         <XIcon color="error" />
                       </ListItemIcon>
                       <Typography>
-                        Sell the things you make with these sprites.
+                        Printing and selling merchandise
                       </Typography>
                     </ListItem>
                     <ListItem>
@@ -102,7 +114,7 @@ export default function About() {
                         <XIcon color="error" />
                       </ListItemIcon>
                       <Typography>
-                        Use these sprites without giving credit.
+                        Commercial AI services
                       </Typography>
                     </ListItem>
                     <ListItem>
@@ -110,7 +122,23 @@ export default function About() {
                         <XIcon color="error" />
                       </ListItemIcon>
                       <Typography>
-                        Claim that you created sprites that you did not make.
+                        Sharing generated images without credit
+                      </Typography>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <XIcon color="error" />
+                      </ListItemIcon>
+                      <Typography>
+                        Claiming ownership of sprites
+                      </Typography>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemIcon>
+                        <XIcon color="error" />
+                      </ListItemIcon>
+                      <Typography>
+                        Claiming ownership of sprites
                       </Typography>
                     </ListItem>
                   </List>
@@ -119,21 +147,6 @@ export default function About() {
             </Grid>
           </Grid>
         </Container>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            Legalese version
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              You are free to use, copy, redistribute, or modify sprites and
-              portraits from this repository for your own projects and
-              contributions. When using portraits or sprites from this
-              repository, you must credit the contributors for each portrait and
-              sprite you use. This information can be found on the page for each
-              sprite.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
 
         <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
           FAQ
