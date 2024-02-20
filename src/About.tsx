@@ -130,14 +130,6 @@ export default function About() {
                         Claiming ownership of sprites
                       </Typography>
                     </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <XIcon color="error" />
-                      </ListItemIcon>
-                      <Typography>
-                        Claiming ownership of sprites
-                      </Typography>
-                    </ListItem>
                   </List>
                 </CardActions>
               </Card>
