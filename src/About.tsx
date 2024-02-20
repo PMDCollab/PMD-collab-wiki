@@ -40,7 +40,7 @@ export default function About() {
           Terms of Use
         </Typography>
         <Typography>
-          Custom sprites are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1">Attribution-NonCommercial 4.0 International</Link><img style={{ maxWidth: "30vw" }} src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" /><img style={{ maxWidth: "30vw" }} src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" /><img style={{ maxWidth: "30vw" }} src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" />
+          Custom sprites are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1">Attribution-NonCommercial 4.0 International</Link><img style={{ maxWidth: "10vw" }} src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" /><img style={{ maxWidth: "10vw" }} src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" /><img style={{ maxWidth: "10vw" }} src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" />
         </Typography>
         <Typography>
           All acceptable use of custom sprites must be done with <Link href="https://wiki.creativecommons.org/wiki/Recommended_practices_for_attribution">appropriate credit</Link>.  We recommend including a file or link of the <Link href="https://github.com/PMDCollab/SpriteCollab/blob/master/credit_names.txt">credit_names.txt</Link>, which contains all authors of the project.
