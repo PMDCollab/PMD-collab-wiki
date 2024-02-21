@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Paper, Typography } from "@mui/material"
+import { Paper, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { formatDate, getFormBounty, getMonsterBounty, thumbnailScale } from '../util'
 import { MonsterFormWithRef } from "./pokemon-carousel"
 import { Maybe } from '../generated/graphql'
@@ -19,31 +19,33 @@ export default function PokemonThumbnail({
   isSpeciesThumbnail = false,
   showForms
 }: Props) {
+  const boxScale = useMediaQuery(useTheme().breakpoints.down("md")) ? 0.75 : 1;
+  const boxSize = 80 * boxScale;
   const {
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
   } = Object.fromEntries(toggles);
-  const textBoxStyle = { width: 80, height: 25 };
+
+  const textBoxStyle = { width: boxSize, height: 25 * boxScale };
   const textBoxWithResize = (name?: Maybe<string>) => ({
     ...textBoxStyle,
-    fontSize: `${thumbnailScale(name)}em`,
-    lineHeight: `${1.2 / thumbnailScale(name)}em`
+    fontSize: `${thumbnailScale(name) * boxScale}em`,
+    lineHeight: `${1.2 / thumbnailScale(name)* boxScale}em`
   })
   return (
-    <Link to={`/${infoKey}?form=${formIndex}`}>
+    <Link to={`/${infoKey}?form=${formIndex}`} style={{ transform: "scale(0.5)" }}>
       <Paper
-        sx={{ minWidth: 80 }}
+        sx={{ minWidth: boxSize }}
         elevation={2}
       >
         {form.portraits.previewEmotion?.url ? (
           <img
             src={form.portraits.previewEmotion.url}
-            style={{ height: 80, imageRendering: "pixelated" }}
+            style={{ height: boxSize, imageRendering: "pixelated" }}
             loading='lazy'
           />
         ) : (
-          // TODO: Fix margin so that the image and text line up perfectly (6.93333px gap) -sec
-          <Typography variant="h4" align="center" sx={{ height: 80, display: "grid", marginBottom: 13 / 15, placeItems: "center" }}>
+          <Typography variant="h4" align="center" sx={{ height: boxSize, display: "grid", marginBottom: 13 / 15, placeItems: "center" }}>
             ?
           </Typography>
         )}
@@ -57,7 +59,7 @@ export default function PokemonThumbnail({
             {form.fullName}
           </Typography>
         )}
-        {index && <Typography align="center" color="GrayText" noWrap sx={{ width: 80, height: 25 }}>
+        {index && <Typography align="center" color="GrayText" noWrap sx={{ width: boxSize, height: 25 }}>
           {infoKey}
         </Typography>}
         {portraitAuthor && (
@@ -71,7 +73,7 @@ export default function PokemonThumbnail({
           </Typography>
         )}
         {lastModification && (
-          <Typography align="center" color="GrayText" noWrap sx={textBoxStyle}>
+          <Typography align="center" color="GrayText" noWrap sx={textBoxStyle} fontSize={16 * boxScale}>
             {formatDate(Math.max( // TODO: this sucks rewrite it
               form.portraits.modifiedDate && new Date(form.portraits.modifiedDate).getTime() || 0,
               form.sprites.modifiedDate && new Date(form.sprites.modifiedDate).getTime() || 0
@@ -79,12 +81,12 @@ export default function PokemonThumbnail({
           </Typography>
         )}
         {portraitBounty && (
-          <Typography color="GrayText" align="center" noWrap sx={textBoxStyle}>
-            {isSpeciesThumbnail ? getMonsterBounty(monster ,'portraits') : getFormBounty(form, 'portraits')} gp
+          <Typography color="GrayText" align="center" noWrap sx={textBoxStyle} fontSize={16 * boxScale}>
+            {isSpeciesThumbnail ? getMonsterBounty(monster, 'portraits') : getFormBounty(form, 'portraits')} gp
           </Typography>
         )}
         {spriteBounty && (
-          <Typography color="GrayText" align="center" noWrap sx={textBoxStyle}>
+          <Typography color="GrayText" align="center" noWrap sx={textBoxStyle} fontSize={16 * boxScale}>
             {isSpeciesThumbnail ? getMonsterBounty(monster, 'sprites') : getFormBounty(form, 'sprites')} gp
           </Typography>
         )}

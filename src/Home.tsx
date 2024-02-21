@@ -21,7 +21,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Filter, Toggle } from "./types/params"
 
 export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
-  const [currentText, setCurrentText] = useState("");
+  const textState = useState(""), [currentText] = textState;
   const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
   const splitFormState = useState<boolean>(false), [splitForms] = splitFormState;
   const unnecessaryState = useState<boolean>(false), [showUnnecessary] = unnecessaryState;
@@ -67,8 +67,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
           >
             Search for a pokemon, artist or pokedex number ...
           </Typography>
-          <Search currentText={currentText} setCurrentText={setCurrentText} />
-          {!isMobile && (
+          <Search textState={textState} />
             <Accordion sx={{ mt: 2 }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography color="text.secondary">
@@ -90,7 +89,6 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
                 />
               </AccordionDetails>
             </Accordion>
-          )}
         </Container>
 
         <PokemonCarousel

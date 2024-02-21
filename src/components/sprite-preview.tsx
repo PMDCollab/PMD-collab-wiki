@@ -25,6 +25,7 @@ export default function SpritePreview({ sprite, dungeon, animData, history }: Pr
         )
       }
 
+      // TODO: the phaser instance isn't being destroyed on page change, this seriously needs to be fixed
       if (node !== null) {
         gameContainer.current?.game.destroy(true)
       }

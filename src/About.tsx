@@ -42,9 +42,9 @@ export default function About() {
         <Typography>
           Custom sprites are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1">Attribution-NonCommercial 4.0 International</Link>. All acceptable use of custom sprites must be done with <Link href="https://wiki.creativecommons.org/wiki/Recommended_practices_for_attribution">appropriate credit</Link>.  We recommend including a file or link of the <Link href="https://github.com/PMDCollab/SpriteCollab/blob/master/credit_names.txt">credit_names.txt</Link>, which contains all authors of the project.
         </Typography>
-        <Container sx={{ mb: 2 }}>
+        <Container sx={{ mb: 2, mt: 2 }}>
           <Grid container spacing={2} justifyContent="space-around">
-            <Grid>
+            <Grid item>
               <Card>
                 <CardContent>
                   <Typography align="center" variant="h5">
@@ -89,7 +89,7 @@ export default function About() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid>
+            <Grid item>
               <Card>
                 <CardContent>
                   <Typography align="center" variant="h5">
