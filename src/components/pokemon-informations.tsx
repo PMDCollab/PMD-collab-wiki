@@ -1,7 +1,7 @@
 import Emotions from "./emotions"
 import SpritePreview from "./sprite-preview"
-import { Dungeon, IPMDCollab } from "../types/enum"
-import { useEffect, useRef, useState } from "react"
+import { Dungeon } from "../types/enum"
+import { useRef } from "react"
 import { MonsterForm } from "../generated/graphql"
 import Bounty from "./bounty"
 import {
@@ -18,7 +18,6 @@ import {
 } from "@mui/material"
 import { getLastModification } from "../util"
 import { CreditsPrimary, CreditsSecondary } from "./credits"
-import { XMLParser } from 'fast-xml-parser'
 
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />

@@ -4,6 +4,7 @@ import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
 import { Card, Grid, Typography } from "@mui/material"
+import { XMLParser } from 'fast-xml-parser'
 
 interface Props {
   sprite: Sprite
@@ -17,15 +18,17 @@ export default function SpritePreview({ sprite, dungeon, animDataXml, history }:
   const container = useCallback(
     (node: HTMLDivElement) => {
       async function initialize() {
+        const xmlData = await (await fetch(animDataXml)).text();
+        const parser = new XMLParser();
+        const data = parser.parse(xmlData) as IPMDCollab;
         gameContainer.current = new GameContainer(
           node,
           sprite,
-          animDataXml.AnimData,
+          data.AnimData,
           dungeon
         )
       }
 
-      // TODO: the phaser instance isn't being destroyed on page change, this seriously needs to be fixed
       if (node !== null) {
         gameContainer.current?.game.destroy(true)
       }
