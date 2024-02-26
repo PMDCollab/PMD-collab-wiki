@@ -18,6 +18,7 @@ import {
 } from "@mui/material"
 import { getLastModification } from "../util"
 import { CreditsPrimary, CreditsSecondary } from "./credits"
+import GameContainer from './phaser/game-container'
 
 export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -33,9 +34,10 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
 interface Props {
   info: MonsterForm
   infoKey: number
+  phaserWindows: GameContainer[]
 }
 export default function PokemonInformations({
-  info: { sprites, sprites: { animDataXml }, portraits }
+  info: { sprites, sprites: { animDataXml }, portraits }, phaserWindows
 }: Props) {
   const bg = useRef<Dungeon>(Object.values(Dungeon)[Math.floor(Math.random() * Object.values(Dungeon).length)]);
   const portraitDate = portraits.modifiedDate && new Date(portraits.modifiedDate)
@@ -137,6 +139,7 @@ export default function PokemonInformations({
                         sprite={sprite}
                         animDataXml={animDataXml}
                         history={sprites.history.filter((e) => !e.obsolete)}
+                        phaserWindows={phaserWindows}
                       />
                     </Paper>
                   </Grid>

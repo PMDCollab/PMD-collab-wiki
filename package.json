@@ -21,7 +21,7 @@
     "phaser": "^3.60.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.12.0",
+    "react-router-dom": "^6.22.1",
     "react-tabs": "^6.0.1",
     "typescript": "^4.9.5",
     "vite": "^4.4.9",
