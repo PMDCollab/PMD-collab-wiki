@@ -8,10 +8,10 @@ import { Card, Grid, Typography } from "@mui/material"
 interface Props {
   sprite: Sprite
   dungeon: Dungeon
-  animData: IPMDCollab
+  animDataXml: string
   history: MonsterHistory[]
 }
-export default function SpritePreview({ sprite, dungeon, animData, history }: Props) {
+export default function SpritePreview({ sprite, dungeon, animDataXml, history }: Props) {
   const gameContainer = useRef<GameContainer>()
 
   const container = useCallback(
@@ -20,7 +20,7 @@ export default function SpritePreview({ sprite, dungeon, animData, history }: Pr
         gameContainer.current = new GameContainer(
           node,
           sprite,
-          animData.AnimData,
+          animDataXml.AnimData,
           dungeon
         )
       }
@@ -32,7 +32,7 @@ export default function SpritePreview({ sprite, dungeon, animData, history }: Pr
 
       initialize()
     },
-    [animData, sprite, dungeon]
+    [animDataXml, sprite, dungeon]
   )
 
   return (
