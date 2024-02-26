@@ -23,7 +23,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
   let phaserWindows: GameContainer[] = [];
   function reset() {
     for (const window of phaserWindows) {
-      window.game.destroy(false);
+      window.game.destroy(true);
     }
     console.log(phaserWindows.length)
   }
