@@ -11,8 +11,9 @@ interface Props {
   dungeon: Dungeon
   animDataXml: string
   history: MonsterHistory[]
+  phaserWindows: GameContainer[]
 }
-export default function SpritePreview({ sprite, dungeon, animDataXml, history }: Props) {
+export default function SpritePreview({ sprite, dungeon, animDataXml, history, phaserWindows }: Props) {
   const gameContainer = useRef<GameContainer>()
 
   const container = useCallback(
@@ -27,13 +28,13 @@ export default function SpritePreview({ sprite, dungeon, animDataXml, history }:
           data.AnimData,
           dungeon
         )
+        phaserWindows.push(gameContainer.current);
       }
 
       if (node !== null) {
         gameContainer.current?.game.destroy(true)
+        initialize()
       }
-
-      initialize()
     },
     [animDataXml, sprite, dungeon]
   )
