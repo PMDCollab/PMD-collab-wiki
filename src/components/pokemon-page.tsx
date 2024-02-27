@@ -11,6 +11,7 @@ import {
   Select,
   Typography
 } from "@mui/material"
+import GameContainer from './phaser/game-container'
 
 interface Props {
   infoKey: number
@@ -19,6 +20,13 @@ interface Props {
   rawId: string
 }
 export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Props) {
+  let phaserWindows: GameContainer[] = [];
+  function reset() {
+    for (const window of phaserWindows) {
+      window.game.destroy(true);
+    }
+    console.log(phaserWindows.length)
+  }
   const { loading, error, data } = usePokemonQuery({
     variables: { id: infoKey }
   });
@@ -28,7 +36,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
   const form = formList?.[formIndex] ?? formList?.[0];
 
   const prevLink = prevIndex && (
-    <Link to={`/${prevIndex}`}>
+    <Link to={`/${prevIndex}`} onClick={reset}>
       <Typography variant="h6" color="text.secondary">
         {"<"}
         {prevIndex}
@@ -36,7 +44,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
     </Link>
   )
   const nextLink = nextIndex && (
-    <Link to={`/${nextIndex}`}>
+    <Link to={`/${nextIndex}`} onClick={reset}>
       <Typography variant="h6" color="text.secondary" align="right">
         {nextIndex}
         {">"}
@@ -76,10 +84,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
                     if (!formList) return;
                     const formIndex = formList.findIndex(f => f.fullName === e.target.value);
                     if (formIndex == -1) return;
-                    setSearchParam(param => {
-                      param.set("form", formIndex.toString())
-                      return param;
-                    });
+                    setSearchParam(param => (param.set("form", formIndex.toString()), param));
                   }}
                 >
                   {formList?.map(({ path, fullName }) => (
@@ -105,7 +110,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
         </Grid>
         <Divider sx={{ mt: 2 }} />
         {form && (
-          <PokemonInformations info={form} infoKey={infoKey} />
+          <PokemonInformations info={form} infoKey={infoKey} phaserWindows={phaserWindows}/>
         )}
       </Container>
     </Box>
