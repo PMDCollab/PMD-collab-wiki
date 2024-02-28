@@ -212,7 +212,7 @@ export default function About() {
           <AccordionDetails>
             <Typography>
               If you have created or want to learn how to create sprites, you
-              can join the #sprite-asset-help channel of the{" "}
+              can join the #spriting-help channel of the{" "}
               <Link href="https://discord.gg/skytemple">
                 SkyTemple discord server
               </Link>
