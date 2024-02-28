@@ -11,6 +11,7 @@ import {
   AccordionSummary,
   Box,
   Container,
+  Link,
   Typography,
   useMediaQuery,
   useTheme
@@ -55,7 +56,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
           color="text.secondary"
           gutterBottom
         >
-          Free to use <strong>WITH CREDIT</strong> for ROMhacks, fangames, etc. Don't use for
+          Free to use <strong><Link href='https://www.youtube.com' className='with-credit'>WITH CREDIT</Link></strong> for ROMhacks, fangames, etc. Don't use for
           commercial projects.
         </Typography>
         <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
@@ -68,27 +69,27 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
             Search for a pokemon, artist or pokedex number ...
           </Typography>
           <Search textState={textState} />
-            <Accordion sx={{ mt: 2 }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography color="text.secondary">
-                  Searching options
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <DisplayParameters
-                  toggleState={toggleState}
-                  filterState={filterState}
-                  splitFormState={splitFormState}
-                  unnecessaryState={unnecessaryState}
-                  showFormState={showFormState}
-                />
-                <PokemonRanking
-                  setToggles={setToggles}
-                  setRankBy={setRankBy}
-                  rankBy={rankBy}
-                />
-              </AccordionDetails>
-            </Accordion>
+          <Accordion sx={{ mt: 2 }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography color="text.secondary">
+                Searching options
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <DisplayParameters
+                toggleState={toggleState}
+                filterState={filterState}
+                splitFormState={splitFormState}
+                unnecessaryState={unnecessaryState}
+                showFormState={showFormState}
+              />
+              <PokemonRanking
+                setToggles={setToggles}
+                setRankBy={setRankBy}
+                rankBy={rankBy}
+              />
+            </AccordionDetails>
+          </Accordion>
         </Container>
 
         <PokemonCarousel
