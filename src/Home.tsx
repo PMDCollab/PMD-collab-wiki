@@ -56,7 +56,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
           color="text.secondary"
           gutterBottom
         >
-          Free to use <strong><Link href='https://www.youtube.com' className='with-credit'>WITH CREDIT</Link></strong> for ROMhacks, fangames, etc. Don't use for
+          Free to use <strong><Link href='#/About' className='with-credit'>WITH CREDIT</Link></strong> for ROMhacks, fangames, etc. Don't use for
           commercial projects.
         </Typography>
         <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
