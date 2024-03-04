@@ -216,7 +216,7 @@ export default function PokemonCarousel({
             <PokemonThumbnail
               infoKey={form.monster.rawId}
               form={form}
-              isSpeciesThumbnail={!splitForms}
+              isSpeciesThumbnail={splitForms}
               toggles={toggles}
               showForms={showForms}
             />
