@@ -4,6 +4,7 @@
   size-adjust: 150%;
 }
 
-strong {
+strong > .with-credit {
+  text-decoration: underline;
   color: red;
 }

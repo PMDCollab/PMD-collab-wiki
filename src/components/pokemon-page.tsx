@@ -1,6 +1,7 @@
 import PokemonInformations from "./pokemon-informations"
 import { Link, useSearchParams } from "react-router-dom"
-import { MonsterForm, usePokemonQuery } from "../generated/graphql"
+import { Link as MuiLink } from '@mui/material'
+import { Credit, MonsterForm, usePokemonQuery } from "../generated/graphql"
 import { Bar } from "./bar"
 import {
   Box,
@@ -12,6 +13,7 @@ import {
   Typography
 } from "@mui/material"
 import GameContainer from './phaser/game-container'
+import { useEffect, useState } from 'react'
 
 interface Props {
   infoKey: number
@@ -20,20 +22,34 @@ interface Props {
   rawId: string
 }
 export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Props) {
-  let phaserWindows: GameContainer[] = [];
+  const [creditsURL, setCreditsURL] = useState<string>();
+  const phaserWindows: GameContainer[] = [];
   function reset() {
     for (const window of phaserWindows) {
       window.game.destroy(true);
     }
-    console.log(phaserWindows.length)
   }
-  const { loading, error, data } = usePokemonQuery({
-    variables: { id: infoKey }
-  });
+  const { loading, error, data } = usePokemonQuery({ variables: { id: infoKey } });
   const [searchParam, setSearchParam] = useSearchParams({ form: "0" });
   const formList = data?.monster[0].forms as MonsterForm[] | undefined;
   const formIndex = parseInt(searchParam.get("form") ?? "0") ?? 0;
   const form = formList?.[formIndex] ?? formList?.[0];
+
+  useEffect(() => {
+    if (!form) return;
+    // TODO: could probably optimize this part idk not really that worth it
+    const allCredits = [
+      form.portraits.creditPrimary,
+      ...form.portraits.creditSecondary,
+      form.sprites.creditPrimary,
+      ...form.sprites.creditSecondary,
+    ].filter((credit, i, arr) => credit &&
+      i == arr.findIndex(credit2 => credit.name == credit2?.name)) as Credit[];
+    const creditText = allCredits
+      .map(credit => `${credit.name ?? "(No Name)"}\t${credit.contact ?? "(No Contact)"}`)
+      .join("\n");
+    setCreditsURL(URL.createObjectURL(new Blob([creditText], { type: 'text/plain' })));
+  }, [form])
 
   const prevLink = prevIndex && (
     <Link to={`/${prevIndex}`} onClick={reset}>
@@ -102,6 +118,8 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
                   ))}
                 </Select>
               )}
+              {/* credits.txt */}
+              {creditsURL && <MuiLink href={creditsURL} target='_blank'>credits.txt</MuiLink>}
             </div>
           </Grid>
           <Grid item xs={2}>
@@ -110,7 +128,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
         </Grid>
         <Divider sx={{ mt: 2 }} />
         {form && (
-          <PokemonInformations info={form} infoKey={infoKey} phaserWindows={phaserWindows}/>
+          <PokemonInformations info={form} infoKey={infoKey} phaserWindows={phaserWindows} />
         )}
       </Container>
     </Box>

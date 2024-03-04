@@ -9,14 +9,14 @@ interface Props {
   form: MonsterFormWithRef
   infoKey: string
   toggles: Map<Toggle, boolean>
-  isSpeciesThumbnail?: boolean
+  isSpeciesThumbnail: boolean
   showForms: boolean
 }
 export default function PokemonThumbnail({
   form, form: { monster, formIndex },
   infoKey,
   toggles,
-  isSpeciesThumbnail = false,
+  isSpeciesThumbnail,
   showForms
 }: Props) {
   const boxScale = useMediaQuery(useTheme().breakpoints.down("md")) ? 0.75 : 1;
