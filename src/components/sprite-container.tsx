@@ -22,19 +22,14 @@ export const SpriteContainer = (props: {
   sprite: SpriteQL
 }) => {
   return (
-    <Stage
-      width={200}
-      height={200}
-      onUnmount={() => {
-        utils.clearTextureCache()
-      }}
-    >
+    <Stage width={200} height={200}>
       <Sprite
         image={`/maps/${props.dungeon}.png`}
         x={100}
         y={100}
         anchor={{ x: 0.5, y: 0.5 }}
         scale={2}
+        alpha={0.9999}
       />
       <Suspense
         fallback={<Text text="Loading..." anchor={0.5} x={100} y={100} />}
@@ -66,9 +61,10 @@ const AnimatedPokemon = (props: {
   animationData: IAnimData
   sprite: SpriteQL
 }) => {
-  const [frames, setFrames] = useState<FrameObject[]>([])
-  const [shadowFrames, setShadowFrames] = useState<FrameObject[]>([])
-
+  const [framesObject, setFramesObject] = useState<FrameObject[]>([])
+  const [shadowFramesObject, setShadowFramesObject] = useState<FrameObject[]>(
+    []
+  )
   const metadata = props.animationData.Anims.Anim.find(
     ({ Name }) => Name === props.sprite.action
   )!
@@ -83,6 +79,10 @@ const AnimatedPokemon = (props: {
 
   // load
   useEffect(() => {
+    utils.clearTextureCache()
+    setFramesObject([])
+    setShadowFramesObject([])
+
     const { FrameWidth: frameWidth, FrameHeight: frameHeight } = metadata
 
     if (!Assets.cache.has(`${animUrl}-${action}-${AnimationType.ANIM}`)) {
@@ -149,13 +149,6 @@ const AnimatedPokemon = (props: {
 
         await spriteSheet.parse()
 
-        setFrames(
-          Object.keys(frames).map((frame) => ({
-            time: durations[frame] * 40,
-            texture: Texture.from(frame)
-          }))
-        )
-
         const shadowFrames: utils.Dict<ISpritesheetFrameData> = {}
         const shadowAnimations: utils.Dict<string[]> = { [action]: [] }
         const shadowDurations: utils.Dict<number> = {}
@@ -203,7 +196,14 @@ const AnimatedPokemon = (props: {
 
         await shadowSpriteSheet.parse()
 
-        setShadowFrames(
+        setFramesObject(
+          Object.keys(frames).map((frame) => ({
+            time: durations[frame] * 40,
+            texture: Texture.from(frame)
+          }))
+        )
+
+        setShadowFramesObject(
           Object.keys(shadowFrames).map((frame) => ({
             time: shadowDurations[frame] * 40,
             texture: Texture.from(frame)
@@ -214,25 +214,27 @@ const AnimatedPokemon = (props: {
       }
     }
     loadData()
-  }, [])
+  }, [animUrl])
 
-  return frames?.length > 0 && shadowFrames?.length > 0 ? (
+  return framesObject?.length > 0 && shadowFramesObject?.length > 0 ? (
     <>
       <AnimatedSprite
         isPlaying={true}
         x={100}
         y={100}
         anchor={{ x: 0.5, y: 0.5 }}
-        textures={shadowFrames}
+        textures={shadowFramesObject}
         scale={2}
+        name="shadow"
       />
       <AnimatedSprite
         isPlaying={true}
         x={100}
         y={100}
         anchor={{ x: 0.5, y: 0.5 }}
-        textures={frames}
+        textures={framesObject}
         scale={2}
+        name="pokemon"
       />
     </>
   ) : null
