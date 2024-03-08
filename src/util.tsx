@@ -23,7 +23,7 @@ export function getMonsterBounty(monster: Monster, type: 'sprites' | 'portraits'
     }, 0)
 }
 export function getFormBounty(monster: MonsterForm, type: 'sprites' | 'portraits'): number {
-    const { [type]: { bounty: { exists, full, incomplete } } } = monster;
+    const { exists, full, incomplete } = monster[type].bounty ?? {}
     return Math.max(exists || 0, full || 0, incomplete || 0);
 }
 
