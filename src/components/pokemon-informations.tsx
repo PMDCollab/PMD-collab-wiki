@@ -12,6 +12,7 @@ import {
 } from "@mui/material"
 import { useRef } from "react"
 import { MonsterForm } from "../generated/graphql"
+import { useAnimData } from "../hooks/useAnimData"
 import { Dungeon } from "../types/enum"
 import { getLastModification } from "../util"
 import Bounty from "./bounty"
@@ -47,6 +48,10 @@ export default function PokemonInformations({
       Math.floor(Math.random() * Object.values(Dungeon).length)
     ]
   )
+  if (!animDataXml) {
+    return null
+  }
+  const { data, isLoading } = useAnimData(animDataXml)
   const portraitDate =
     portraits.modifiedDate && new Date(portraits.modifiedDate)
   const spriteDate = sprites.modifiedDate && new Date(sprites.modifiedDate)
@@ -135,8 +140,7 @@ export default function PokemonInformations({
             </Grid>
           )}
         </Grid>
-
-        {sprites.actions.length ? (
+        {sprites.actions.length && data?.Anims?.Anim?.length ? (
           <Grid container spacing={2} sx={{ mt: 3 }}>
             {animDataXml &&
               sprites.actions.map(
@@ -147,7 +151,7 @@ export default function PokemonInformations({
                         <SpritePreview
                           dungeon={bg.current}
                           sprite={sprite}
-                          animDataXml={animDataXml}
+                          animationData={data}
                           history={sprites.history.filter((e) => !e.obsolete)}
                           infoKey={infoKey}
                         />
@@ -158,7 +162,9 @@ export default function PokemonInformations({
           </Grid>
         ) : (
           <Typography variant="h6">
-            {portraits.required
+            {isLoading
+              ? "Loading"
+              : portraits.required
               ? "No sprites available for now."
               : "This form's sprites are unnecessary."}
           </Typography>

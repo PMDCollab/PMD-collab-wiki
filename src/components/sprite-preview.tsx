@@ -1,27 +1,27 @@
 import { Card, Grid, Typography } from "@mui/material"
 import { MonsterHistory, Sprite } from "../generated/graphql"
-import { Dungeon } from "../types/enum"
+import { Dungeon, IAnimData } from "../types/enum"
 import Lock from "./lock"
 import { SpriteContainer } from "./sprite-container"
 
 interface Props {
   sprite: Sprite
   dungeon: Dungeon
-  animDataXml: string
+  animationData: IAnimData
   history: MonsterHistory[]
   infoKey: number
 }
 export default function SpritePreview({
   sprite,
   dungeon,
-  animDataXml,
+  animationData,
   history
 }: Props) {
   return (
     <Card>
       <SpriteContainer
         dungeon={dungeon}
-        animDataXml={animDataXml}
+        animationData={animationData}
         sprite={sprite}
       />
       <Grid container justifyContent="center" alignItems="start">

@@ -1,27 +1,31 @@
 import { AnimatedSprite, Sprite, Stage, Text } from "@pixi/react"
-import { XMLParser } from "fast-xml-parser"
-import {
-  Assets,
-  BaseTexture,
-  FrameObject,
-  ISpritesheetFrameData,
-  SCALE_MODES,
-  Spritesheet,
-  Texture,
-  utils
-} from "pixi.js"
-import { Suspense, useEffect, useState } from "react"
+import { BaseTexture, SCALE_MODES, TextStyle } from "pixi.js"
 import { Sprite as SpriteQL } from "../generated/graphql"
-import { AnimationType, Dungeon, IAnimData, IPMDCollab } from "../types/enum"
+import { useSprite } from "../hooks/useSprite"
+import { Dungeon, IAnim, IAnimData } from "../types/enum"
 
 BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST
 
 export const SpriteContainer = (props: {
   dungeon: Dungeon
-  animDataXml: string
+  animationData: IAnimData
   sprite: SpriteQL
 }) => {
-  return (
+  const metadata = props.animationData.Anims.Anim.find(
+    ({ Name }) => Name === props.sprite.action
+  )
+  const metadataDurations = metadata?.Durations?.Duration
+  const durationArray = metadataDurations
+    ? Array.isArray(metadataDurations)
+      ? metadataDurations
+      : [metadataDurations]
+    : undefined
+
+  const animUrl = props.sprite.animUrl
+  const action = props.sprite.action
+  const shadowsUrl = props.sprite.shadowsUrl
+
+  return metadata && durationArray ? (
     <Stage width={200} height={200}>
       <Sprite
         image={`/maps/${props.dungeon}.png`}
@@ -29,201 +33,52 @@ export const SpriteContainer = (props: {
         y={100}
         anchor={{ x: 0.5, y: 0.5 }}
         scale={2}
-        alpha={0.9999}
       />
-      <Suspense
-        fallback={<Text text="Loading..." anchor={0.5} x={100} y={100} />}
-      >
-        <AnimatedSpriteContainer
-          animDataXml={props.animDataXml}
-          sprite={props.sprite}
-        />
-      </Suspense>
+      <AnimatedPokemon
+        metadata={metadata}
+        sprite={props.sprite}
+        durationArray={durationArray}
+        animUrl={animUrl}
+        shadowsUrl={shadowsUrl}
+        action={action}
+      />
     </Stage>
-  )
-}
-
-const AnimatedSpriteContainer = (props: {
-  animDataXml: string
-  sprite: SpriteQL
-}) => {
-  const [data, setData] = useState<null | IPMDCollab>(null)
-  useEffect(() => {
-    const fetchData = fetchXml(props.animDataXml)
-    setData(fetchData)
-  }, [])
-  return data?.AnimData ? (
-    <AnimatedPokemon animationData={data.AnimData} sprite={props.sprite} />
   ) : null
 }
 
 const AnimatedPokemon = (props: {
-  animationData: IAnimData
+  metadata: IAnim
   sprite: SpriteQL
+  durationArray: number[]
+  animUrl: string
+  shadowsUrl: string
+  action: string
 }) => {
-  const [framesObject, setFramesObject] = useState<FrameObject[]>([])
-  const [shadowFramesObject, setShadowFramesObject] = useState<FrameObject[]>(
-    []
+  const { FrameWidth: frameWidth, FrameHeight: frameHeight } = props.metadata
+
+  const pokemon = useSprite(
+    props.animUrl,
+    frameWidth,
+    frameHeight,
+    props.durationArray
   )
-  const metadata = props.animationData.Anims.Anim.find(
-    ({ Name }) => Name === props.sprite.action
-  )!
-  const metadataDurations = metadata.Durations.Duration
-  const durationArray = Array.isArray(metadataDurations)
-    ? metadataDurations
-    : [metadataDurations]
+  const shadow = useSprite(
+    props.shadowsUrl,
+    frameWidth,
+    frameHeight,
+    props.durationArray
+  )
 
-  const animUrl = props.sprite.animUrl
-  const action = props.sprite.action
-  const shadowsUrl = props.sprite.shadowsUrl
-
-  // load
-  useEffect(() => {
-    utils.clearTextureCache()
-    setFramesObject([])
-    setShadowFramesObject([])
-
-    const { FrameWidth: frameWidth, FrameHeight: frameHeight } = metadata
-
-    if (!Assets.cache.has(`${animUrl}-${action}-${AnimationType.ANIM}`)) {
-      Assets.add({
-        alias: `${animUrl}-${action}-${AnimationType.ANIM}`,
-        src: animUrl
-      })
-    }
-
-    if (!Assets.cache.has(`${animUrl}-${action}-${AnimationType.SHADOW}`)) {
-      Assets.add({
-        alias: `${animUrl}-${action}-${AnimationType.SHADOW}`,
-        src: shadowsUrl
-      })
-    }
-
-    const loadData = async () => {
-      try {
-        const loadedAnim = await Assets.load<Texture>(
-          `${animUrl}-${action}-${AnimationType.ANIM}`
-        )
-
-        const loadedShadow = await Assets.load(
-          `${animUrl}-${action}-${AnimationType.SHADOW}`
-        )
-
-        const frames: utils.Dict<ISpritesheetFrameData> = {}
-        const animations: utils.Dict<string[]> = { [action]: [] }
-        const durations: utils.Dict<number> = {}
-        let k = 0
-
-        for (let j = 0; j < loadedAnim.baseTexture.height / frameHeight; j++) {
-          for (let i = 0; i < loadedAnim.baseTexture.width / frameWidth; i++) {
-            const id = `${animUrl}-${action}-${AnimationType.ANIM}-${k}`
-            frames[id] = {
-              frame: {
-                h: frameHeight,
-                w: frameWidth,
-                x: i * frameWidth,
-                y: j * frameHeight
-              },
-              sourceSize: {
-                h: frameHeight,
-                w: frameWidth
-              }
-            }
-            durations[id] = durationArray[i]
-            animations[action].push(id)
-            k++
-          }
-        }
-
-        const spriteSheet = new Spritesheet({
-          texture: Texture.from(`${animUrl}-${action}-${AnimationType.ANIM}`),
-          data: {
-            frames: frames,
-            meta: {
-              scale: 1
-            },
-
-            animations: animations
-          }
-        })
-
-        await spriteSheet.parse()
-
-        const shadowFrames: utils.Dict<ISpritesheetFrameData> = {}
-        const shadowAnimations: utils.Dict<string[]> = { [action]: [] }
-        const shadowDurations: utils.Dict<number> = {}
-
-        for (
-          let j = 0;
-          j < loadedShadow.baseTexture.height / frameHeight;
-          j++
-        ) {
-          for (
-            let i = 0;
-            i < loadedShadow.baseTexture.width / frameWidth;
-            i++
-          ) {
-            const id = `${animUrl}-${action}-${AnimationType.SHADOW}-${k}`
-            shadowFrames[id] = {
-              frame: {
-                h: frameHeight,
-                w: frameWidth,
-                x: i * frameWidth,
-                y: j * frameHeight
-              },
-              sourceSize: {
-                h: frameHeight,
-                w: frameWidth
-              }
-            }
-            shadowDurations[id] = durationArray[i]
-            shadowAnimations[action].push(id)
-            k++
-          }
-        }
-
-        const shadowSpriteSheet = new Spritesheet({
-          texture: Texture.from(`${animUrl}-${action}-${AnimationType.SHADOW}`),
-          data: {
-            frames: shadowFrames,
-            meta: {
-              scale: 1
-            },
-
-            animations: shadowAnimations
-          }
-        })
-
-        await shadowSpriteSheet.parse()
-
-        setFramesObject(
-          Object.keys(frames).map((frame) => ({
-            time: durations[frame] * 40,
-            texture: Texture.from(frame)
-          }))
-        )
-
-        setShadowFramesObject(
-          Object.keys(shadowFrames).map((frame) => ({
-            time: shadowDurations[frame] * 40,
-            texture: Texture.from(frame)
-          }))
-        )
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    loadData()
-  }, [animUrl])
-
-  return framesObject?.length > 0 && shadowFramesObject?.length > 0 ? (
+  return (!pokemon.isLoading || !shadow.isLoading) &&
+    shadow.frames &&
+    pokemon.frames ? (
     <>
       <AnimatedSprite
         isPlaying={true}
         x={100}
         y={100}
         anchor={{ x: 0.5, y: 0.5 }}
-        textures={shadowFramesObject}
+        textures={shadow.frames}
         scale={2}
         name="shadow"
       />
@@ -232,38 +87,26 @@ const AnimatedPokemon = (props: {
         x={100}
         y={100}
         anchor={{ x: 0.5, y: 0.5 }}
-        textures={framesObject}
+        textures={pokemon.frames}
         scale={2}
         name="pokemon"
       />
     </>
-  ) : null
-}
-
-function fetchXml(animDataXml: string) {
-  const parser = new XMLParser()
-  let result: any
-  let status = "pending"
-  let fetching = fetch(animDataXml)
-    .then((res) => res.text())
-    // Fetch request has gone well
-    .then((success) => {
-      status = "fulfilled"
-      result = parser.parse(success) as IPMDCollab
-    })
-    // Fetch request has failed
-    .catch((error) => {
-      status = "rejected"
-      result = error
-    })
-
-  return () => {
-    if (status === "pending") {
-      throw fetching // Suspend(A way to tell React data is still fetching)
-    } else if (status === "rejected") {
-      throw result // Result is an error
-    } else if (status === "fulfilled") {
-      return result // Result is a fulfilled promise
-    }
-  }
+  ) : (
+    <Text
+      text="Loading"
+      x={100}
+      y={100}
+      anchor={{ x: 0.5, y: 0.5 }}
+      style={
+        new TextStyle({
+          fontFamily: "wonderMail",
+          fontSize: 30,
+          fill: ["#fff"],
+          stroke: "#000",
+          strokeThickness: 1
+        })
+      }
+    />
+  )
 }
