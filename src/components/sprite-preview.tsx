@@ -1,47 +1,29 @@
-import { useCallback, useRef } from "react"
-import { MonsterHistory, Sprite } from "../generated/graphql"
-import { Dungeon, IPMDCollab } from "../types/enum"
-import Lock from "./lock"
-import GameContainer from "./phaser/game-container"
 import { Card, Grid, Typography } from "@mui/material"
-import { XMLParser } from 'fast-xml-parser'
+import { MonsterHistory, Sprite } from "../generated/graphql"
+import { Dungeon, IAnimData } from "../types/enum"
+import Lock from "./lock"
+import { SpriteContainer } from "./sprite-container"
 
 interface Props {
   sprite: Sprite
   dungeon: Dungeon
-  animDataXml: string
+  animationData: IAnimData
   history: MonsterHistory[]
-  phaserWindows: GameContainer[]
+  infoKey: number
 }
-export default function SpritePreview({ sprite, dungeon, animDataXml, history, phaserWindows }: Props) {
-  const gameContainer = useRef<GameContainer>()
-
-  const container = useCallback(
-    (node: HTMLDivElement) => {
-      async function initialize() {
-        const xmlData = await (await fetch(animDataXml)).text();
-        const parser = new XMLParser();
-        const data = parser.parse(xmlData) as IPMDCollab;
-        gameContainer.current = new GameContainer(
-          node,
-          sprite,
-          data.AnimData,
-          dungeon
-        )
-        phaserWindows.push(gameContainer.current);
-      }
-
-      if (node !== null) {
-        gameContainer.current?.game.destroy(true)
-        initialize()
-      }
-    },
-    [animDataXml, sprite, dungeon]
-  )
-
+export default function SpritePreview({
+  sprite,
+  dungeon,
+  animationData,
+  history
+}: Props) {
   return (
     <Card>
-      <div id={`action-${sprite.action}`} ref={container}></div>
+      <SpriteContainer
+        dungeon={dungeon}
+        animationData={animationData}
+        sprite={sprite}
+      />
       <Grid container justifyContent="center" alignItems="start">
         <Lock
           locked={sprite.locked}
