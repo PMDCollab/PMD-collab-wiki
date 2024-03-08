@@ -369,18 +369,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "reputation",
-            "description": "This may return some sort of point value for reputation for this user, if applicable and the source to get these points from is returning them properly. The value may be cached/stale for a while.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,

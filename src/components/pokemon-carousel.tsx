@@ -171,7 +171,7 @@ export default function PokemonCarousel({
         withPortraitPhases ||
         withSpritePhases ||
         portraitBounty ||
-        spriteBounty
+        spriteBounty,
     }
   })
   useEffect(() => {
@@ -216,7 +216,7 @@ export default function PokemonCarousel({
             <PokemonThumbnail
               infoKey={form.monster.rawId}
               form={form}
-              isSpeciesThumbnail={splitForms}
+              isSpeciesThumbnail={!splitForms}
               toggles={toggles}
               showForms={showForms}
             />
