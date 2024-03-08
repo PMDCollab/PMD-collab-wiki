@@ -25,7 +25,6 @@ export default function PokemonThumbnail({
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
   } = Object.fromEntries(toggles);
-
   const textBoxStyle = { width: boxSize, height: 25 * boxScale };
   const textBoxWithResize = (name?: Maybe<string>) => ({
     ...textBoxStyle,
