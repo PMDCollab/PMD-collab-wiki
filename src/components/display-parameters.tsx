@@ -14,7 +14,7 @@ export default function DisplayParameters({
   toggleState: [toggles, setToggle], filterState: [filters, setFilter],
   splitFormState: [splitForms, setSplitForms],
   unnecessaryState: [showUnnecessary, setShowUnnecessary],
-  showFormState: [showForms, setShowForms],
+  showFormState: [showForms, setShowForms]
 }: Props) {
   return (
     <Grid container spacing={2}>
@@ -25,7 +25,7 @@ export default function DisplayParameters({
           control={
             <Checkbox
               checked={splitForms}
-              onChange={async (e) => {
+              onChange={async e => {
                 setShowForms(e.target.checked)
                 setSplitForms(e.target.checked)
               }}
@@ -37,9 +37,7 @@ export default function DisplayParameters({
           control={
             <Checkbox
               checked={showUnnecessary}
-              onChange={async (e) => {
-                setShowUnnecessary(e.target.checked);
-              }}
+              onChange={async e => setShowUnnecessary(e.target.checked)}
             />
           }
         />
@@ -49,9 +47,7 @@ export default function DisplayParameters({
             <Checkbox
               disabled={!splitForms}
               checked={showForms && splitForms}
-              onChange={async (e) => {
-                setShowForms(e.target.checked);
-              }}
+              onChange={async (e) => setShowForms(e.target.checked)}
             />
           }
         />
@@ -64,9 +60,7 @@ export default function DisplayParameters({
             control={
               <Checkbox
                 checked={isShowing}
-                onChange={async (e) => {
-                  setToggle(prev => new Map([...prev, [toggle, e.target.checked]]))
-                }}
+                onChange={async (e) => setToggle(prev => new Map([...prev, [toggle, e.target.checked]]))}
               />
             }
             key={toggle}
@@ -83,9 +77,7 @@ export default function DisplayParameters({
               control={
                 <Checkbox
                   checked={isShowing}
-                  onChange={async (e) => {
-                    setFilter(prev => new Map([...prev, [filter, e.target.checked]]))
-                  }}
+                  onChange={async (e) => setFilter(prev => new Map([...prev, [filter, e.target.checked]]))}
                 />
               }
             />

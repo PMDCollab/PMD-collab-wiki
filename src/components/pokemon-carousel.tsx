@@ -127,6 +127,7 @@ interface Props {
   splitForms: boolean
   showUnnecessary: boolean
   showForms: boolean
+  creditsMode: boolean
 }
 export default function PokemonCarousel({
   currentText,
@@ -136,9 +137,11 @@ export default function PokemonCarousel({
   filters,
   splitForms,
   showUnnecessary,
-  showForms
+  showForms,
+  creditsMode
 }: Props) {
   const [limitedLoad, setLimitedLoad] = useState<boolean>(true);
+  const creditedMonsState = useState(new Set<string>());
   const {
     portraitAuthor,
     spriteAuthor,
@@ -219,6 +222,8 @@ export default function PokemonCarousel({
               isSpeciesThumbnail={splitForms}
               toggles={toggles}
               showForms={showForms}
+              creditsMode={creditsMode}
+              creditedMonsState={creditedMonsState}
             />
           </Grid>
         ))}

@@ -10,7 +10,9 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Checkbox,
   Container,
+  FormControlLabel,
   Link,
   Typography,
   useMediaQuery,
@@ -24,6 +26,8 @@ import { Filter, Toggle } from "./types/params"
 export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const textState = useState(""), [currentText] = textState;
   const [rankBy, setRankBy] = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
+  // TODO: maybe destructure early i might not need the state
+  const creditsModeState = useState<boolean>(false), [creditsMode, setCreditsMode] = creditsModeState;
   const splitFormState = useState<boolean>(false), [splitForms] = splitFormState;
   const unnecessaryState = useState<boolean>(false), [showUnnecessary] = unnecessaryState;
   const showFormState = useState<boolean>(false), [showForms] = showFormState;
@@ -50,6 +54,14 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
     <Box>
       <Bar />
       <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
+        <FormControlLabel
+          sx={{ position: 'absolute' }}
+          label={<Typography color="text.secondary">Credits Mode</Typography>}
+          control={<Checkbox
+            checked={creditsMode}
+            onChange={async e => setCreditsMode(e.target.checked)}
+          />}
+        />
         <Typography
           variant={isMobile ? "subtitle2" : "h5"}
           align="center"
@@ -101,6 +113,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
           showUnnecessary={showUnnecessary}
           showForms={showForms}
           ids={ids}
+          creditsMode={creditsMode}
         />
         <Footer meta={meta} />
       </Container>
