@@ -21,7 +21,6 @@ export const useSprite = (
     const fetchData = async () => {
       setFrames(null)
       setIsLoading(true)
-      utils.clearTextureCache()
       try {
         if (!Assets.cache.has(url)) {
           Assets.add({
@@ -68,7 +67,6 @@ export const useSprite = (
             animations: animations
           }
         })
-
         await spriteSheet.parse()
 
         setFrames(
