@@ -145,7 +145,7 @@ export default function PokemonPage({
           </Grid>
         </Grid>
         <Divider sx={{ mt: 2 }} />
-        {form && <PokemonInformations info={form} infoKey={infoKey} />}
+        {<PokemonInformations info={form} infoKey={infoKey} />}
       </Container>
     </Box>
   )
