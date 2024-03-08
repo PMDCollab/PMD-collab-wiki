@@ -68,10 +68,6 @@ export const useSprite = (
           }
         })
 
-        Object.keys(frames).forEach((id) => {
-          Texture.removeFromCache(id)
-        })
-
         await spriteSheet.parse()
 
         setFrames(
