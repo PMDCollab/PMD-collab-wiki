@@ -16,7 +16,7 @@ export const useAnimData = (url: string | undefined | null) => {
           const parsed = parser.parse(text) as IPMDCollab
           setData(parsed.AnimData)
         } catch (error) {
-          console.log(error)
+          console.warn(error)
         } finally {
           setIsLoading(false)
         }

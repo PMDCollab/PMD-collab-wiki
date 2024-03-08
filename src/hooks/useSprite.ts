@@ -67,6 +67,11 @@ export const useSprite = (
             animations: animations
           }
         })
+
+        Object.keys(frames).forEach((id) => {
+          Texture.removeFromCache(id)
+        })
+
         await spriteSheet.parse()
 
         setFrames(
@@ -76,7 +81,7 @@ export const useSprite = (
           }))
         )
       } catch (error) {
-        console.log(error)
+        console.warn(url, error)
       } finally {
         setIsLoading(false)
       }
