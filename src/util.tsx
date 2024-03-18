@@ -20,10 +20,10 @@ export function getMonsterBounty(monster: Monster, type: 'sprites' | 'portraits'
     return monster.forms.reduce((a, monster) => {
         if (!monster.portraits.required && !useUnnecessary) return a;
         return Math.max(a, getFormBounty(monster, type))
-    }, 0)
+    }, 0);
 }
 export function getFormBounty(monster: MonsterForm, type: 'sprites' | 'portraits'): number {
-    const { [type]: { bounty: { exists, full, incomplete } } } = monster;
+    const { exists, full, incomplete } = monster[type].bounty ?? {};
     return Math.max(exists || 0, full || 0, incomplete || 0);
 }
 

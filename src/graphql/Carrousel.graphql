@@ -4,6 +4,40 @@ fragment myBounty on MonsterBounty {
   full
 }
 
+fragment form on MonsterForm {
+  fullName @include(if: $withSplitForms)
+  portraits {
+    modifiedDate @include(if: $withSplitForms)
+    required @include(if: $withForms)
+    previewEmotion @include(if: $withSplitForms) {
+      url
+    }
+    bounty @include(if: $withPortraitBounty) {
+      ...myBounty
+    }
+    creditPrimary @include(if: $withCredits) {
+      name
+    }
+    creditSecondary @include(if: $withCredits) {
+      name
+    }
+    phase @include(if: $withPortraitPhases)
+  }
+  sprites {
+    modifiedDate @include(if: $withSplitForms)
+    required @include(if: $withForms)
+    bounty @include(if: $withSpriteBounty) {
+      ...myBounty
+    }
+    creditPrimary @include(if: $withCredits) {
+      name
+    }
+    creditSecondary @include(if: $withCredits) {
+      name
+    }
+    phase @include(if: $withSpritePhases)
+  }
+}
 query Carrousel(
   $ids: [Int!]!
   $withPortraitBounty: Boolean!
@@ -20,40 +54,11 @@ query Carrousel(
     name
     rawId
     forms @include(if: $withForms) {
-      fullName @include(if: $withSplitForms)
-      portraits {
-        modifiedDate @include(if: $withSplitForms)
-        required @include(if: $withForms)
-        previewEmotion @include(if: $withSplitForms) {
-          url
-        }
-        bounty @include(if: $withPortraitBounty) {
-          ...myBounty
-        }
-        creditPrimary @include(if: $withCredits) {
-          name
-        }
-        creditSecondary @include(if: $withCredits) {
-          name
-        }
-        phase @include(if: $withPortraitPhases)
-      }
-      sprites {
-        modifiedDate @include(if: $withSplitForms)
-        required @include(if: $withForms)
-        bounty @include(if: $withSpriteBounty) {
-          ...myBounty
-        }
-        creditPrimary @include(if: $withCredits) {
-          name
-        }
-        creditSecondary @include(if: $withCredits) {
-          name
-        }
-        phase @include(if: $withSpritePhases)
-      }
+      # TODO: make into fragment
+      ...form
     }
-    manual(path: "/") {
+    manual(path: "/") @skip(if: $withSplitForms) {
+      ...form
       portraits {
         modifiedDate @include(if: $withModifiedDate)
         creditPrimary {
