@@ -214,7 +214,7 @@ export default function PokemonCarousel({
   return <>
     {creditsMode && <div>
       <h1>Selected: {creditedMons.size}/{visibleMonsters.length}</h1>
-      <button onClick={() => generateCredits(visibleMonsters, creditedMons)}>Download!</button>
+      <button onClick={() => generateCredits(visibleMonsters, creditedMons)} style={{ margin: '10px' }}>Download!</button>
     </div>}
     <Grid container spacing={2} justifyContent={"center"}>
       {loading
