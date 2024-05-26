@@ -98,7 +98,7 @@ export default function PokemonThumbnail({
   return creditsMode ?
     <div
       style={{ cursor: 'pointer', border: creditedMons.has(uniqueName) ? '2px solid green' : '2px solid red' }}
-      onClick={async () => {
+      onClick={() => {
         if (creditedMons.has(uniqueName)) {
           const newSet = new Set([...creditedMons]);
           newSet.delete(uniqueName)
