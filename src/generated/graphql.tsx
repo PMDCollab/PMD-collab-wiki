@@ -67,6 +67,29 @@ export type Credit = {
   name?: Maybe<Scalars['String']>;
 };
 
+/** A known license from a common list of options. */
+export type KnownLicense = {
+  __typename?: 'KnownLicense';
+  license: KnownLicenseType;
+};
+
+/** A known license from a common list of options. */
+export enum KnownLicenseType {
+  /** Licensed under Creative Commons Attribution-NonCommercial 4.0 International */
+  CcByNc4 = 'CC_BY_NC4',
+  /** Original license: When using, you must credit the contributors. */
+  Pmdcollab1 = 'PMDCOLLAB1',
+  /** License for works between May 2023 - March 2024: You are free to use, copy redistribute or modify sprites and portraits from this repository for your own projects and contributions. When using portraits or sprites from this repository, you must credit the contributors for each portrait and sprite you use. */
+  Pmdcollab2 = 'PMDCOLLAB2',
+  /** The license could not be determined. */
+  Unknown = 'UNKNOWN',
+  /** The license is not specified / the work is unlicensed. */
+  Unspecified = 'UNSPECIFIED'
+}
+
+/** The license that applies to the image of a sprite action or portrait emotion. */
+export type License = KnownLicense | OtherLicense;
+
 export type Meta = {
   __typename?: 'Meta';
   /** Version of this API. */
@@ -165,6 +188,8 @@ export type MonsterFormPortraits = {
   emotionsFlipped: Array<Portrait>;
   /** List of all modifications made to those portraits since its creation. */
   history: Array<MonsterHistory>;
+  /** Returns a URL to retrieve the credits text file for the portraits for this form. */
+  historyUrl?: Maybe<Scalars['String']>;
   /** The date and time this portrait set was last updated. */
   modifiedDate?: Maybe<Scalars['DateTimeUtc']>;
   /** Current completion phase of the portraits. */
@@ -207,6 +232,8 @@ export type MonsterFormSprites = {
   creditSecondary: Array<Credit>;
   /** List of all modifications made to those sprites since its creation. */
   history: Array<MonsterHistory>;
+  /** Returns a URL to retrieve the credits text file for the sprites for this form. */
+  historyUrl?: Maybe<Scalars['String']>;
   /** The date and time this sprite set was last updated. */
   modifiedDate?: Maybe<Scalars['DateTimeUtc']>;
   /** Current completion phase of the sprites. */
@@ -230,6 +257,8 @@ export type MonsterHistory = {
   __typename?: 'MonsterHistory';
   /** The author that contributed for this history entry. */
   credit?: Maybe<Credit>;
+  /** The license applying to this modification. */
+  license: License;
   /** A list of emotions or actions that were changed in this history entry. */
   modifications: Array<Scalars['String']>;
   /** The date of the history entry submission. */
@@ -243,6 +272,12 @@ export type OtherBounty = {
   __typename?: 'OtherBounty';
   bounty: Scalars['Int'];
   phase: Scalars['Int'];
+};
+
+/** An unknown license. The name is the identifier for the license. */
+export type OtherLicense = {
+  __typename?: 'OtherLicense';
+  name: Scalars['String'];
 };
 
 /** The current phase of the sprite or portrait. */
@@ -321,7 +356,9 @@ export type SpriteUnion = CopyOf | Sprite;
 
 export type MyBountyFragment = { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null };
 
-export type FormFragment = { __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, required?: boolean, phase?: Phase, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, required?: boolean, phase?: Phase, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> } };
+export type CreditableHistoryFragment = { __typename?: 'MonsterHistory', modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, id: string, discordHandle?: string | null, contact?: string | null } | null };
+
+export type FormFragment = { __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, required?: boolean, phase?: Phase, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }>, history: Array<{ __typename?: 'MonsterHistory', modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, id: string, discordHandle?: string | null, contact?: string | null } | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, required?: boolean, phase?: Phase, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }>, history: Array<{ __typename?: 'MonsterHistory', modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, id: string, discordHandle?: string | null, contact?: string | null } | null }> } };
 
 export type CarrouselQueryVariables = Exact<{
   ids: Array<Scalars['Int']> | Scalars['Int'];
@@ -333,10 +370,11 @@ export type CarrouselQueryVariables = Exact<{
   withCredits: Scalars['Boolean'];
   withForms: Scalars['Boolean'];
   withSplitForms: Scalars['Boolean'];
+  withCreditableHistory: Scalars['Boolean'];
 }>;
 
 
-export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms?: Array<{ __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, required?: boolean, phase?: Phase, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, required?: boolean, phase?: Phase, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> } }>, manual?: { __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, required?: boolean, phase?: Phase, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, required?: boolean, phase?: Phase, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }> } } | null }> };
+export type CarrouselQuery = { __typename?: 'Query', monster: Array<{ __typename?: 'Monster', id: number, name: string, rawId: string, forms?: Array<{ __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, required?: boolean, phase?: Phase, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }>, history: Array<{ __typename?: 'MonsterHistory', modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, id: string, discordHandle?: string | null, contact?: string | null } | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, required?: boolean, phase?: Phase, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }>, history: Array<{ __typename?: 'MonsterHistory', modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, id: string, discordHandle?: string | null, contact?: string | null } | null }> } }>, manual?: { __typename?: 'MonsterForm', fullName?: string, portraits: { __typename?: 'MonsterFormPortraits', modifiedDate?: any | null, required?: boolean, phase?: Phase, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, previewEmotion?: { __typename?: 'Portrait', url: string } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }>, history: Array<{ __typename?: 'MonsterHistory', modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, id: string, discordHandle?: string | null, contact?: string | null } | null }> }, sprites: { __typename?: 'MonsterFormSprites', modifiedDate?: any | null, required?: boolean, phase?: Phase, creditPrimary?: { __typename?: 'Credit', name?: string | null } | null, bounty?: { __typename?: 'MonsterBounty', incomplete?: number | null, exists?: number | null, full?: number | null }, creditSecondary?: Array<{ __typename?: 'Credit', name?: string | null }>, history: Array<{ __typename?: 'MonsterHistory', modifications: Array<string>, obsolete: boolean, credit?: { __typename?: 'Credit', name?: string | null, id: string, discordHandle?: string | null, contact?: string | null } | null }> } } | null }> };
 
 export type ContributorsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -366,6 +404,18 @@ export const MyBountyFragmentDoc = gql`
   full
 }
     `;
+export const CreditableHistoryFragmentDoc = gql`
+    fragment creditableHistory on MonsterHistory {
+  credit {
+    name
+    id
+    discordHandle
+    contact
+  }
+  modifications
+  obsolete
+}
+    `;
 export const FormFragmentDoc = gql`
     fragment form on MonsterForm {
   fullName @include(if: $withSplitForms)
@@ -385,6 +435,9 @@ export const FormFragmentDoc = gql`
       name
     }
     phase @include(if: $withPortraitPhases)
+    history {
+      ...creditableHistory @include(if: $withCreditableHistory)
+    }
   }
   sprites {
     modifiedDate @include(if: $withSplitForms)
@@ -399,9 +452,13 @@ export const FormFragmentDoc = gql`
       name
     }
     phase @include(if: $withSpritePhases)
+    history {
+      ...creditableHistory @include(if: $withCreditableHistory)
+    }
   }
 }
-    ${MyBountyFragmentDoc}`;
+    ${MyBountyFragmentDoc}
+${CreditableHistoryFragmentDoc}`;
 export const MyCreditFragmentDoc = gql`
     fragment myCredit on Credit {
   name
@@ -421,7 +478,7 @@ export const MyHistoryFragmentDoc = gql`
 }
     ${MyCreditFragmentDoc}`;
 export const CarrouselDocument = gql`
-    query Carrousel($ids: [Int!]!, $withPortraitBounty: Boolean!, $withSpriteBounty: Boolean!, $withModifiedDate: Boolean!, $withPortraitPhases: Boolean!, $withSpritePhases: Boolean!, $withCredits: Boolean!, $withForms: Boolean!, $withSplitForms: Boolean!) {
+    query Carrousel($ids: [Int!]!, $withPortraitBounty: Boolean!, $withSpriteBounty: Boolean!, $withModifiedDate: Boolean!, $withPortraitPhases: Boolean!, $withSpritePhases: Boolean!, $withCredits: Boolean!, $withForms: Boolean!, $withSplitForms: Boolean!, $withCreditableHistory: Boolean!) {
   monster(filter: $ids) {
     id
     name
@@ -472,6 +529,7 @@ export const CarrouselDocument = gql`
  *      withCredits: // value for 'withCredits'
  *      withForms: // value for 'withForms'
  *      withSplitForms: // value for 'withSplitForms'
+ *      withCreditableHistory: // value for 'withCreditableHistory'
  *   },
  * });
  */

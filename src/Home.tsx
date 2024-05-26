@@ -22,6 +22,7 @@ import { Bar } from "./components/bar"
 import { Footer } from "./components/footer"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Filter, Toggle } from "./types/params"
+import { useSearchParams } from 'react-router-dom'
 
 export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const textState = useState(""), [currentText] = textState;
@@ -49,19 +50,20 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   ])), [filters] = filterState;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [searchParams] = useSearchParams();
 
   return (
     <Box>
       <Bar />
       <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
-        <FormControlLabel
+        {searchParams.get("beta") == "true" && <FormControlLabel
           sx={{ position: 'absolute' }}
           label={<Typography color="text.secondary">Credits Mode</Typography>}
           control={<Checkbox
             checked={creditsMode}
             onChange={async e => setCreditsMode(e.target.checked)}
           />}
-        />
+        />}
         <Typography
           variant={isMobile ? "subtitle2" : "h5"}
           align="center"

@@ -53,16 +53,8 @@ export default function Contributors() {
                       !discordHandle?.includes("Deleted User")
                   )
                   .sort((a, b) => {
-                    const nameA = a.name
-                      ? a.name
-                      : a.discordHandle
-                      ? a.discordHandle
-                      : ""
-                    const nameB = b.name
-                      ? b.name
-                      : b.discordHandle
-                      ? b.discordHandle
-                      : ""
+                    const nameA = a.name || a.discordHandle || ""
+                    const nameB = b.name || b.discordHandle || ""
                     return nameA.localeCompare(nameB)
                   })
                   .map(({ name, id, discordHandle, contact }) => (

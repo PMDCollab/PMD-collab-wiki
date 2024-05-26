@@ -23,6 +23,7 @@ export default function PokemonThumbnail({
   creditsMode,
   creditedMonsState: [creditedMons, setCreditedMons]
 }: Props) {
+  const uniqueName = monster.name + (form.fullName || monster.name);
   const boxScale = useMediaQuery(useTheme().breakpoints.down("md")) ? 0.75 : 1;
   const boxSize = 80 * boxScale;
   const {
@@ -96,14 +97,17 @@ export default function PokemonThumbnail({
   </Paper>
   return creditsMode ?
     <div
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', border: creditedMons.has(uniqueName) ? '2px solid green' : '2px solid red' }}
       onClick={async () => {
-        if (creditedMons.has(form.fullName)) {
-          const newSet = new Set(...creditedMons);
-          return newSet.delete(form.fullName), newSet;
+        if (creditedMons.has(uniqueName)) {
+          const newSet = new Set([...creditedMons]);
+          newSet.delete(uniqueName)
+          setCreditedMons(newSet);
+        } else {
+          setCreditedMons(credit => new Set([...credit, uniqueName]));
         }
-        return new Set(...creditedMons, form.fullName);
-      }}>{insideThumbnail}</div> :
+      }}>{insideThumbnail}
+    </div> :
     <Link to={`/${infoKey}?form=${formIndex}`} style={{ transform: "scale(0.5)" }}>
       {insideThumbnail}
     </Link>
