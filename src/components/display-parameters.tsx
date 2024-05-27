@@ -1,21 +1,16 @@
 import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
-import { Filter, Toggle, filterNames, toggleNames } from '../types/params'
-import { Fragment } from 'react'
-import { UseState } from '../util'
+import { filterNames, toggleNames } from '../types/params'
+import { Fragment, useContext } from 'react'
+import { Context } from '../Home'
 
-interface Props {
-  toggleState: UseState<Map<Toggle, boolean>>
-  filterState: UseState<Map<Filter, boolean>>
-  splitFormState: UseState<boolean>
-  unnecessaryState: UseState<boolean>
-  showFormState: UseState<boolean>
-}
-export default function DisplayParameters({
-  toggleState: [toggles, setToggle], filterState: [filters, setFilter],
-  splitFormState: [splitForms, setSplitForms],
-  unnecessaryState: [showUnnecessary, setShowUnnecessary],
-  showFormState: [showForms, setShowForms]
-}: Props) {
+export default function DisplayParameters() {
+  const {
+    toggleState: [toggles, setToggle],
+    filterState: [filters, setFilters],
+    splitFormState: [splitForms, setSplitForms],
+    unnecessaryState: [showUnnecessary, setShowUnnecessary],
+    showFormState: [showForms, setShowForms]
+  } = useContext(Context)!;
   return (
     <Grid container spacing={2}>
       <Grid item key={0}>
@@ -77,7 +72,7 @@ export default function DisplayParameters({
               control={
                 <Checkbox
                   checked={isShowing}
-                  onChange={async (e) => setFilter(prev => new Map([...prev, [filter, e.target.checked]]))}
+                  onChange={async (e) => setFilters(prev => new Map([...prev, [filter, e.target.checked]]))}
                 />
               }
             />

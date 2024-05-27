@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import { Monster, MonsterForm, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Box, Grid, Link, Skeleton, Typography } from "@mui/material"
 import { getFormBounty, getMonsterBounty, groupBy } from "../util"
-import { Filter, Toggle } from '../types/params'
+import { Filter } from '../types/params'
 import { generateCredits } from './generate-credits'
+import { Context } from '../Home'
 
 export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number } // TODO: don't merge with existing form
 
@@ -121,26 +122,20 @@ function filterMonsterForms(
 
 interface Props {
   currentText: string
-  rankBy: RankMethod
   ids: number[]
-  toggles: Map<Toggle, boolean>
-  filters: Map<Filter, boolean>
-  splitForms: boolean
-  showUnnecessary: boolean
-  showForms: boolean
-  creditsMode: boolean
 }
 export default function PokemonCarousel({
   currentText,
-  rankBy,
-  ids,
-  toggles,
-  filters,
-  splitForms,
-  showUnnecessary,
-  showForms,
-  creditsMode
+  ids
 }: Props) {
+  const {
+    filterState: [filters],
+    toggleState: [toggles],
+    rankState: [rankBy],
+    unnecessaryState: [showUnnecessary],
+    splitFormState: [splitForms],
+    creditsModeState: [creditsMode]
+  } = useContext(Context)!;
   const [limitedLoad, setLimitedLoad] = useState<boolean>(true);
   const creditedMonsState = useState(new Set<string>()), [creditedMons] = creditedMonsState;
   const {
@@ -228,8 +223,6 @@ export default function PokemonCarousel({
               infoKey={form.monster.rawId}
               form={form}
               isSpeciesThumbnail={!splitForms}
-              toggles={toggles}
-              showForms={showForms}
               creditsMode={creditsMode}
               creditedMonsState={creditedMonsState}
             />

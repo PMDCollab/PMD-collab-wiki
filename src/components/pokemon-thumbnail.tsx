@@ -1,29 +1,27 @@
 import { Link } from "react-router-dom"
 import { Paper, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { UseState, formatDate, getFormBounty, getMonsterBounty, thumbnailScale } from '../util'
+import { UseState, formatDate, getFormBounty, getMonsterBounty, getUniqueMonsterName, thumbnailScale } from '../util'
 import { MonsterFormWithRef } from "./pokemon-carousel"
 import { Maybe } from '../generated/graphql'
-import { Toggle } from '../types/params'
+import { useContext } from 'react'
+import { Context } from '../Home'
 
 interface Props {
   form: MonsterFormWithRef
   infoKey: string
-  toggles: Map<Toggle, boolean>
   isSpeciesThumbnail: boolean
-  showForms: boolean
   creditsMode: boolean
   creditedMonsState: UseState<Set<string>>
 }
 export default function PokemonThumbnail({
   form, form: { monster, formIndex },
   infoKey,
-  toggles,
   isSpeciesThumbnail,
-  showForms,
   creditsMode,
   creditedMonsState: [creditedMons, setCreditedMons]
 }: Props) {
-  const uniqueName = monster.name + (form.fullName || monster.name);
+  const { toggleState: [toggles], showFormState: [showForms] } = useContext(Context)!;
+  const uniqueName = getUniqueMonsterName(monster, form);
   const boxScale = useMediaQuery(useTheme().breakpoints.down("md")) ? 0.75 : 1;
   const boxSize = 80 * boxScale;
   const {

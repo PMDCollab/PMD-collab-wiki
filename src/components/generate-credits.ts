@@ -1,6 +1,11 @@
 import { Credit } from '../generated/graphql';
+import { getUniqueMonsterName } from '../util';
 import { MonsterFormWithRef } from './pokemon-carousel';
 
+/**
+ * This entire file literally just exists for the shopping cart feature
+ * i couldn't throw this code anywhere else without it looking ugly
+ */
 type CreditString = string;
 type SpriteType = 'sprites' | 'portraits';
 type Pokemon = string;
@@ -14,12 +19,12 @@ export async function generateCredits(visibleMonsters: MonsterFormWithRef[], cre
   }
   let buffer = `All custom graphics not originating from official PMD games are licensed under Attribution-NonCommercial 4.0 International ` +
     `http://creativecommons.org/licenses/by/4.0/.\n` +
-    `All graphics referred to in this file can be found in http://sprites.pmdcollab.org/\n`;
+    `All graphics referred to in this file can be found in http://sprites.pmdcollab.org/\n\n`;
 
   const creditFormat: OfficialCreditFormat = {};
   for (const form of visibleMonsters) {
     const monsterName = form.monster.name
-    if (!creditedMonsters.has(monsterName + (form.fullName || monsterName))) continue;
+    if (!creditedMonsters.has(getUniqueMonsterName(form.monster, form))) continue;
     for (const history of form.portraits.history) {
       if (history.obsolete || !history.credit) continue;
       const creditPerson = creditToString(history.credit);
