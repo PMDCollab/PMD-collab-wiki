@@ -4,6 +4,17 @@ fragment myBounty on MonsterBounty {
   full
 }
 
+fragment creditableHistory on MonsterHistory {
+  credit {
+    name
+    id
+    discordHandle
+    contact
+  }
+  modifications
+  obsolete
+}
+
 fragment form on MonsterForm {
   fullName @include(if: $withSplitForms)
   portraits {
@@ -22,6 +33,9 @@ fragment form on MonsterForm {
       name
     }
     phase @include(if: $withPortraitPhases)
+    history {
+      ...creditableHistory @include(if: $withCreditableHistory)
+    }
   }
   sprites {
     modifiedDate @include(if: $withSplitForms)
@@ -36,6 +50,9 @@ fragment form on MonsterForm {
       name
     }
     phase @include(if: $withSpritePhases)
+    history {
+      ...creditableHistory @include(if: $withCreditableHistory)
+    }
   }
 }
 query Carrousel(
@@ -48,13 +65,13 @@ query Carrousel(
   $withCredits: Boolean!
   $withForms: Boolean!
   $withSplitForms: Boolean!
+  $withCreditableHistory: Boolean!
 ) {
   monster(filter: $ids) {
     id
     name
     rawId
     forms @include(if: $withForms) {
-      # TODO: make into fragment
       ...form
     }
     manual(path: "/") @skip(if: $withSplitForms) {

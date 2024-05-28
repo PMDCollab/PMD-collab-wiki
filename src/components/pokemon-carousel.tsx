@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import { Monster, MonsterForm, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Box, Grid, Link, Skeleton, Typography } from "@mui/material"
 import { getFormBounty, getMonsterBounty, groupBy } from "../util"
-import { Filter, Toggle } from '../types/params'
+import { Filter } from '../types/params'
+import { generateCredits } from './generate-credits'
+import { Context } from '../Home'
 
 export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number } // TODO: don't merge with existing form
 
@@ -120,25 +122,22 @@ function filterMonsterForms(
 
 interface Props {
   currentText: string
-  rankBy: RankMethod
   ids: number[]
-  toggles: Map<Toggle, boolean>
-  filters: Map<Filter, boolean>
-  splitForms: boolean
-  showUnnecessary: boolean
-  showForms: boolean
 }
 export default function PokemonCarousel({
   currentText,
-  rankBy,
-  ids,
-  toggles,
-  filters,
-  splitForms,
-  showUnnecessary,
-  showForms
+  ids
 }: Props) {
+  const {
+    filterState: [filters],
+    toggleState: [toggles],
+    rankState: [rankBy],
+    unnecessaryState: [showUnnecessary],
+    splitFormState: [splitForms],
+    creditsModeState: [creditsMode]
+  } = useContext(Context)!;
   const [limitedLoad, setLimitedLoad] = useState<boolean>(true);
+  const creditedMonsState = useState(new Set<string>()), [creditedMons] = creditedMonsState;
   const {
     portraitAuthor,
     spriteAuthor,
@@ -165,13 +164,16 @@ export default function PokemonCarousel({
         withCredits ||
         rankBy == RankMethod.PORTRAIT_AUTHOR ||
         rankBy == RankMethod.SPRITE_AUTHOR ||
-        splitForms,
+        splitForms ||
+        creditsMode,
       withForms:
         withCredits ||
         withPortraitPhases ||
         withSpritePhases ||
         portraitBounty ||
-        spriteBounty,
+        spriteBounty ||
+        creditsMode,
+      withCreditableHistory: creditsMode, // TODO: remove flag so that history fetching is done in generate-credits.ts
     }
   })
   useEffect(() => {
@@ -204,7 +206,11 @@ export default function PokemonCarousel({
     </Typography>
   </Box>
 
-  return (
+  return <>
+    {creditsMode && <div>
+      <h1>Selected: {creditedMons.size}/{visibleMonsters.length}</h1>
+      <button onClick={() => generateCredits(visibleMonsters, creditedMons)} style={{ margin: '10px' }}>Download!</button>
+    </div>}
     <Grid container spacing={2} justifyContent={"center"}>
       {loading
         ? Array.from({ length: 100 }, (_, i) => <Grid item key={i}>
@@ -217,11 +223,11 @@ export default function PokemonCarousel({
               infoKey={form.monster.rawId}
               form={form}
               isSpeciesThumbnail={!splitForms}
-              toggles={toggles}
-              showForms={showForms}
+              creditsMode={creditsMode}
+              creditedMonsState={creditedMonsState}
             />
           </Grid>
         ))}
     </Grid>
-  )
+  </>
 }

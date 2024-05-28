@@ -398,6 +398,95 @@
       },
       {
         "kind": "OBJECT",
+        "name": "KnownLicense",
+        "description": "A known license from a common list of options.",
+        "fields": [
+          {
+            "name": "license",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "KnownLicenseType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "KnownLicenseType",
+        "description": "A known license from a common list of options.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "CC_BY_NC4",
+            "description": "Licensed under Creative Commons Attribution-NonCommercial 4.0 International",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PMDCOLLAB1",
+            "description": "Original license: When using, you must credit the contributors.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PMDCOLLAB2",
+            "description": "License for works between May 2023 - March 2024: You are free to use, copy redistribute or modify sprites and portraits from this repository for your own projects and contributions. When using portraits or sprites from this repository, you must credit the contributors for each portrait and sprite you use.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UNKNOWN",
+            "description": "The license could not be determined.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UNSPECIFIED",
+            "description": "The license is not specified / the work is unlicensed.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "License",
+        "description": "The license that applies to the image of a sprite action or portrait emotion.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "KnownLicense",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "OtherLicense",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
         "name": "Meta",
         "description": null,
         "fields": [
@@ -1106,6 +1195,18 @@
             "deprecationReason": null
           },
           {
+            "name": "historyUrl",
+            "description": "Returns a URL to retrieve the credits text file for the portraits for this form.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "modifiedDate",
             "description": "The date and time this portrait set was last updated.",
             "args": [],
@@ -1362,6 +1463,18 @@
             "deprecationReason": null
           },
           {
+            "name": "historyUrl",
+            "description": "Returns a URL to retrieve the credits text file for the sprites for this form.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "modifiedDate",
             "description": "The date and time this sprite set was last updated.",
             "args": [],
@@ -1469,6 +1582,22 @@
             "deprecationReason": null
           },
           {
+            "name": "license",
+            "description": "The license applying to this modification.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "UNION",
+                "name": "License",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "modifications",
             "description": "A list of emotions or actions that were changed in this history entry.",
             "args": [],
@@ -1561,6 +1690,33 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "OtherLicense",
+        "description": "An unknown license. The name is the identifier for the license.",
+        "fields": [
+          {
+            "name": "name",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },

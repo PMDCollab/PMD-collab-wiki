@@ -5,9 +5,9 @@ export const DISCORD_APP_URL = "https://cdn.discordapp.com/attachments/"
 export const REQUEST_ITEMS_SIZE = 100
 
 export type CreditInformation = {
-  contact: string | undefined
-  discord: string | undefined
-  name: string | undefined
+  contact?: string
+  discord?: string
+  name?: string
 }
 
 export enum AnimationType {

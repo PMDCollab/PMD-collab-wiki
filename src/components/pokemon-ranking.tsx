@@ -1,14 +1,14 @@
-import { Dispatch, SetStateAction } from "react"
+import { useContext } from "react"
 import { RankMethod } from "../types/enum"
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
-import { Toggle, rankMethodToToggle } from '../types/params'
+import { rankMethodToToggle } from '../types/params'
+import { Context } from '../Home'
 
-interface Props {
-  setToggles: Dispatch<SetStateAction<Map<Toggle, boolean>>>
-  rankBy: RankMethod
-  setRankBy: Dispatch<SetStateAction<RankMethod>>
-}
-export default function PokemonRanking({ setToggles, rankBy, setRankBy }: Props) {
+export default function PokemonRanking() {
+  const {
+    toggleState: [_, setToggles],
+    rankState: [rankBy, setRankBy]
+  } = useContext(Context)!;
   return (
     <FormControl sx={{ mt: 2 }} fullWidth>
       <InputLabel id="rank-by-label">Rank by</InputLabel>
