@@ -23,23 +23,23 @@ export async function generateCredits(visibleMonsters: MonsterFormWithRef[], cre
 
   const creditFormat: OfficialCreditFormat = {};
   for (const form of visibleMonsters) {
-    const monsterName = form.monster.name
-    if (!creditedMonsters.has(getUniqueMonsterName(form.monster, form))) continue;
+    const monsterName = getUniqueMonsterName(form.monster, form);
+    if (!creditedMonsters.has(monsterName)) continue;
     for (const history of form.portraits.history) {
       if (history.obsolete || !history.credit) continue;
       const creditPerson = creditToString(history.credit);
       if (!creditFormat[creditPerson]) creditFormat[creditPerson] = { sprites: {}, portraits: {} } as Record<SpriteType, Record<Pokemon, Emotion[]>>;
       const portraitCredits = creditFormat[creditPerson].portraits;
-      const trueName = !form.fullName || monsterName === form.fullName ? monsterName : monsterName + form.fullName;
-      portraitCredits[trueName] = [...history.modifications];
+      if (portraitCredits[monsterName]) portraitCredits[monsterName].push(...history.modifications); // TODO: dont push duplicates
+      else portraitCredits[monsterName] = [...history.modifications];
     }
     for (const history of form.sprites.history) { // TODO: dont copy this code maybe
       if (history.obsolete || !history.credit) continue;
       const creditPerson = creditToString(history.credit);
       if (!creditFormat[creditPerson]) creditFormat[creditPerson] = { sprites: {}, portraits: {} } as Record<SpriteType, Record<Pokemon, Emotion[]>>;
       const portraitCredits = creditFormat[creditPerson].sprites;
-      const trueName = !form.fullName || monsterName === form.fullName ? monsterName : `${monsterName} ${form.fullName}`;
-      portraitCredits[trueName] = [...history.modifications];
+      if (portraitCredits[monsterName]) portraitCredits[monsterName].push(...history.modifications);
+      else portraitCredits[monsterName] = [...history.modifications];
     }
   }
   // parse creditFormat into a string
@@ -51,11 +51,10 @@ export async function generateCredits(visibleMonsters: MonsterFormWithRef[], cre
       if (spriteType == 'sprites') buffer += `\tSprite:\n`;
       else buffer += `\tPortrait:\n`;
       for (const [pokemon, emotions] of Object.entries(monsterCredits)) {
-        buffer += `\t\t${pokemon}: ${emotions.join(",")}\n`;
+        buffer += `\t\t${pokemon}: ${[...new Set(emotions)].join(",")}\n`; // TODO: don't remove duplicates here maybe? idk
       }
     }
   }
-
   // paste to text
   const url = URL.createObjectURL(new Blob([buffer], { type: 'text/plain' }));
   window.open(url, '_blank');

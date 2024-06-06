@@ -3,10 +3,11 @@ import { RankMethod } from "../types/enum"
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import { rankMethodToToggle } from '../types/params'
 import { Context } from '../Home'
+import { toggleParamCallback } from '../util'
 
 export default function PokemonRanking() {
   const {
-    toggleState: [_, setToggles],
+    searchParamsState: [_, setSearchParams],
     rankState: [rankBy, setRankBy]
   } = useContext(Context)!;
   return (
@@ -22,7 +23,7 @@ export default function PokemonRanking() {
           setRankBy(selectedRankMethod);
           if (selectedRankMethod == RankMethod.NAME) return;
           const selectedToggle = rankMethodToToggle[selectedRankMethod];
-          setToggles(toggle => new Map([...toggle, [selectedToggle, true]]));
+          setSearchParams(toggleParamCallback(selectedToggle, true));
         }}
       >
         {Object.values(RankMethod).map((r) => (
