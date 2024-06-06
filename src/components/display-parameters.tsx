@@ -2,15 +2,20 @@ import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
 import { filterNames, toggleNames } from '../types/params'
 import { Fragment, useContext } from 'react'
 import { Context } from '../Home'
+import { toggleParamCallback } from '../util';
 
 export default function DisplayParameters() {
   const {
-    toggleState: [toggles, setToggle],
-    filterState: [filters, setFilters],
-    splitFormState: [splitForms, setSplitForms],
-    unnecessaryState: [showUnnecessary, setShowUnnecessary],
-    showFormState: [showForms, setShowForms]
+    searchParamsState: [_, setSearchParams],
+    toggleState,
+    filterState,
+    miscState
   } = useContext(Context)!;
+  const {
+    splitForms,
+    showUnnecessary,
+    showFormName
+  } = miscState;
   return (
     <Grid container spacing={2}>
       <Grid item key={0}>
@@ -21,8 +26,8 @@ export default function DisplayParameters() {
             <Checkbox
               checked={splitForms}
               onChange={async e => {
-                setShowForms(e.target.checked)
-                setSplitForms(e.target.checked)
+                setSearchParams(toggleParamCallback('showFormName', e.target.checked))
+                setSearchParams(toggleParamCallback('splitForms', e.target.checked))
               }}
             />
           }
@@ -32,7 +37,7 @@ export default function DisplayParameters() {
           control={
             <Checkbox
               checked={showUnnecessary}
-              onChange={async e => setShowUnnecessary(e.target.checked)}
+              onChange={async e => setSearchParams(toggleParamCallback('showUnnecessary', e.target.checked))}
             />
           }
         />
@@ -41,21 +46,21 @@ export default function DisplayParameters() {
           control={
             <Checkbox
               disabled={!splitForms}
-              checked={showForms && splitForms}
-              onChange={async (e) => setShowForms(e.target.checked)}
+              checked={showFormName && splitForms}
+              onChange={async (e) => setSearchParams(toggleParamCallback('showFormName', e.target.checked))}
             />
           }
         />
       </Grid>
       <Grid item key={1}>
         <Typography sx={{ fontWeight: "bold" }}>Toggles</Typography>
-        {[...toggles.entries()].map(([toggle, isShowing]) => (
+        {[...toggleState.entries()].map(([toggle, isShowing]) => (
           <FormControlLabel
             label={<Typography color="text.secondary">{toggleNames[toggle]}</Typography>}
             control={
               <Checkbox
                 checked={isShowing}
-                onChange={async (e) => setToggle(prev => new Map([...prev, [toggle, e.target.checked]]))}
+                onChange={async (e) => setSearchParams(toggleParamCallback(toggle, e.target.checked))}
               />
             }
             key={toggle}
@@ -64,7 +69,7 @@ export default function DisplayParameters() {
       </Grid>
       <Grid item key={2}>
         <Typography sx={{ fontWeight: "bold" }}>Filters</Typography>
-        {[...filters.entries()].map(([filter, isShowing], index) => (
+        {[...filterState.entries()].map(([filter, isShowing], index) => (
           <Fragment key={filter}>
             {index == 3 && <br />}
             <FormControlLabel
@@ -72,7 +77,7 @@ export default function DisplayParameters() {
               control={
                 <Checkbox
                   checked={isShowing}
-                  onChange={async (e) => setFilters(prev => new Map([...prev, [filter, e.target.checked]]))}
+                  onChange={async (e) => setSearchParams(toggleParamCallback(filter, e.target.checked))}
                 />
               }
             />
