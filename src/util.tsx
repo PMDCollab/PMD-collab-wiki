@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Maybe, Monster, MonsterForm } from './generated/graphql';
+import { URLSearchParamsInit } from 'react-router-dom';
 
 export type UseState<T> = [T, Dispatch<SetStateAction<T>>];
 
@@ -38,4 +39,14 @@ export function groupBy<T, K extends PropertyKey>(arr: T[], cb: (element: T) => 
 
 export function getUniqueMonsterName(monster: Monster, form?: MonsterForm) {
   return !form?.fullName || monster.name == form.fullName ? monster.name : `${monster.name} ${form.fullName}`;
+}
+
+/**
+ * Returns a callback that is used in setSearchParams to toggle a parameter on/off. Falsy values will omit the parameter entirely.
+ * @param key the key to set
+ * @param value the value to set it to or delete
+ * @returns a callback that is used in setSearchParams to toggle a parameter on/off
+ */
+export function toggleParamCallback<T>(key: string, value: T): (prev: URLSearchParams) => URLSearchParamsInit {
+  return param => (value ? param.set(key, value.toString()) : param.delete(key), param)
 }

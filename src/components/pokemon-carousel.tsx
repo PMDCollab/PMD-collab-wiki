@@ -22,40 +22,45 @@ function getFilterType(filter: Filter): { type: 'sprites' | 'portraits', phase: 
   }
 }
 
+// TODO: test performance for returning a comparator instead of the function being the comparator
 function rankMonsters(
   rankBy: RankMethod,
-  a: MonsterFormWithRef,
-  b: MonsterFormWithRef,
   splitForms: boolean,
   showUnnecessary: boolean
-) {
+): (a: MonsterFormWithRef, b: MonsterFormWithRef) => number {
   switch (rankBy) {
     case RankMethod.POKEDEX_NUMBER:
-      return a.monster.id - b.monster.id;
+      return (a, b) => a.monster.id - b.monster.id;
     case RankMethod.LAST_MODIFICATION:
-      const { portraits: { modifiedDate: dap }, sprites: { modifiedDate: das } } = a;
-      const { portraits: { modifiedDate: dbp }, sprites: { modifiedDate: dbs } } = b;
-      return Math.max(new Date(dbp ?? 0).getTime(), new Date(dbs ?? 0).getTime()) -
-        Math.max(new Date(dap ?? 0).getTime(), new Date(das ?? 0).getTime());
+      return (a, b) => {
+        const { portraits: { modifiedDate: dap }, sprites: { modifiedDate: das } } = a;
+        const { portraits: { modifiedDate: dbp }, sprites: { modifiedDate: dbs } } = b;
+        return Math.max(new Date(dbp ?? 0).getTime(), new Date(dbs ?? 0).getTime()) -
+          Math.max(new Date(dap ?? 0).getTime(), new Date(das ?? 0).getTime());
+      }
     case RankMethod.NAME:
-      return a.monster.name.localeCompare(b.monster.name)
+      return (a, b) => a.monster.name.localeCompare(b.monster.name);
     case RankMethod.PORTRAIT_AUTHOR:
-      const aName = a.portraits.creditPrimary?.name
-      const bName = b.portraits.creditPrimary?.name
-      if (!aName || !bName) return aName ? -1 : 1
-      return aName.localeCompare(bName)
+      return (a, b) => {
+        const aName = a.portraits.creditPrimary?.name;
+        const bName = b.portraits.creditPrimary?.name;
+        if (!aName || !bName) return aName ? -1 : 1;
+        return aName.localeCompare(bName);
+      }
     case RankMethod.SPRITE_AUTHOR:
-      const aNameSprite = a.sprites.creditPrimary?.name
-      const bNameSprite = b.sprites.creditPrimary?.name
-      if (!aNameSprite || !bNameSprite) return aNameSprite ? -1 : 1
-      return aNameSprite.localeCompare(bNameSprite)
+      return (a, b) => {
+        const aNameSprite = a.sprites.creditPrimary?.name
+        const bNameSprite = b.sprites.creditPrimary?.name
+        if (!aNameSprite || !bNameSprite) return aNameSprite ? -1 : 1
+        return aNameSprite.localeCompare(bNameSprite)
+      }
     case RankMethod.PORTRAIT_BOUNTY:
-      return splitForms
+      return (a, b) => splitForms
         ? getFormBounty(b, 'portraits') - getFormBounty(a, 'portraits')
         : getMonsterBounty(b.monster, 'portraits', showUnnecessary) -
         getMonsterBounty(a.monster, 'portraits', showUnnecessary)
     case RankMethod.SPRITE_BOUNTY:
-      return splitForms
+      return (a, b) => splitForms
         ? getFormBounty(b, 'sprites') - getFormBounty(a, 'sprites')
         : getMonsterBounty(b.monster, 'sprites', showUnnecessary) -
         getMonsterBounty(a.monster, 'sprites', showUnnecessary)
@@ -117,7 +122,7 @@ function filterMonsterForms(
   }
   return forms
     .filter(({ portraits, sprites }) => !splitForms || portraits.required || sprites.required || showUnnecessary)
-    .sort((a, b) => rankMonsters(rankBy, a, b, splitForms, showUnnecessary) ?? 0);
+    .sort(rankMonsters(rankBy, splitForms, showUnnecessary));
 }
 
 interface Props {
@@ -129,14 +134,12 @@ export default function PokemonCarousel({
   ids
 }: Props) {
   const {
-    filterState: [filters],
-    toggleState: [toggles],
+    filterState,
+    toggleState,
+    miscState,
     rankState: [rankBy],
-    unnecessaryState: [showUnnecessary],
-    splitFormState: [splitForms],
-    creditsModeState: [creditsMode]
   } = useContext(Context)!;
-  const [limitedLoad, setLimitedLoad] = useState<boolean>(true);
+  const [limitedLoad, setLimitedLoad] = useState(true);
   const creditedMonsState = useState(new Set<string>()), [creditedMons] = creditedMonsState;
   const {
     portraitAuthor,
@@ -144,9 +147,14 @@ export default function PokemonCarousel({
     portraitBounty,
     spriteBounty,
     lastModification
-  } = Object.fromEntries(toggles);
-  const withPortraitPhases = [...filters.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "portraits")
-  const withSpritePhases = [...filters.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "sprites")
+  } = Object.fromEntries(toggleState);
+  const {
+    splitForms,
+    creditsMode,
+    showUnnecessary
+  } = miscState;
+  const withPortraitPhases = [...filterState.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "portraits")
+  const withSpritePhases = [...filterState.entries()].some(([filter, isShowing]) => isShowing && getFilterType(filter).type == "sprites")
   const withCredits = portraitAuthor || spriteAuthor || !!currentText || splitForms
   // TODO: use refetch and fetchMore options in carrousel query to save time -sec
   const { loading, error, data } = useCarrouselQuery({
@@ -190,11 +198,11 @@ export default function PokemonCarousel({
       splitForms,
       showUnnecessary,
       currentText,
-      filters,
+      filterState,
       rankBy
     )
     return monsters;
-  }, [data, splitForms, currentText, filters, rankBy])
+  }, [data, splitForms, currentText, filterState, rankBy])
 
   if (error) return <Box textAlign='center' alignItems='center'>
     <h1>Uh Oh!</h1>
@@ -223,7 +231,6 @@ export default function PokemonCarousel({
               infoKey={form.monster.rawId}
               form={form}
               isSpeciesThumbnail={!splitForms}
-              creditsMode={creditsMode}
               creditedMonsState={creditedMonsState}
             />
           </Grid>

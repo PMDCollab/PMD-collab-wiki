@@ -10,24 +10,23 @@ interface Props {
   form: MonsterFormWithRef
   infoKey: string
   isSpeciesThumbnail: boolean
-  creditsMode: boolean
   creditedMonsState: UseState<Set<string>>
 }
 export default function PokemonThumbnail({
   form, form: { monster, formIndex },
   infoKey,
   isSpeciesThumbnail,
-  creditsMode,
   creditedMonsState: [creditedMons, setCreditedMons]
 }: Props) {
-  const { toggleState: [toggles], showFormState: [showForms] } = useContext(Context)!;
+  const { toggleState, miscState } = useContext(Context)!;
+  const { creditsMode, showFormName } = miscState;
   const uniqueName = getUniqueMonsterName(monster, form);
   const boxScale = useMediaQuery(useTheme().breakpoints.down("md")) ? 0.75 : 1;
   const boxSize = 80 * boxScale;
   const {
     index, spriteAuthor, portraitAuthor, lastModification,
     portraitBounty, spriteBounty
-  } = Object.fromEntries(toggles);
+  } = Object.fromEntries(toggleState);
   const textBoxStyle = { width: boxSize, height: 25 * boxScale };
   const textBoxWithResize = (name?: Maybe<string>) => ({
     ...textBoxStyle,
@@ -56,7 +55,7 @@ export default function PokemonThumbnail({
     >
       {monster.name}
     </Typography>
-    {showForms && (
+    {showFormName && (
       <Typography color="GrayText" align="center" noWrap sx={textBoxWithResize(form.fullName)}>
         {form.fullName}
       </Typography>
@@ -98,9 +97,11 @@ export default function PokemonThumbnail({
       style={{ cursor: 'pointer', border: creditedMons.has(uniqueName) ? '2px solid green' : '2px solid red' }}
       onClick={() => {
         if (creditedMons.has(uniqueName)) {
-          const newSet = new Set([...creditedMons]);
-          newSet.delete(uniqueName)
-          setCreditedMons(newSet);
+          setCreditedMons(creditedMons => {
+            const newSet = new Set([...creditedMons]);
+            newSet.delete(uniqueName)
+            return newSet;
+          });
         } else {
           setCreditedMons(credit => new Set([...credit, uniqueName]));
         }

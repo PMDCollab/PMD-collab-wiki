@@ -55,7 +55,6 @@ export async function generateCredits(visibleMonsters: MonsterFormWithRef[], cre
       }
     }
   }
-
   // paste to text
   const url = URL.createObjectURL(new Blob([buffer], { type: 'text/plain' }));
   window.open(url, '_blank');
