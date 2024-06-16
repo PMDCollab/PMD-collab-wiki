@@ -38,6 +38,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const rankState = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
   // the lord the savior use search params
   const searchParamsState = useSearchParams(), [searchParams, setSearchParams] = searchParamsState;
+  // TODO: make these objects instead of maps
   const toggleState = paramsToMap<Toggle, boolean>(searchParams, toggles, param => param === "true");
   const filterState = paramsToMap<Filter, boolean>(searchParams, filters, param => param === "true");
   const miscState = paramsToObject<MiscParams, boolean>(searchParams, miscParams, param => param === "true");
