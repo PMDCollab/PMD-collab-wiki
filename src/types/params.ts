@@ -12,7 +12,7 @@ export const toggles: Toggle[] = [
   'lastModification',
   'portraitBounty',
   'spriteBounty'
-] as const;
+];
 
 export const rankMethodToToggle: Record<Exclude<RankMethod, RankMethod.NAME>, Toggle> = {
   [RankMethod.POKEDEX_NUMBER]: 'index',
@@ -47,7 +47,7 @@ export const filters: Filter[] = [
   'fullyFeaturedSprites',
   'existingSprites',
   'incompleteSprites'
-] as const;
+];
 
 export const filterNames: Record<Filter, string> = {
   fullyFeaturedPortraits: "Fully-Featured Portraits",
@@ -56,7 +56,7 @@ export const filterNames: Record<Filter, string> = {
   fullyFeaturedSprites: "Fully-Featured Sprites",
   existingSprites: "Existing Sprites",
   incompleteSprites: "Incomplete Sprites"
-} as const;
+};
 
 /**
  * i'm just putting this here because i like grouping state into maps and it makes things nicer for me
@@ -68,7 +68,7 @@ export const miscParams: MiscParams[] = [
   'splitForms',
   'showUnnecessary',
   'showFormName'
-] as const;
+];
 
 /**
  * Takes a URLSearchParams object and parses state into a map containing the specified keys.
