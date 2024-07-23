@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
+import { Checkbox, FormControlLabel, Grid, Link, Typography } from "@mui/material"
 import { filterNames, toggleNames } from '../types/params'
 import { Fragment, useContext } from 'react'
 import { Context } from '../Home'
@@ -18,7 +18,17 @@ export default function DisplayParameters() {
   } = miscState;
   return (
     <Grid container spacing={2}>
-      <Grid item key={0}>
+      <Grid item key={0} xs={12}>
+        <Typography sx={{ fontWeight: "bold" }}>Credits <Link href="https://github.com/PMDCollab/PMD-collab-wiki/pull/100">(New!)</Link></Typography>
+        <FormControlLabel
+          label={<Typography color="text.secondary">Credits Mode</Typography>}
+          control={<Checkbox
+            checked={miscState.creditsMode}
+            onChange={async e => setSearchParams(toggleParamCallback('creditsMode', e.target.checked))}
+          />}
+        />
+      </Grid>
+      <Grid item key={1} xs={12}>
         <Typography sx={{ fontWeight: "bold" }}>Forms View</Typography>
         <FormControlLabel
           label={<Typography color="text.secondary">Split Forms</Typography>}
@@ -52,7 +62,7 @@ export default function DisplayParameters() {
           }
         />
       </Grid>
-      <Grid item key={1}>
+      <Grid item key={2} xs={12}>
         <Typography sx={{ fontWeight: "bold" }}>Toggles</Typography>
         {[...toggleState.entries()].map(([toggle, isShowing]) => (
           <FormControlLabel
@@ -67,7 +77,7 @@ export default function DisplayParameters() {
           />
         ))}
       </Grid>
-      <Grid item key={2}>
+      <Grid item key={3} xs={12}>
         <Typography sx={{ fontWeight: "bold" }}>Filters</Typography>
         {[...filterState.entries()].map(([filter, isShowing], index) => (
           <Fragment key={filter}>
