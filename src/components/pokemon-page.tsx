@@ -13,7 +13,7 @@ import {
   Typography
 } from "@mui/material"
 import GameContainer from './phaser/game-container'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 interface Props {
   infoKey: number
@@ -22,7 +22,6 @@ interface Props {
   rawId: string
 }
 export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Props) {
-  const [creditsURL, setCreditsURL] = useState<string>();
   const phaserWindows: GameContainer[] = [];
   function reset() {
     for (const window of phaserWindows) {
@@ -35,8 +34,8 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
   const formIndex = parseInt(searchParam.get("form") ?? "0") ?? 0;
   const form = formList?.[formIndex] ?? formList?.[0];
 
-  useEffect(() => {
-    if (!form) return;
+  const creditsURL = useMemo(() => {
+    if (!form) return '';
     // TODO: could probably optimize this part idk not really that worth it
     const allCredits = [
       form.portraits.creditPrimary,
@@ -48,8 +47,8 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
     const creditText = allCredits
       .map(credit => `${credit.name ?? "(No Name)"}\t${credit.contact ?? "(No Contact)"}`)
       .join("\n");
-    setCreditsURL(URL.createObjectURL(new Blob([creditText], { type: 'text/plain' })));
-  }, [form])
+    return URL.createObjectURL(new Blob([creditText], { type: 'text/plain' }));
+  }, [form]);
 
   const prevLink = prevIndex && (
     <Link to={`/${prevIndex}`} onClick={reset}>

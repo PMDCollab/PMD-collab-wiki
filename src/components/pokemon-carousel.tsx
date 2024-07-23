@@ -1,14 +1,15 @@
-import { useContext, useEffect, useMemo, useState } from "react"
+import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Monster, MonsterForm, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
-import { Box, Grid, Link, Skeleton, Typography } from "@mui/material"
+import { Button, Grid, Skeleton } from "@mui/material"
 import { getFormBounty, getMonsterBounty, groupBy } from "../util"
 import { Filter } from '../types/params'
 import { generateCredits } from './generate-credits'
 import { Context } from '../Home'
+import ErrorPage from '../ErrorPage'
 
-export type MonsterFormWithRef = MonsterForm & { monster: Monster, formIndex: number } // TODO: don't merge with existing form
+export type MonsterFormWithRef = { form: MonsterForm, monster: Monster, formIndex: number } // TODO: don't merge with existing form
 
 function getFilterType(filter: Filter): { type: 'sprites' | 'portraits', phase: Phase } {
   const type = filter.endsWith('Sprites') ? 'sprites' : 'portraits';
@@ -33,8 +34,8 @@ function rankMonsters(
       return (a, b) => a.monster.id - b.monster.id;
     case RankMethod.LAST_MODIFICATION:
       return (a, b) => {
-        const { portraits: { modifiedDate: dap }, sprites: { modifiedDate: das } } = a;
-        const { portraits: { modifiedDate: dbp }, sprites: { modifiedDate: dbs } } = b;
+        const { portraits: { modifiedDate: dap }, sprites: { modifiedDate: das } } = a.form;
+        const { portraits: { modifiedDate: dbp }, sprites: { modifiedDate: dbs } } = b.form;
         return Math.max(new Date(dbp ?? 0).getTime(), new Date(dbs ?? 0).getTime()) -
           Math.max(new Date(dap ?? 0).getTime(), new Date(das ?? 0).getTime());
       }
@@ -42,26 +43,26 @@ function rankMonsters(
       return (a, b) => a.monster.name.localeCompare(b.monster.name);
     case RankMethod.PORTRAIT_AUTHOR:
       return (a, b) => {
-        const aName = a.portraits.creditPrimary?.name;
-        const bName = b.portraits.creditPrimary?.name;
+        const aName = a.form.portraits.creditPrimary?.name;
+        const bName = b.form.portraits.creditPrimary?.name;
         if (!aName || !bName) return aName ? -1 : 1;
         return aName.localeCompare(bName);
       }
     case RankMethod.SPRITE_AUTHOR:
       return (a, b) => {
-        const aNameSprite = a.sprites.creditPrimary?.name
-        const bNameSprite = b.sprites.creditPrimary?.name
+        const aNameSprite = a.form.sprites.creditPrimary?.name
+        const bNameSprite = b.form.sprites.creditPrimary?.name
         if (!aNameSprite || !bNameSprite) return aNameSprite ? -1 : 1
         return aNameSprite.localeCompare(bNameSprite)
       }
     case RankMethod.PORTRAIT_BOUNTY:
       return (a, b) => splitForms
-        ? getFormBounty(b, 'portraits') - getFormBounty(a, 'portraits')
+        ? getFormBounty(b.form, 'portraits') - getFormBounty(a.form, 'portraits')
         : getMonsterBounty(b.monster, 'portraits', showUnnecessary) -
         getMonsterBounty(a.monster, 'portraits', showUnnecessary)
     case RankMethod.SPRITE_BOUNTY:
       return (a, b) => splitForms
-        ? getFormBounty(b, 'sprites') - getFormBounty(a, 'sprites')
+        ? getFormBounty(b.form, 'sprites') - getFormBounty(a.form, 'sprites')
         : getMonsterBounty(b.monster, 'sprites', showUnnecessary) -
         getMonsterBounty(a.monster, 'sprites', showUnnecessary)
   }
@@ -77,51 +78,58 @@ function filterMonsterForms(
 ) {
   // Although not a lot of time is spent filtering out it would be better to avoid unnecessary checks here -sec
   const lowerCaseText = currentText.toLowerCase();
-  if (lowerCaseText) forms = forms.filter(splitForms
-    ? ({ monster: { name, id }, portraits, sprites }) =>
-      name.toLowerCase().includes(lowerCaseText) ||
-      portraits.creditPrimary?.name
-        ?.toLowerCase()
-        .includes(lowerCaseText) ||
-      portraits.creditSecondary.some(({ name }) =>
-        name?.toLowerCase().includes(lowerCaseText)
-      ) ||
-      sprites.creditPrimary?.name
-        ?.toLowerCase()
-        .includes(lowerCaseText) ||
-      sprites.creditSecondary.some(({ name }) =>
-        name?.toLowerCase().includes(lowerCaseText)
-      ) ||
-      id.toString().includes(lowerCaseText)
-    : ({ monster: { name, forms, id } }) =>
-      name.toLowerCase().includes(lowerCaseText) ||
-      forms.some(
-        ({ portraits: { creditPrimary: cpp, creditSecondary: csp },
-          sprites: { creditPrimary: cps, creditSecondary: css } }) =>
-          cpp?.name?.toLowerCase().includes(lowerCaseText) ||
-          cps?.name?.toLowerCase().includes(lowerCaseText) ||
-          csp.some(({ name }) => name?.toLowerCase().includes(lowerCaseText)) ||
-          css.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
-      ) ||
-      id.toString().includes(lowerCaseText))
+  if (lowerCaseText) {
+    if (splitForms) {
+      forms = forms.filter(({ monster: { name, id }, form: { portraits, sprites } }) =>
+        name.toLowerCase().includes(lowerCaseText) ||
+        portraits.creditPrimary?.name
+          ?.toLowerCase()
+          .includes(lowerCaseText) ||
+        portraits.creditSecondary.some(({ name }) =>
+          name?.toLowerCase().includes(lowerCaseText)
+        ) ||
+        sprites.creditPrimary?.name
+          ?.toLowerCase()
+          .includes(lowerCaseText) ||
+        sprites.creditSecondary.some(({ name }) =>
+          name?.toLowerCase().includes(lowerCaseText)
+        ) ||
+        id.toString().includes(lowerCaseText));
+    } else {
+      forms = forms.filter(({ monster: { name, forms, id } }) =>
+        name.toLowerCase().includes(lowerCaseText) ||
+        forms.some(
+          ({ portraits: { creditPrimary: cpp, creditSecondary: csp },
+            sprites: { creditPrimary: cps, creditSecondary: css } }) =>
+            cpp?.name?.toLowerCase().includes(lowerCaseText) ||
+            cps?.name?.toLowerCase().includes(lowerCaseText) ||
+            csp.some(({ name }) => name?.toLowerCase().includes(lowerCaseText)) ||
+            css.some(({ name }) => name?.toLowerCase().includes(lowerCaseText))
+        ) ||
+        id.toString().includes(lowerCaseText));
+    }
+  }
+  // declare filters
   const { portraits: portraitFilters = [], sprites: spriteFilters = [] } = groupBy([...filters.entries()]
     .filter(([_, isShowing]) => isShowing)
     .map(([filter]) => getFilterType(filter)),
     (filter) => filter.type);
   // TODO: make this a bit nicer i kinda dont like having to write 4 different filters
   if (portraitFilters.length || spriteFilters.length) {
-    forms = splitForms
-      ? forms.filter((form) =>
+    if (splitForms) {
+      forms = forms.filter(({ form }) =>
         (!portraitFilters.length || portraitFilters.some(({ phase }) => phase == form.portraits.phase))
-        && (!spriteFilters.length || spriteFilters.some(({ phase }) => phase == form.sprites.phase)))
-      : forms.filter(({ monster: { forms } }) =>
+        && (!spriteFilters.length || spriteFilters.some(({ phase }) => phase == form.sprites.phase)));
+    } else {
+      forms = forms.filter(({ monster: { forms } }) =>
         (!portraitFilters.length || portraitFilters.some(({ phase }) =>
           forms.some(form => (showUnnecessary || form.portraits.required) && phase == form.portraits.phase)))
         && (!spriteFilters.length || spriteFilters.some(({ phase }) =>
           forms.some(form => (showUnnecessary || form.sprites.required) && phase == form.sprites.phase))));
+    }
   }
   return forms
-    .filter(({ portraits, sprites }) => !splitForms || portraits.required || sprites.required || showUnnecessary)
+    .filter(({ form: { portraits, sprites } }) => !splitForms || portraits.required || sprites.required || showUnnecessary)
     .sort(rankMonsters(rankBy, splitForms, showUnnecessary));
 }
 
@@ -140,7 +148,9 @@ export default function PokemonCarousel({
     rankState: [rankBy],
   } = useContext(Context)!;
   const [limitedLoad, setLimitedLoad] = useState(true);
-  const creditedMonsState = useState(new Set<string>()), [creditedMons] = creditedMonsState;
+  const creditedMonsRef = useRef<Record<string, HTMLInputElement | null>>({});
+  // @ts-ignore
+  window.x = creditedMonsRef;
   const {
     portraitAuthor,
     spriteAuthor,
@@ -189,8 +199,8 @@ export default function PokemonCarousel({
   }, [data])
   const visibleMonsters = useMemo(() => {
     const monsterForms = (data?.monster.flatMap((monster) =>
-      splitForms ? monster.forms?.map((form, formIndex) => ({ ...form, monster, formIndex })) ?? [] :
-        monster.manual ? { ...monster.manual, monster, formIndex: 0 } : {}
+      splitForms ? monster.forms?.map((form, formIndex) => ({ form, monster, formIndex })) ?? [] :
+        monster.manual ? { form: monster.manual, monster, formIndex: 0 } : {}
     ) ?? []) as MonsterFormWithRef[];
     // TODO: move to object containing instead of making new one
     const monsters = filterMonsterForms(
@@ -204,20 +214,11 @@ export default function PokemonCarousel({
     return monsters;
   }, [data, splitForms, currentText, filterState, rankBy])
 
-  if (error) return <Box textAlign='center' alignItems='center'>
-    <h1>Uh Oh!</h1>
-    <Typography>
-      Looks like the server ran into an error. This typically happens when our sprite server is down, and we'll try to get it back up as soon as possible.
-    </Typography>
-    <Typography>
-      If this problem still occurs, check server uptime at <Link href="https://status.pmdcollab.org/">PMDCollab Status</Link>.
-    </Typography>
-  </Box>
+  if (error) return <ErrorPage />
 
   return <>
     {creditsMode && <div>
-      <h1>Selected: {creditedMons.size}/{visibleMonsters.length}</h1>
-      <button onClick={() => generateCredits(visibleMonsters, creditedMons)} style={{ margin: '10px' }}>Download!</button>
+      <Button variant="contained" onClick={() => generateCredits(visibleMonsters, creditedMonsRef.current!)} style={{ margin: '10px' }}>Download Credits!</Button>
     </div>}
     <Grid container spacing={2} justifyContent={"center"}>
       {loading
@@ -231,7 +232,7 @@ export default function PokemonCarousel({
               infoKey={form.monster.rawId}
               form={form}
               isSpeciesThumbnail={!splitForms}
-              creditedMonsState={creditedMonsState}
+              creditedMonsRef={creditedMonsRef}
             />
           </Grid>
         ))}

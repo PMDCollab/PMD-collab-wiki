@@ -1,22 +1,23 @@
 import { Link } from "react-router-dom"
 import { Paper, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { UseState, formatDate, getFormBounty, getMonsterBounty, getUniqueMonsterName, thumbnailScale } from '../util'
+import { formatDate, getFormBounty, getMonsterBounty, getUniqueMonsterName, thumbnailScale } from '../util'
 import { MonsterFormWithRef } from "./pokemon-carousel"
 import { Maybe } from '../generated/graphql'
-import { useContext } from 'react'
+import { MutableRefObject, useContext } from 'react'
 import { Context } from '../Home'
+import './thing.css';
 
 interface Props {
   form: MonsterFormWithRef
   infoKey: string
   isSpeciesThumbnail: boolean
-  creditedMonsState: UseState<Set<string>>
+  creditedMonsRef: MutableRefObject<Record<string, HTMLInputElement | null>>
 }
 export default function PokemonThumbnail({
-  form, form: { monster, formIndex },
+  form: { form, monster, formIndex },
   infoKey,
   isSpeciesThumbnail,
-  creditedMonsState: [creditedMons, setCreditedMons]
+  creditedMonsRef
 }: Props) {
   const { toggleState, miscState } = useContext(Context)!;
   const { creditsMode, showFormName } = miscState;
@@ -49,9 +50,7 @@ export default function PokemonThumbnail({
       </Typography>
     )}
     <Typography
-      align="center" color={
-        !creditsMode ? "GrayText" : creditedMons.has(form.fullName) ? 'green' : 'red'
-      } noWrap sx={textBoxWithResize(monster.name)}
+      align="center" color="GrayText" noWrap sx={textBoxWithResize(monster.name)}
     >
       {monster.name}
     </Typography>
@@ -75,7 +74,7 @@ export default function PokemonThumbnail({
     )}
     {lastModification && (
       <Typography align="center" color="GrayText" noWrap sx={textBoxStyle} fontSize={16 * boxScale}>
-        {formatDate(Math.max( // TODO: this sucks rewrite it
+        {formatDate(Math.max(
           form.portraits.modifiedDate && new Date(form.portraits.modifiedDate).getTime() || 0,
           form.sprites.modifiedDate && new Date(form.sprites.modifiedDate).getTime() || 0
         ))}
@@ -93,19 +92,11 @@ export default function PokemonThumbnail({
     )}
   </Paper>
   return creditsMode ?
-    <div
-      style={{ cursor: 'pointer', border: creditedMons.has(uniqueName) ? '2px solid green' : '2px solid red' }}
-      onClick={() => {
-        if (creditedMons.has(uniqueName)) {
-          setCreditedMons(creditedMons => {
-            const newSet = new Set([...creditedMons]);
-            newSet.delete(uniqueName)
-            return newSet;
-          });
-        } else {
-          setCreditedMons(credit => new Set([...credit, uniqueName]));
-        }
-      }}>{insideThumbnail}
+    <div className="credit-label">
+      <label htmlFor={uniqueName}>
+        <input type="checkbox" name={uniqueName} id={uniqueName} ref={el => creditedMonsRef.current[uniqueName] = el} />
+        {insideThumbnail}
+      </label>
     </div> :
     <Link to={`/${infoKey}?form=${formIndex}`} style={{ transform: "scale(0.5)" }}>
       {insideThumbnail}

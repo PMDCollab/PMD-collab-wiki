@@ -39,9 +39,9 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   // the lord the savior use search params
   const searchParamsState = useSearchParams(), [searchParams, setSearchParams] = searchParamsState;
   // TODO: make these objects instead of maps
-  const toggleState = paramsToMap<Toggle, boolean>(searchParams, toggles, param => param === "true");
-  const filterState = paramsToMap<Filter, boolean>(searchParams, filters, param => param === "true");
-  const miscState = paramsToObject<MiscParams, boolean>(searchParams, miscParams, param => param === "true");
+  const toggleState = paramsToMap<Toggle, boolean>(searchParams, toggles, Boolean);
+  const filterState = paramsToMap<Filter, boolean>(searchParams, filters, Boolean);
+  const miscState = paramsToObject<MiscParams, boolean>(searchParams, miscParams, Boolean);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));

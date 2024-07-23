@@ -12,7 +12,8 @@ type Pokemon = string;
 type Emotion = string;
 type OfficialCreditFormat = Record<CreditString, Record<SpriteType, Record<Pokemon, Emotion[]>>>
 
-export async function generateCredits(visibleMonsters: MonsterFormWithRef[], creditedMonsters: Set<string>) {
+export async function generateCredits(visibleMonsters: MonsterFormWithRef[], monsterList: Record<string, HTMLInputElement | null>) {
+  const creditedMonsters = new Set(Object.keys(monsterList).filter(credit => monsterList[credit]?.checked));
   if (!visibleMonsters) {
     window.alert("No monster data found!");
     return;
@@ -22,8 +23,8 @@ export async function generateCredits(visibleMonsters: MonsterFormWithRef[], cre
     `All graphics referred to in this file can be found in http://sprites.pmdcollab.org/\n\n`;
 
   const creditFormat: OfficialCreditFormat = {};
-  for (const form of visibleMonsters) {
-    const monsterName = getUniqueMonsterName(form.monster, form);
+  for (const { form, monster } of visibleMonsters) {
+    const monsterName = getUniqueMonsterName(monster, form);
     if (!creditedMonsters.has(monsterName)) continue;
     for (const history of form.portraits.history) {
       if (history.obsolete || !history.credit) continue;
