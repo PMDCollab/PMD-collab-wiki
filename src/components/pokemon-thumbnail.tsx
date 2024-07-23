@@ -5,7 +5,6 @@ import { MonsterFormWithRef } from "./pokemon-carousel"
 import { Maybe } from '../generated/graphql'
 import { MutableRefObject, useContext } from 'react'
 import { Context } from '../Home'
-import './thing.css';
 
 interface Props {
   form: MonsterFormWithRef
