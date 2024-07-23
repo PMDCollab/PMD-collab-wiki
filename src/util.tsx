@@ -20,7 +20,7 @@ export function getLastModification(t?: Maybe<Date> | "") {
 export function getMonsterBounty(monster: Monster, type: 'sprites' | 'portraits', useUnnecessary = false): number {
   return monster.forms.reduce((a, monster) => {
     if (!monster.portraits.required && !useUnnecessary) return a;
-    return Math.max(a, getFormBounty(monster, type))
+    return Math.max(a, getFormBounty(monster, type));
   }, 0);
 }
 export function getFormBounty(monster: MonsterForm, type: 'sprites' | 'portraits'): number {
@@ -34,7 +34,7 @@ export function groupBy<T, K extends PropertyKey>(arr: T[], cb: (element: T) => 
     const key = cb(element);
     (a[key] = a[key] || []).push(element);
     return a;
-  }, {} as Record<K, T[]>)
+  }, {} as Record<K, T[]>);
 }
 
 export function getUniqueMonsterName(monster: Monster, form?: MonsterForm) {
@@ -48,5 +48,5 @@ export function getUniqueMonsterName(monster: Monster, form?: MonsterForm) {
  * @returns a callback that is used in setSearchParams to toggle a parameter on/off
  */
 export function toggleParamCallback<T>(key: string, value: T): (prev: URLSearchParams) => URLSearchParamsInit {
-  return param => (value ? param.set(key, value.toString()) : param.delete(key), param)
+  return param => (value ? param.set(key, value.toString()) : param.delete(key), param);
 }

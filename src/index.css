@@ -8,3 +8,18 @@ strong > .with-credit {
   text-decoration: underline;
   color: red;
 }
+
+.credit-label {
+  outline: 3px solid red;
+  border-radius: 5px;
+  color: red;
+}
+
+.credit-label input[type="checkbox"] {
+  display: none;
+}
+
+.credit-label:has(input[type="checkbox"]:checked) {
+  outline: 3px solid green;
+  color: green;
+}

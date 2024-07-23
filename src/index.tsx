@@ -11,6 +11,7 @@ import { ThemeProvider } from "@emotion/react"
 import { CssBaseline, createTheme } from "@mui/material"
 import "./index.css"
 import Contributors from "./Contributors"
+import ErrorPage from './ErrorPage'
 
 const defaultTheme = createTheme({ typography: { fontFamily: "wonderMail" } })
 const client = new ApolloClient({
@@ -19,12 +20,17 @@ const client = new ApolloClient({
 })
 
 async function initialize() {
-  const result = await client.query({
+  const { data } = await client.query({
     query: KeysDocument
-  }) as KeysQueryResult;
-  if (!result.data) return;
-  const sortedMonsters = [...result.data.monster].sort((a, b) => a.id - b.id)
-  ReactDOM.createRoot(document.getElementById("root")!).render(
+  }).catch(() => ({})) as KeysQueryResult;
+  
+  const root = ReactDOM.createRoot(document.getElementById("root")!);
+  if (!data) {
+    root.render(<ErrorPage />);
+    return;
+  }
+  const sortedMonsters = [...data.monster].sort((a, b) => a.id - b.id)
+  root.render(
     <React.StrictMode>
       <ThemeProvider theme={defaultTheme}>
         <CssBaseline />
@@ -35,7 +41,7 @@ async function initialize() {
                 path="/"
                 element={
                   <Home
-                    meta={result.data.meta}
+                    meta={data.meta}
                     ids={sortedMonsters.map(({ id }) => id)}
                   />
                 }
