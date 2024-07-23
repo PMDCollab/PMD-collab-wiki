@@ -10,9 +10,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Checkbox,
   Container,
-  FormControlLabel,
   Link,
   Typography,
   useMediaQuery,
@@ -23,7 +21,7 @@ import { Footer } from "./components/footer"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Filter, MiscParams, Toggle, filters, miscParams, paramsToMap, paramsToObject, toggles } from "./types/params"
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom'
-import { UseState, toggleParamCallback } from './util'
+import { UseState } from './util'
 
 export const Context = createContext<{
   searchParamsState: [URLSearchParams, SetURLSearchParams]
@@ -37,7 +35,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
   const textState = useState(""), [currentText] = textState;
   const rankState = useState<RankMethod>(RankMethod.POKEDEX_NUMBER);
   // the lord the savior use search params
-  const searchParamsState = useSearchParams(), [searchParams, setSearchParams] = searchParamsState;
+  const searchParamsState = useSearchParams(), [searchParams] = searchParamsState;
   // TODO: make these objects instead of maps
   const toggleState = paramsToMap<Toggle, boolean>(searchParams, toggles, Boolean);
   const filterState = paramsToMap<Filter, boolean>(searchParams, filters, Boolean);
@@ -50,16 +48,7 @@ export default function Home({ ids, meta }: { ids: number[]; meta: Meta }) {
     <Context.Provider value={{ searchParamsState, toggleState, filterState, miscState, rankState }}>
       <Box>
         <Bar />
-        {/* TODO: put this in a different component */}
         <Container maxWidth="xl" sx={{ backgroundColor: "rgba(255,255,255,.9)" }}>
-          {searchParams.get("beta") === "true" && <FormControlLabel
-            sx={{ position: 'absolute' }}
-            label={<Typography color="text.secondary">Credits Mode</Typography>}
-            control={<Checkbox
-              checked={miscState.creditsMode}
-              onChange={async e => setSearchParams(toggleParamCallback('creditsMode', e.target.checked))}
-            />}
-          />}
           <Typography
             variant={isMobile ? "subtitle2" : "h5"}
             align="center"

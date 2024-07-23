@@ -218,6 +218,7 @@ export default function PokemonCarousel({
 
   return <>
     {creditsMode && <div>
+      {!splitForms && <h3>WARNING: Split Forms is not enabled. You will only generate credits for the first form of each sprite.</h3>}
       <Button variant="contained" onClick={() => generateCredits(visibleMonsters, creditedMonsRef.current!)} style={{ margin: '10px' }}>Download Credits!</Button>
     </div>}
     <Grid container spacing={2} justifyContent={"center"}>

@@ -92,7 +92,7 @@ export default function PokemonThumbnail({
   </Paper>
   return creditsMode ?
     <div className="credit-label">
-      <label htmlFor={uniqueName}>
+      <label htmlFor={uniqueName} style={{ cursor: 'pointer' }}>
         <input type="checkbox" name={uniqueName} id={uniqueName} ref={el => creditedMonsRef.current[uniqueName] = el} />
         {insideThumbnail}
       </label>
