@@ -31,7 +31,7 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
   const { loading, error, data } = usePokemonQuery({ variables: { id: infoKey } });
   const [searchParam, setSearchParam] = useSearchParams({ form: "0" });
   const formList = data?.monster[0].forms as MonsterForm[] | undefined;
-  const formIndex = parseInt(searchParam.get("form") ?? "0") ?? 0;
+  const formIndex = parseInt(searchParam.get("form") ?? "0");
   const form = formList?.[formIndex] ?? formList?.[0];
 
   const creditsURL = useMemo(() => {
