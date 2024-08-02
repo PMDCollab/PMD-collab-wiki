@@ -62,7 +62,7 @@ export default function PokemonInformations({
       <Typography>Download recolor sprites</Typography>
     </Link>
   )
-  console.log(sprites.actions)
+
   return (
     <Box>
       <Box sx={{ mt: 4, mb: 2 }}>
