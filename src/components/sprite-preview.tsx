@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react"
-import { MonsterHistory, Sprite } from "../generated/graphql"
+import { CopyOf, MonsterHistory, Sprite, SpriteUnion } from "../generated/graphql"
 import { Dungeon, IPMDCollab } from "../types/enum"
 import Lock from "./lock"
 import GameContainer from "./phaser/game-container"
@@ -7,13 +7,18 @@ import { Card, Grid, Typography } from "@mui/material"
 import { XMLParser } from 'fast-xml-parser'
 
 interface Props {
-  sprite: Sprite
+  actions: SpriteUnion[]
+  sprite: SpriteUnion
   dungeon: Dungeon
   animDataXml: string
   history: MonsterHistory[]
   phaserWindows: GameContainer[]
 }
-export default function SpritePreview({ sprite, dungeon, animDataXml, history, phaserWindows }: Props) {
+
+// TODO: move util function somewhere else perhaps? it's only for type checking
+const isCopyOf = (sprite: SpriteUnion): sprite is CopyOf => sprite.__typename === "CopyOf";
+
+export default function SpritePreview({ actions, sprite, dungeon, animDataXml, history, phaserWindows }: Props) {
   const gameContainer = useRef<GameContainer>()
 
   const container = useCallback(
@@ -22,9 +27,10 @@ export default function SpritePreview({ sprite, dungeon, animDataXml, history, p
         const xmlData = await (await fetch(animDataXml)).text();
         const parser = new XMLParser();
         const data = parser.parse(xmlData) as IPMDCollab;
+        const mainSprite = isCopyOf(sprite) ? actions.find(action => action.action === sprite.copyOf) as Sprite : sprite;
         gameContainer.current = new GameContainer(
           node,
-          sprite,
+          mainSprite,
           data.AnimData,
           dungeon
         )

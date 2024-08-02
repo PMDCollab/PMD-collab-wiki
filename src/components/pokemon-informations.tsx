@@ -62,6 +62,7 @@ export default function PokemonInformations({
       <Typography>Download recolor sprites</Typography>
     </Link>
   )
+  console.log(sprites.actions)
   return (
     <Box>
       <Box sx={{ mt: 4, mb: 2 }}>
@@ -129,13 +130,12 @@ export default function PokemonInformations({
         {sprites.actions.length ? (
           <Grid container spacing={2} sx={{ mt: 3 }}>
             {animDataXml && sprites.actions.map(
-              (sprite) =>
-                sprite.__typename === "Sprite" &&
-                (
+              (sprite) => (
                   <Grid item key={sprite.action}>
                     <Paper elevation={2}>
                       <SpritePreview
                         dungeon={bg.current}
+                        actions={sprites.actions}
                         sprite={sprite}
                         animDataXml={animDataXml}
                         history={sprites.history.filter((e) => !e.obsolete)}
