@@ -38,24 +38,30 @@ export const toggleNames: Record<Toggle, string> = {
  * If any sprite filters are checked, only monsters with that sprite filter (one is OK) are allowed.
  * If any portrait filters are checked, only monsters with that portrait filter (one is OK) are allowed.
  */
-export type Filter = `${'fullyFeatured' | 'existing' | 'incomplete'}${'Sprites' | 'Portraits'}`;
+export type Filter = Exclude<`${'fullyFeatured' | 'existing' | 'incomplete' | 'missing'}${'Sprites' | 'Portraits'}`, 'missingSprites'>;
 
 export const filters: Filter[] = [
   'fullyFeaturedPortraits',
   'existingPortraits',
   'incompletePortraits',
+  'missingPortraits',
   'fullyFeaturedSprites',
   'existingSprites',
-  'incompleteSprites'
+  'incompleteSprites',
+  // 'missingSprites'
 ];
 
+
+// TODO: i probably don't need a record since i'm just referring to the phase
 export const filterNames: Record<Filter, string> = {
-  fullyFeaturedPortraits: "Fully-Featured Portraits",
-  existingPortraits: "Existing Portraits",
-  incompletePortraits: "Incomplete Portraits",
-  fullyFeaturedSprites: "Fully-Featured Sprites",
-  existingSprites: "Existing Sprites",
-  incompleteSprites: "Incomplete Sprites"
+  fullyFeaturedPortraits: "Fully-Featured",
+  existingPortraits: "Existing",
+  incompletePortraits: "Incomplete",
+  missingPortraits: "Missing",
+  fullyFeaturedSprites: "Fully-Featured",
+  existingSprites: "Existing",
+  incompleteSprites: "Incomplete",
+  // missingSprites: "Missing"
 };
 
 /**
