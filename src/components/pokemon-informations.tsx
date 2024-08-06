@@ -131,19 +131,19 @@ export default function PokemonInformations({
           <Grid container spacing={2} sx={{ mt: 3 }}>
             {animDataXml && sprites.actions.map(
               (sprite) => (
-                  <Grid item key={sprite.action}>
-                    <Paper elevation={2}>
-                      <SpritePreview
-                        dungeon={bg.current}
-                        actions={sprites.actions}
-                        sprite={sprite}
-                        animDataXml={animDataXml}
-                        history={sprites.history.filter((e) => !e.obsolete)}
-                        phaserWindows={phaserWindows}
-                      />
-                    </Paper>
-                  </Grid>
-                )
+                <Grid item key={sprite.action}>
+                  <Paper elevation={2}>
+                    <SpritePreview
+                      dungeon={bg.current}
+                      actions={sprites.actions}
+                      sprite={sprite}
+                      animDataXml={animDataXml}
+                      history={sprites.history.filter((e) => !e.obsolete)}
+                      phaserWindows={phaserWindows}
+                    />
+                  </Paper>
+                </Grid>
+              )
             )}
           </Grid>
         ) : (

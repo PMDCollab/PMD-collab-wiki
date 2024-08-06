@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Monster, MonsterForm, Phase, useCarrouselQuery } from "../generated/graphql"
+import { Monster, MonsterForm, MonsterFormPortraits, MonsterFormSprites, Phase, useCarrouselQuery } from "../generated/graphql"
 import { RankMethod } from "../types/enum"
 import PokemonThumbnail from "./pokemon-thumbnail"
 import { Button, Grid, Skeleton } from "@mui/material"
@@ -11,15 +11,18 @@ import ErrorPage from '../ErrorPage'
 
 export type MonsterFormWithRef = { form: MonsterForm, monster: Monster, formIndex: number } // TODO: don't merge with existing form
 
-function getFilterType(filter: Filter): { type: 'sprites' | 'portraits', phase: Phase } {
+export type PhaseInfo = { type: 'sprites' | 'portraits', phase: Phase | null }
+function getFilterType(filter: Filter): PhaseInfo {
   const type = filter.endsWith('Sprites') ? 'sprites' : 'portraits';
   switch (true) {
     case filter.startsWith("fullyFeatured"):
       return { type, phase: Phase.Full };
     case filter.startsWith("existing"):
       return { type, phase: Phase.Exists };
-    default:
+    case filter.startsWith("incomplete"):
       return { type, phase: Phase.Incomplete };
+    default:
+      return { type, phase: null };
   }
 }
 
@@ -114,18 +117,26 @@ function filterMonsterForms(
     .filter(([_, isShowing]) => isShowing)
     .map(([filter]) => getFilterType(filter)),
     (filter) => filter.type);
-  // TODO: make this a bit nicer i kinda dont like having to write 4 different filters
+  // TODO: null means checking for missing (i.e. no emotions/actions) so bother capypara until he adds it to spriteserver
+  // TODO: move this to some other file maybe
+  const phaseMatches = (target: MonsterFormPortraits | MonsterFormSprites) =>
+    ({ phase }: Pick<PhaseInfo, 'phase'>): boolean => {
+      if (phase !== null) return phase === target.phase;
+      if ('previewEmotion' in target) return !target.previewEmotion?.url;
+      // TODO: implement missing sprite filtering
+      return false;
+    }
   if (portraitFilters.length || spriteFilters.length) {
     if (splitForms) {
       forms = forms.filter(({ form }) =>
-        (!portraitFilters.length || portraitFilters.some(({ phase }) => phase == form.portraits.phase))
-        && (!spriteFilters.length || spriteFilters.some(({ phase }) => phase == form.sprites.phase)));
+        (!portraitFilters.length || portraitFilters.some(phaseMatches(form.portraits)))
+        && (!spriteFilters.length || spriteFilters.some(phaseMatches(form.sprites))));
     } else {
       forms = forms.filter(({ monster: { forms } }) =>
         (!portraitFilters.length || portraitFilters.some(({ phase }) =>
-          forms.some(form => (showUnnecessary || form.portraits.required) && phase == form.portraits.phase)))
+          forms.some(form => (showUnnecessary || form.portraits.required) && phaseMatches(form.portraits)({ phase }))))
         && (!spriteFilters.length || spriteFilters.some(({ phase }) =>
-          forms.some(form => (showUnnecessary || form.sprites.required) && phase == form.sprites.phase))));
+          forms.some(form => (showUnnecessary || form.sprites.required) && phaseMatches(form.sprites)({ phase })))));
     }
   }
   return forms

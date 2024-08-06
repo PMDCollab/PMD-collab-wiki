@@ -79,9 +79,10 @@ export default function DisplayParameters() {
       </Grid>
       <Grid item key={3} xs={12}>
         <Typography sx={{ fontWeight: "bold" }}>Filters</Typography>
+        Portraits: &emsp;
         {[...filterState.entries()].map(([filter, isShowing], index) => (
           <Fragment key={filter}>
-            {index == 3 && <br />}
+            {index == 4 && <><br />Sprites: &emsp;</>}
             <FormControlLabel
               label={<Typography color="text.secondary">{filterNames[filter]}</Typography>}
               control={
