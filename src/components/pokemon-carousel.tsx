@@ -123,8 +123,8 @@ function filterMonsterForms(
     ({ phase }: Pick<PhaseInfo, 'phase'>): boolean => {
       if (phase !== null) return phase === target.phase;
       if ('previewEmotion' in target) return !target.previewEmotion?.url;
-      // TODO: implement missing sprite filtering
-      return false;
+      // TODO: remove cast here that typescript can't find
+      return !(target as MonsterFormSprites).actions?.length;
     }
   if (portraitFilters.length || spriteFilters.length) {
     if (splitForms) {
@@ -203,6 +203,7 @@ export default function PokemonCarousel({
         spriteBounty ||
         creditsMode,
       withCreditableHistory: creditsMode, // TODO: remove flag so that history fetching is done in generate-credits.ts
+      withSpriteActions: filterState.get('missingSprites')!,
     }
   })
   useEffect(() => {

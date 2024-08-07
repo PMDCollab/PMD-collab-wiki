@@ -53,6 +53,10 @@ fragment form on MonsterForm {
     history {
       ...creditableHistory @include(if: $withCreditableHistory)
     }
+    actions @include(if: $withSpriteActions){
+      ... on Sprite {action}
+      ... on CopyOf {action}
+    }
   }
 }
 query Carrousel(
@@ -66,6 +70,7 @@ query Carrousel(
   $withForms: Boolean!
   $withSplitForms: Boolean!
   $withCreditableHistory: Boolean!
+  $withSpriteActions: Boolean!
 ) {
   monster(filter: $ids) {
     id

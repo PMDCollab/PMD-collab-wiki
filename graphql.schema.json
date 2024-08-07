@@ -332,15 +332,15 @@
           },
           {
             "name": "discordHandle",
-            "description": "Discord username or old-style name and discriminator (in the form Name#Discriminator [eg. Capypara#7887)), if this is a credit for a Discord profile, and the server can resolve the ID to a Discord profile.",
+            "description": "This used to return the Discord handle of this author, if applicable and possible. It will now always return null.",
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
             },
-            "isDeprecated": false,
-            "deprecationReason": null
+            "isDeprecated": true,
+            "deprecationReason": "This is no longer implemented and will always return null. It may or may not be re-introduced in future versions."
           },
           {
             "name": "id",
@@ -378,8 +378,8 @@
       },
       {
         "kind": "SCALAR",
-        "name": "DateTimeUtc",
-        "description": "DateTime",
+        "name": "DateTime",
+        "description": "Combined date and time (with time zone) in [RFC 3339][0] format.\n\nRepresents a description of an exact instant on the time-line (such as the\ninstant that a user account was created).\n\n[`DateTime` scalar][1] compliant.\n\nSee also [`chrono::DateTime`][2] for details.\n\n[0]: https://datatracker.ietf.org/doc/html/rfc3339#section-5\n[1]: https://graphql-scalars.dev/docs/scalars/date-time\n[2]: https://docs.rs/chrono/latest/chrono/struct.DateTime.html",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -531,7 +531,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "DateTimeUtc",
+                "name": "DateTime",
                 "ofType": null
               }
             },
@@ -563,7 +563,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "DateTimeUtc",
+                "name": "DateTime",
                 "ofType": null
               }
             },
@@ -1010,7 +1010,7 @@
       {
         "kind": "OBJECT",
         "name": "MonsterFormPortraits",
-        "description": null,
+        "description": "Portraits for a single monster form.",
         "fields": [
           {
             "name": "bounty",
@@ -1212,7 +1212,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "DateTimeUtc",
+              "name": "DateTime",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1319,7 +1319,7 @@
       {
         "kind": "OBJECT",
         "name": "MonsterFormSprites",
-        "description": null,
+        "description": "Sprites for a single monster form.",
         "fields": [
           {
             "name": "action",
@@ -1480,7 +1480,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "DateTimeUtc",
+              "name": "DateTime",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1567,7 +1567,7 @@
       {
         "kind": "OBJECT",
         "name": "MonsterHistory",
-        "description": null,
+        "description": "An entry in the history log for a monster sprite or portrait.",
         "fields": [
           {
             "name": "credit",
@@ -1630,7 +1630,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "DateTimeUtc",
+                "name": "DateTime",
                 "ofType": null
               }
             },
@@ -1828,22 +1828,6 @@
         "name": "Query",
         "description": null,
         "fields": [
-          {
-            "name": "apiVersion",
-            "description": "Version of this API.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": true,
-            "deprecationReason": "Use `meta` instead."
-          },
           {
             "name": "config",
             "description": "Configuration for this instance of SpriteCollab.",
@@ -3065,6 +3049,33 @@
     ],
     "directives": [
       {
+        "name": "deprecated",
+        "description": null,
+        "isRepeatable": false,
+        "locations": [
+          "ENUM_VALUE",
+          "FIELD_DEFINITION"
+        ],
+        "args": [
+          {
+            "name": "reason",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
         "name": "include",
         "description": null,
         "isRepeatable": false,
@@ -3111,6 +3122,32 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
+        "name": "specifiedBy",
+        "description": null,
+        "isRepeatable": false,
+        "locations": [
+          "SCALAR"
+        ],
+        "args": [
+          {
+            "name": "url",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
