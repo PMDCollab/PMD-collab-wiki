@@ -38,7 +38,7 @@ export const toggleNames: Record<Toggle, string> = {
  * If any sprite filters are checked, only monsters with that sprite filter (one is OK) are allowed.
  * If any portrait filters are checked, only monsters with that portrait filter (one is OK) are allowed.
  */
-export type Filter = Exclude<`${'fullyFeatured' | 'existing' | 'incomplete' | 'missing'}${'Sprites' | 'Portraits'}`, 'missingSprites'>;
+export type Filter = `${'fullyFeatured' | 'existing' | 'incomplete' | 'missing'}${'Sprites' | 'Portraits'}`;
 
 export const filters: Filter[] = [
   'fullyFeaturedPortraits',
@@ -48,7 +48,7 @@ export const filters: Filter[] = [
   'fullyFeaturedSprites',
   'existingSprites',
   'incompleteSprites',
-  // 'missingSprites'
+  'missingSprites'
 ];
 
 
@@ -61,7 +61,7 @@ export const filterNames: Record<Filter, string> = {
   fullyFeaturedSprites: "Fully-Featured",
   existingSprites: "Existing",
   incompleteSprites: "Incomplete",
-  // missingSprites: "Missing"
+  missingSprites: "Missing"
 };
 
 /**
