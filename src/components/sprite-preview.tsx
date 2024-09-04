@@ -17,6 +17,16 @@ interface Props {
 
 // TODO: move util function somewhere else perhaps? it's only for type checking
 const isCopyOf = (sprite: SpriteUnion): sprite is CopyOf => sprite.__typename === "CopyOf";
+function getOriginalSprite(sprite: SpriteUnion, actions: SpriteUnion[]): Sprite {
+  if (!isCopyOf(sprite)) {
+    return sprite;
+  }
+  while (isCopyOf(sprite)) {
+    // typescript WHYYYYY i made a type guard just for this situation
+    sprite = actions.find(action => action.action === (sprite as CopyOf).copyOf)!;
+  }
+  return sprite;
+}
 
 export default function SpritePreview({ actions, sprite, dungeon, animDataXml, history, phaserWindows }: Props) {
   const gameContainer = useRef<GameContainer>()
@@ -27,7 +37,7 @@ export default function SpritePreview({ actions, sprite, dungeon, animDataXml, h
         const xmlData = await (await fetch(animDataXml)).text();
         const parser = new XMLParser();
         const data = parser.parse(xmlData) as IPMDCollab;
-        const mainSprite = isCopyOf(sprite) ? actions.find(action => action.action === sprite.copyOf) as Sprite : sprite;
+        const mainSprite = getOriginalSprite(sprite, actions);
         gameContainer.current = new GameContainer(
           node,
           mainSprite,
