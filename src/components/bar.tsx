@@ -8,7 +8,6 @@ import {
 } from "@mui/material"
 import HomeIcon from "@mui/icons-material/Home"
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
-import TwitterIcon from "@mui/icons-material/Twitter"
 import GitHubIcon from "@mui/icons-material/GitHub"
 import InfoIcon from "@mui/icons-material/Info"
 import GroupIcon from "@mui/icons-material/Group"
@@ -47,15 +46,29 @@ export function Bar() {
         <IconButton
           size="large"
           color="inherit"
-          href="https://twitter.com/PMD_Spritebot"
+          href="https://bsky.app/profile/pmd-spritebot.bsky.social"
         >
-          <TwitterIcon />
+          <img src="/bluesky.png" alt="Bluesky Logo" width="24"/>
           {!isMobile && (
             <Typography variant="h6" ml={0.5}>
-              Twitter
+              Bluesky
             </Typography>
           )}
         </IconButton>
+
+        <IconButton
+          size="large"
+          color="inherit"
+          href="https://guild.pmdcollab.org/@spritebot"
+        >
+          <img src="/mastodon.png" alt="Mastodon Logo" width="24"/>
+          {!isMobile && (
+            <Typography variant="h6" ml={0.5}>
+              Mastodon
+            </Typography>
+          )}
+        </IconButton>
+
         <IconButton
           size="large"
           color="inherit"

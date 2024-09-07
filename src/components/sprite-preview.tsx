@@ -18,12 +18,8 @@ interface Props {
 // TODO: move util function somewhere else perhaps? it's only for type checking
 const isCopyOf = (sprite: SpriteUnion): sprite is CopyOf => sprite.__typename === "CopyOf";
 function getOriginalSprite(sprite: SpriteUnion, actions: SpriteUnion[]): Sprite {
-  if (!isCopyOf(sprite)) {
-    return sprite;
-  }
-  while (isCopyOf(sprite)) {
-    // typescript WHYYYYY i made a type guard just for this situation
-    sprite = actions.find(action => action.action === (sprite as CopyOf).copyOf)!;
+  if (isCopyOf(sprite)) {
+    return getOriginalSprite(actions.find(action => action.action === sprite.copyOf)!, actions);
   }
   return sprite;
 }
