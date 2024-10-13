@@ -205,7 +205,7 @@ export default function PokemonCarousel({
       withCreditableHistory: creditsMode, // TODO: remove flag so that history fetching is done in generate-credits.ts
       withSpriteActions: filterState.get('missingSprites')!,
     }
-  })
+  });
   useEffect(() => {
     setLimitedLoad(loading && (data ?? true) && limitedLoad)
   }, [data])
@@ -224,7 +224,7 @@ export default function PokemonCarousel({
       rankBy
     )
     return monsters;
-  }, [data, splitForms, currentText, filterState, rankBy])
+  }, [data, splitForms, currentText, filterState, rankBy]);
 
   if (error) return <ErrorPage />
 
