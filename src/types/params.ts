@@ -87,6 +87,7 @@ export function paramsToMap<K extends string, V>(searchParams: URLSearchParams, 
   return new Map<K, V>(targets.map(target => [target, callback(searchParams.get(target))]));
 }
 
+// this does the same thing but object!
 export function paramsToObject<K extends string, V>(searchParams: URLSearchParams, targets: K[], callback: (url: string | null) => V): Record<K, V> {
   return targets.reduce((object, target) => (object[target] = callback(searchParams.get(target)), object), {} as Record<K, V>)
 }

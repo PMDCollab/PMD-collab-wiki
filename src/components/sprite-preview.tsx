@@ -39,17 +39,17 @@ export default function SpritePreview({ actions, sprite, dungeon, animDataXml, h
           mainSprite,
           data.AnimData,
           dungeon
-        )
+        );
         phaserWindows.push(gameContainer.current);
       }
 
       if (node !== null) {
-        gameContainer.current?.game.destroy(true)
-        initialize()
+        gameContainer.current?.game.destroy(true);
+        initialize();
       }
     },
     [animDataXml, sprite, dungeon]
-  )
+  );
 
   return (
     <Card>

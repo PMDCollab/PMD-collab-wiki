@@ -12,17 +12,11 @@ import {
 } from "@mui/material"
 import { Bar } from "./components/bar"
 import { Credit, useContributorsQuery } from "./generated/graphql"
-import { useEffect, useState } from "react"
+import { useMemo } from "react"
 
 export default function Contributors() {
-  const [credits, setCredits] = useState<Credit[]>([])
-  const { data } = useContributorsQuery({ errorPolicy: "ignore" })
-
-  useEffect(() => {
-    if (data?.credit) {
-      setCredits(data.credit)
-    }
-  }, [data])
+  const { data } = useContributorsQuery({ errorPolicy: "ignore" });
+  const credits = useMemo<Credit[]>(() => data?.credit ?? [], [data]);
 
   return (
     <Box>
@@ -47,24 +41,16 @@ export default function Contributors() {
               </TableHead>
               <TableBody>
                 {credits
-                  .filter(
-                    ({ name, discordHandle }) =>
-                      (name || discordHandle) &&
-                      !discordHandle?.includes("Deleted User")
-                  )
-                  .sort((a, b) => {
-                    const nameA = a.name || a.discordHandle || ""
-                    const nameB = b.name || b.discordHandle || ""
-                    return nameA.localeCompare(nameB)
-                  })
-                  .map(({ name, id, discordHandle, contact }) => (
+                  .filter(({ name }) => name)
+                  .sort((a, b) => (a.name || "").localeCompare(b.name || ""))
+                  .map(({ name, id, contact }) => (
                     <TableRow
                       key={id}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell align="center">
                         <Typography variant="h6">
-                          {name ?? discordHandle}
+                          {name}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
