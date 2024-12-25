@@ -46,7 +46,7 @@ export function Bar() {
         <IconButton
           size="large"
           color="inherit"
-          href="https://bsky.app/profile/pmd-spritebot.bsky.social"
+          href="https://bsky.app/profile/spritebot.pmd.social"
         >
           <img src="/bluesky.png" alt="Bluesky Logo" width="24"/>
           {!isMobile && (
