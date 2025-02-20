@@ -23,10 +23,17 @@ async function initialize() {
   const { data } = await client.query({
     query: KeysDocument
   }).catch(() => ({})) as KeysQueryResult;
-  
+
   const root = ReactDOM.createRoot(document.getElementById("root")!);
   if (!data) {
-    root.render(<ErrorPage />);
+    root.render(
+      <React.StrictMode>
+        <ThemeProvider theme={defaultTheme}>
+          <CssBaseline>
+            <ErrorPage />
+          </CssBaseline>
+        </ThemeProvider>
+      </React.StrictMode>);
     return;
   }
   const sortedMonsters = [...data.monster].sort((a, b) => a.id - b.id)
