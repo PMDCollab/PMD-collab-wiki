@@ -40,7 +40,7 @@ export default function About() {
           Terms of Use
         </Typography>
         <Typography>
-          Custom sprites are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1">Attribution-NonCommercial 4.0 International</Link>. All acceptable use of custom sprites must be done with <Link href="https://wiki.creativecommons.org/wiki/Recommended_practices_for_attribution">appropriate credit</Link>.<br />For individual credits, enable <Link href="../?creditsMode=true">Credits Mode</Link> on the main website and select the portraits/sprites you would like to include.<br />If you want all credits, we recommend including a file or link of the <Link href="https://github.com/PMDCollab/SpriteCollab/blob/master/credit_names.txt">credit_names.txt</Link>, which contains all authors of the project.
+          Custom sprites are licensed under <Link href="https://github.com/PMDCollab/SpriteCollab/blob/master/spritebot_credits.txt">spritebot_credits.txt</Link>, which contains all authors of the project.
         </Typography>
         <Typography variant="h5" gutterBottom>
           Proper Crediting
