@@ -13,11 +13,11 @@ import "./index.css"
 import Contributors from "./Contributors"
 import ErrorPage from './ErrorPage'
 
-const defaultTheme = createTheme({ typography: { fontFamily: "wonderMail" } })
+const defaultTheme = createTheme({ typography: { fontFamily: "wonderMail" } });
 const client = new ApolloClient({
   uri: "https://spriteserver.pmdcollab.org/graphql",
   cache: new InMemoryCache()
-})
+});
 
 async function initialize() {
   const { data } = await client.query({
@@ -36,7 +36,7 @@ async function initialize() {
       </React.StrictMode>);
     return;
   }
-  const sortedMonsters = [...data.monster].sort((a, b) => a.id - b.id)
+  const sortedMonsters = [...data.monster].sort((a, b) => a.id - b.id);
   root.render(
     <React.StrictMode>
       <ThemeProvider theme={defaultTheme}>
