@@ -40,7 +40,7 @@ export default function About() {
           Terms of Use
         </Typography>
         <Typography>
-          All custom graphics in this repository not originating from official PMD games are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International</Link>. Usage of the assets in this repository is subject to the terms of the license.
+          All custom graphics in this repository not originating from official PMD games are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International</Link>. Usage of the assets in this repository is subject to the terms of the license.           Custom sprites are licensed under <Link href="https://github.com/PMDCollab/SpriteCollab/blob/master/spritebot_credits.txt">spritebot_credits.txt</Link>, which contains all authors of the project.
         </Typography>
         <Container sx={{ mb: 2, mt: 2 }}>
           <Grid container spacing={2} justifyContent="space-around">
