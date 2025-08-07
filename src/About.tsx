@@ -136,15 +136,6 @@ export default function About() {
             </Grid>
           </Grid>
         </Container>
-        <Typography variant="h5" gutterBottom>
-          Proper Crediting
-        </Typography>
-        <Typography>
-          Appropriate crediting is required to use the assets in this repository.
-          If you wish to use them, you must list all the authors that contributed to each asset you use, separately.
-          The recommended way of doing this is enabling credits mode on the main page, selecting all the assets you used, and clicking the "download credits" button to generate a single file with all the required credits.
-          Alternatively, each asset page contains a link to a credits.txt file with its credits. This file already follows the required format, so you can take the credits from there and then combine them for all the assets you use.
-        </Typography>
 
         <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
           FAQ
