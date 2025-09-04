@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Grid, Link, Typography } from "@mui/material"
+import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material"
 import { filterNames, toggleNames } from '../types/params'
 import { Fragment, useContext } from 'react'
 import { Context } from '../Home'
