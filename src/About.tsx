@@ -40,7 +40,7 @@ export default function About() {
           Terms of Use
         </Typography>
         <Typography>
-          All custom graphics in this repository not originating from official PMD games are licensed under Creative Commons Attribution-NonCommercial 4.0 International. Usage of the assets in this repository is subject to the terms of the license. Custom sprites are licensed under <Link href="https://github.com/PMDCollab/SpriteCollab/blob/master/spritebot_credits.txt">spritebot_credits.txt</Link>, which contains all authors of the project.
+          All custom graphics in this repository not originating from official PMD games are licensed under <Link href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International</Link>. Usage of the assets in this repository is subject to the terms of the license.
         </Typography>
 
         <Container sx={{ mb: 2, mt: 2 }}>
@@ -144,7 +144,7 @@ export default function About() {
         <Typography>
           Appropriate crediting is required to use the assets in this repository.
           If you wish to use them, you must list all the authors that contributed to each asset you use, separately.
-          The recommended way of doing this is enabling credits mode on the main page, selecting all the assets you used, and clicking the "download credits" button to generate a single file with all the required credits.
+          The recommended way of doing this is enabling credits mode on the main page (under Search Options), selecting all the assets you used, and clicking the "download credits" button to generate a single file with all the required credits.
           Alternatively, each asset page contains a link to a credits.txt file with its credits. This file already follows the required format, so you can take the credits from there and then combine them for all the assets you use.
         </Typography>
 
