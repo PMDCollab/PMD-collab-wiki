@@ -4,16 +4,16 @@ import { URLSearchParamsInit } from 'react-router-dom';
 
 export type UseState<T> = [T, Dispatch<SetStateAction<T>>];
 
-const pad = (number: number) => number < 10 ? `0${number}` : number.toString();
-export const thumbnailScale = (str?: Maybe<string>) => Math.max(9 / Math.max(str?.length ?? 0, 9), 0.6);
+const pad = (number: number): string => number < 10 ? `0${number}` : number.toString();
+export const thumbnailScale = (str?: Maybe<string>): number => Math.max(9 / Math.max(str?.length ?? 0, 9), 0.6);
 
-export function formatDate(n?: string | number | Date) {
+export function formatDate(n?: string | number | Date): string {
   if (!n) return "";
   const date = new Date(n);
   return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear().toString().slice(2)}`;
 }
 
-export function getLastModification(t?: Maybe<Date> | "") {
+export function getLastModification(t?: Maybe<Date> | ""): string {
   return t ? `Modified at ${formatDate(t.getTime())}` : "";
 }
 

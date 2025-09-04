@@ -19,7 +19,10 @@ export default function DisplayParameters() {
   return (
     <Grid container spacing={2}>
       <Grid item key={0} xs={12}>
-        <Typography sx={{ fontWeight: "bold" }}>Credits <Link href="https://github.com/PMDCollab/PMD-collab-wiki/pull/100">(New!)</Link></Typography>
+        <Typography sx={{ fontWeight: "bold" }}>Credits</Typography>
+        <Typography>
+          This mode allows you to select multiple Pokémon and generate a single credits file with the corresponding credits for all of them. If you are selecting specific variants of a Pokémon, also enable the option to include different forms.
+        </Typography>
         <FormControlLabel
           label={<Typography color="text.secondary">Credits Mode</Typography>}
           control={<Checkbox

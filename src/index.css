@@ -20,6 +20,6 @@ strong > .with-credit {
 }
 
 .credit-label:has(input[type="checkbox"]:checked) {
-  outline: 3px solid lime;
-  color: lime;
+  outline: 3px solid green;
+  color: green;
 }
