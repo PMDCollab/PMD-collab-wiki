@@ -12,7 +12,9 @@ import { CssBaseline, createTheme } from "@mui/material"
 import "./index.css"
 import Contributors from "./Contributors"
 import ErrorPage from './ErrorPage'
+import { Helmet } from 'react-helmet'
 
+const title = "PMD Sprite Repository"
 const defaultTheme = createTheme({ typography: { fontFamily: "wonderMail" } });
 const client = new ApolloClient({
   uri: "https://spriteserver.pmdcollab.org/graphql",
@@ -39,6 +41,9 @@ async function initialize() {
   const sortedMonsters = [...data.monster].sort((a, b) => a.id - b.id);
   root.render(
     <React.StrictMode>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <ThemeProvider theme={defaultTheme}>
         <CssBaseline />
         <ApolloProvider client={client}>

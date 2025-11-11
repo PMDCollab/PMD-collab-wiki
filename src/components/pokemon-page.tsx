@@ -14,6 +14,7 @@ import {
 } from "@mui/material"
 import GameContainer from './phaser/game-container'
 import { useMemo } from 'react'
+import { Helmet } from 'react-helmet'
 
 interface Props {
   infoKey: number
@@ -69,6 +70,9 @@ export default function PokemonPage({ infoKey, prevIndex, nextIndex, rawId }: Pr
 
   return (
     <Box>
+      {data && <Helmet>
+          <title>#{rawId} {data.monster[0].name}</title>
+        </Helmet>}
       <Bar />
       <Container
         maxWidth="xl"
